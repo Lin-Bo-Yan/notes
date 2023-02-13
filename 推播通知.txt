@@ -26,8 +26,12 @@ sendNotification方法邏輯：
     4. FLAG_IMMUTABLE，選項標誌，表示創建的PendingIntent 對像不可變。
 
 4. 建立一個NotificationManager物件用來管理android通知服務，可以在此建立通知區域
-5. 建立NotificationCompat.Builder物件，來創建通知，然後呼叫NotifiactionManager.notify方法呈現通知。
-6. 建立Notification Channel，這個物件有規定在API版26才能使用，建立一個通知頻道，通知頻道的名稱是lale_channel_id，顯示名稱是新訊息通知，和NotificationManager.IMPORTANCE_DEFAULT。(通知類型)，若未開啟會無法接收新訊息通知。
+5. 建立NotificationCompat.Builder物件，來創建通知，然後呼叫NotifiactionManager.notify方法啟動builder。
+6. 建立Notification Channel，這個物件有規定在API版26才能使用，建立一個通知頻道，
+通知頻道的名稱是lale_channel_id，
+顯示名稱是新訊息通知，和NotificationManager.IMPORTANCE_DEFAULT。(通知類型)。(若未開啟會無法接收新訊息通知)
+然後呼叫Notifiaction.createNotifiactonChannel啟動channel物件。
+
 
 推播總共要四個物件
 1. NotificationManager
