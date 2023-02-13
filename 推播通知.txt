@@ -1,0 +1,53 @@
+firebase發送推播通知，會呼叫onMessageReceived方法接受到通知，lale企業 MyFirebaseMessagingService專案結構在
+laleents.tools.pusher。
+
+LocalBroadcastControlCenter.send方法在lale企業專案結構：laleents.tools.phone
+
+
+onMessageReceived方法邏輯是：
+
+1. 如果remoteMessage.getData有被設值，就會呼叫 MsgControlCenter的receiveMsg方法(Center他是一個Model，所以他專案結構在Model的msg資料夾裡)
+receiveMsg方法，現在知道的是MQTT通話和推播通知都會呼叫他。
+2. receiveMsg方法你要傳入remoteMessage.getData().get("body")由後端發出來的json，回傳一個MessageInfo物件。
+3. 判斷推播類型是否為MQTT或者文字推播。
+4. 判斷是否在前景(畫面開啟app狀態)，如果不是在前景則呼叫sendNotification方法，如果是在前景則呼叫 LocalBroadcastControlCenter.send方法。
+
+
+sendNotification方法邏輯：
+1. RingtonManager類默認系統通知音訊中獲取url，建立Url來設置系統通知音
+2. 處理點選訊息的跳轉 
+    1. 把data.id字串轉成int，綁定intent傳到MainWebActivity，給intent標籤bFromPhone
+    2. 如果MessageInfo.content訊息是空的就結束fun
+3. 會用android的PendingIntent類通知被點擊的推播啟動應用程式，利用PendingIntent.getActivity靜態方法建立一個PendingIntent對象，
+方法接受以下參數：
+    1. this，當前上下文，通常是應用程序的主活動。
+    2. id，每個PendingIntent的唯一ID，區分不同PendingIntentm。
+    3. intent，要啟動的意圖。
+    4. FLAG_IMMUTABLE，選項標誌，表示創建的PendingIntent 對像不可變。
+
+4. 建立一個NotificationManager物件用來管理android通知服務，可以在此建立通知區域
+5. 建立NotificationCompat.Builder物件，來創建通知，然後呼叫NotifiactionManager.notify方法呈現通知。
+6. 建立Notification Channel，這個物件有規定在API版26才能使用，建立一個通知頻道，通知頻道的名稱是lale_channel_id，顯示名稱是新訊息通知，和NotificationManager.IMPORTANCE_DEFAULT。(通知類型)，若未開啟會無法接收新訊息通知。
+
+推播總共要四個物件
+1. NotificationManager
+2. PendingIntent
+3. NotificationCompat.Builder
+4. NotifationChannel
+
+pendingIntent包在Notification.Builder裡面
+NotificationManager啟動Builder
+NotifationManager啟動NotifationChannel
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+LocalBroadcastControlCenter.send方法邏輯：
+1. intent設定廣播識別碼
+2. putExtra綁定資料，key = "data"
+3. 使用LocalBroadcastManager的getInstance()方法取得LocalBroadcastManager的實例，然後使用sendBroadcast()方法將廣播發送出去。
+
+
+by the away：
+LocalBroadcastManager與
+sendBroadcast發送全域廣播相比LocalBroadcastManager更具有優勢，因為廣播數據不會離開應用程式，因此不需要擔心洩漏私人數據，
