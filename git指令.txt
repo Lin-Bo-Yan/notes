@@ -1,0 +1,37 @@
+【Git】取消追蹤檔案
+
+1. 如果要解除單一檔案或是資料夾，可以用：
+   * git rm --cached filename    
+   * git rm -r --cached foldername 
+
+2. 若是要解除多個的話，則可以直接把所有檔案追蹤，這樣比較快(但不要亂用)：
+   * git rm -r --cached .
+
+3. 新增 .gitignore 規則   
+   * 接下來在 .gitignore 內加入新的規則，像我是要忽略 log 檔案，所以就在 .gitignore 下加入：
+
+4. 最後重新 add，commit
+
+=========================================
+
+【Git】重新命名本地分支及遠端分支
+
+1. 重新命名本地分支名稱。<old_name>為舊的分支名稱；<new_name>為新的分支名稱。
+   * git branch -m <old_name> <new_name>
+
+2. 刪除遠端的舊分支。
+   2-1：
+     * git push origin :<old_name>
+
+   2-2：
+     * git remote -v 查詢後的遠端分支
+       如果已經關聯了就可以不用
+     * git push <remote> --delete <old_name>
+兩種方法都可以
+
+3. 將新的本地分支推到遠端並建立及追蹤新的遠端分支。
+   * git push <remote> -u <new_name>
+   * git push origin -u <new_name>
+
+=========================================
+

@@ -1,0 +1,11 @@
+NetworkOnMainThreadException
+
+    E/AndroidRuntime: FATAL EXCEPTION: main
+        Process: com.example.zxing_test, PID: 12505
+        android.os.NetworkOnMainThreadException
+
+
+這個錯誤是 android.os.NetworkOnMainThreadException，意思是在主執行緒 (main thread) 上執行了網路操作，這是不允許的。
+在 Android 上，所有的網路操作都應該在後台執行緒 (background thread) 上進行，以避免阻塞主執行緒，從而使應用程序變得無響應或甚至崩潰。
+為了解決這個錯誤，你可以將網路操作移至後台執行緒上，例如使用 AsyncTask、Thread 或者 Runnable。
+或者你可以關閉 Android 的主執行緒上網路操作的限制，但這不是一個好的解決方案，因為這樣可能會導致應用程序崩潰或變得不穩定。

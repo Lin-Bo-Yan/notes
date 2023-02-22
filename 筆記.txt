@@ -1,0 +1,10 @@
+FirebaseInstanceId 的 getInstance() 方法已經棄用了，他們的功能是獲取註冊令牌，
+用FirebaseMessagingService 呼叫public void onNewToken(String token) 方法不也是得到令牌嗎，
+這兩個方法，FirebaseMessagingService比較好對吧
+
+
+
+是的，您說的沒錯。FirebaseInstanceId.getInstance() 已被棄用，現在應該使用FirebaseMessaging.getInstance().getToken()或
+FirebaseMessagingService的onNewToken()方法來獲取註冊令牌。
+FirebaseMessagingService的onNewToken()方法是Firebase在推送令牌更新時自動調用的方法，
+您可以重寫這個方法來處理註冊令牌更新的邏輯，而無需顯式調用FirebaseInstanceId的方法。這樣更簡潔，更符合最新的Firebase推送標準。

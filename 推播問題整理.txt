@@ -1,0 +1,46 @@
+以下有兩種jitsiMeet推播的形式
+1. 當螢幕亮起時jitsiMeet推動推播
+2. 當螢幕熄滅時jitsiMeet推動推播
+
+當螢幕亮起並且app是背景執行檢測到cpu不會保電，接聽之後喚醒app到前景執行
+當螢幕熄滅時檢測到cpu一樣不會運轉，推播進來後還是不會喚醒app，要等到用戶按下接聽才會喚醒app到前景執行
+
+1. 螢幕熄滅，推播通知並不會啟動系統螢幕使其點亮，會使用戶接聽手機不便，想要的做法是推播能夠點亮螢幕，
+後來也找到辦法解決點亮螢幕這塊。(解決)
+
+2. 測試手機設定摘要顯示，會無法顯示完整推播畫面，也就是說無法直接按下接聽，需要下滑通知才有接通按紐
+
+3. 當對方掛掉電話或是接聽電話，手機系統音仍然會響 (DialogUtils.hideCall(AllData.context, messageInfo);)(MsgControlCenter.stopRing();)
+
+            KeyguardManager.KeyguardLock k1 = keyguardManager.newKeyguardLock("com.example.myapp:bright");
+            k1.disableKeyguard();
+            PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+            PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_DIM_WAKE_LOCK,"com.example.myapp:bright");
+            wl.acquire();
+            wl.release();
+
+            這段程式碼是用來點亮 Android 裝置螢幕的。程式碼中使用了 KeyguardManager 和 PowerManager 兩個系統服務來執行此操作。
+
+首先，KeyguardManager.KeyguardLock 物件 k1 是用來解除鎖屏的，因為當 Android 裝置處於鎖屏狀態時，需要先解除鎖
+
+這段程式碼用於設定喚醒螢幕的功能。以下是程式的功能解釋：
+
+1. KeyguardManager：獲取 KeyguardManager 實例，用於控制鎖屏功能。
+2. KeyguardManager.KeyguardLock：創建 KeyguardLock 實例，用於解鎖鎖屏。
+3. k1.disableKeyguard()：解除鎖屏。
+4. PowerManager：獲取 PowerManager 實例，用於控制電源管理。
+5. PowerManager.WakeLock：創建 WakeLock 實例，用於控制螢幕顯示。
+6. PowerManager.ACQUIRE_CAUSES_WAKEUP：設置 WakeLock 模式為喚醒螢幕。
+7. PowerManager.SCREEN_DIM_WAKE_LOCK：設置 WakeLock 為 PARTIAL_WAKE_LOCK，該模式下 CPU 保持運行，但屏幕和鍵盤背光關閉。
+8. wl.acquire()：獲取 WakeLock，讓屏幕亮起。
+9. wl.release()：釋放 WakeLock，讓屏幕恢復黑屏。
+總體而言，這段程式碼的作用是獲取 KeyguardManager 和 PowerManager 實例，並使用這些實例來控制鎖屏和屏幕顯示功能，以實現喚醒螢幕的效果。
+
+
+
+sdk.dir=C\:\\Users\\boyan.lin\\AppData\\Local\\Android\\Sdk
+
+.gitignore
+
+
+

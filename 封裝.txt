@@ -1,0 +1,35 @@
+public class HttpAfReturn {
+    public boolean sccess= false;
+    public String message;
+    public String errorMessage = "連線失敗";
+    public Object data = null;
+    public int total;
+    public int code = 500;
+    public String stackTrace;
+}
+
+前輩寫了一個class 然後另外寫一個interface
+在interface裡面呼叫HttpAfReturn 類別，
+
+public interface ICloudUtils {
+
+    /**
+     * 取得EIM_QRcode登入資料
+     */
+    HttpAfReturn getEimQRcode(Context context, String af_token, String qrcode_info_url);
+}
+
+想知道 HttpAfReturn 這樣設計的用意是?
+
+
+Q：
+HttpAfReturn 是一個用於封裝 HTTP 請求返回結果的類，它包含了一些常用的 HTTP 請求返回信息字段，
+例如請求是否成功（success）、提示信息（message）、錯誤信息（errorMessage）、返回數據（data）、
+返回數據總數（total）、狀態碼（code）以及堆棧跟踪信息（stackTrace）。
+
+使用這樣一個類可以將 HTTP 請求返回的信息統一封裝，方便調用方處理返回結果，
+尤其是在需要處理大量 HTTP 請求時，可以大大減少代碼冗餘。
+
+在上述接口 ICloudUtils 中，getEimQRcode 方法調用了 HttpAfReturn 類，
+用於返回 EIM_QRcode 登錄的相關信息。通過將返回結果封裝在 HttpAfReturn 類中，可以方便地統一處理和管理 EIM_QRcode 
+登錄請求返回結果，避免出現重複代碼和混亂的數據處理流程。

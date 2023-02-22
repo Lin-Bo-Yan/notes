@@ -1,0 +1,26 @@
+Q：
+public interface ICloudUtils {
+    @WorkerThread
+    HttpAfReturn getEimQRcode(Context context, String af_token, String qrcode_info_url);
+}
+
+@WorkerThread的意思是任務派來時，隨機指派一個執行續去做摟?
+
+
+
+A：
+
+@WorkerThread 是一個 Android 標準庫中的註解，用於標記方法應該在工作線程中執行，而不是在 UI 線程中執行。
+該註解的作用是提醒開發者在使用該方法時需要在工作線程中執行，以避免在 UI 線程中執行耗時操作而導致界面卡頓或 ANR 等問題。
+因此，在使用 ICloudUtils 接口中的 getEimQRcode 方法時，需要確保在工作線程中調用該方法，以保證應用的性能和穩定性。 
+@WorkerThread 並不會隨機指派一個執行線程，而是提醒開發者需要在非 UI 線程中執行該方法。
+具體實現可以使用線程池或異步任務等方式來保證在工作線程中執行。
+
+
+
+@WorkerThread 是一個註解，用於表示該方法應該在後台線程上執行，而不是在主線程上執行。
+這個註解的作用是幫助開發者避免在主線程上執行長時間的耗時操作，以避免阻塞主線程和導致 ANR（Application Not Responding）異常。
+@WorkerThread 註解只是一個提示，表明該方法應該在後台線程上執行。這個註解並不會影響多線程執行，也不會影響 ICloudUtils
+接口的實現類在多線程環境下的正確性。
+如果在使用該接口時出現了多線程並發的問題，可能是由於實現類中對共享資源的訪問沒有進行同步導致的。
+你可以使用 synchronized 關鍵字對方法或代碼塊進行同步，或使用線程安全的數據結構來避免多線程競爭的問題。

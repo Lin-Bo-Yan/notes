@@ -1,0 +1,11 @@
+                    String test="{\n" +
+                            "    \"isLaleAppEim\": false,\n" +
+                            "     \"isLaleAppWork\": true,\n" +
+                            "  \"af_url\": \"https://agentflow.flowring.com:8443/WebAgenda\",\n" +
+                            "  \"af_mem_id\": \"MEM00001091511489187\",\n" +
+                            "  \"af_login_id\": \"f0\",\n" +
+                            "  \"af_token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmMCIsImF1ZCI6Ik1FTTAwMDAxMDkxNTExNDg5MTg3IiwiaXNzIjoiRmxvd0Rlb20iLCJuYW1lIjoi5Y-k6JGjIiwiZXhwIjoxNjY2MTQ0MzA0LCJpYXQiOjE2NjU1Mzk1MDR9.AYfwO7xG8AdOKk43zb4lqcW8UhSQEXWQiH9rqBpFe50\",\n" +
+                            "  \"af_wfci_service_url\": \"http://192.168.3.53:8083\"\n" +
+                            "}";
+
+\" → 跳脫自元 很重要 !
