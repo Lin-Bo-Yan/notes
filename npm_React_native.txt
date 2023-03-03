@@ -1,0 +1,57 @@
+使用 React Native 建立新專案
+1. 建立一個空資料夾，下指令，它會在你已經創建的目錄內再創一個叫做MyReactNativeApp目錄名稱
+  npx react-native init MyReactNativeApp
+2. 若要執行你的專案，請輸入下列命令。 這會開啟新的主控台視窗，其中顯示 Node Metro Bundler。
+  npx react-native run-android
+
+
+參考資料：
+https://learn.microsoft.com/zh-tw/windows/dev-environment/javascript/react-native-for-android
+
+
+若想檢查設備有沒有連接到，可以執行下面指令：
+  1. adb devices
+
+在右邊那列看到device說明你的設備已經被正確連接了。注意，你每次只應當連接一個設備。
+
+npx react-native info
+
+npx react-native info 是一個指令，
+用於顯示 React Native 環境的相關資訊，包括 React Native 版本、Android SDK 版本、Java 版本、Xcode 版本等。
+
+
+
+
+使用 React Native 建立新專案：
+npx react-native init 專案名稱
+npm install
+npm start
+
+
+
+
+
+設置你的第一個 React 應用程式：
+npx create-expo-app AwesomeProject
+cd AwesomeProject
+npx expo start
+
+
+
+
+
+升級 react-native 
+npx react-native upgrade
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+error Failed to install the app. Make sure you have the Android development environment set up: 
+https://reactnative.dev/docs/environment-setup.
+
+
+Error: Command failed: gradlew.bat app:installDebug -PreactNativeDevServerPort=8081
+
+FAILURE: Build failed with an exception.

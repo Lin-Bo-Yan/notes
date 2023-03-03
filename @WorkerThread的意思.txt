@@ -24,3 +24,25 @@ A：
 接口的實現類在多線程環境下的正確性。
 如果在使用該接口時出現了多線程並發的問題，可能是由於實現類中對共享資源的訪問沒有進行同步導致的。
 你可以使用 synchronized 關鍵字對方法或代碼塊進行同步，或使用線程安全的數據結構來避免多線程競爭的問題。
+
+
+
+
+
+Q：
+我有一段程式如下：
+AlertDialog.Builder b = new AlertDialog.Builder(getApplicationContext());
+因為提示視窗的Context選錯造成crash，所以更改為：
+AlertDialog.Builder b = new AlertDialog.Builder(MainWebActivity.this);
+問題隨之解決
+
+getApplicationContext() 這條是取得當前ApplicationContext，那跟MainWebActivity.this兩個作用是甚麼?
+
+
+A：
+getApplicationContext() 是用來獲取應用程序的全域 Context，它的生命週期與整個應用程序的生命週期相同，
+因此它通常用於需要長期存在的對象或在 Activity/Service 對象不存在時使用。例如，當你需要在 Activity/Service 
+對象以外的地方創建對話框或者 Toast 時，可以使用全域 Context。
+而 MainWebActivity.this 則是獲取當前 Activity 的 Context，它的生命週期僅限於當前 Activity，因此它通常用於在 
+Activity 中創建對話框或者 Toast 等 UI 元素。
+總體來說，選擇使用哪種 Context 取決於你創建 UI 元素的場景和需求，適當選擇 Context 可以避免不必要的錯誤和問題。

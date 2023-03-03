@@ -8,3 +8,52 @@ FirebaseInstanceId 的 getInstance() 方法已經棄用了，他們的功能是�
 FirebaseMessagingService的onNewToken()方法來獲取註冊令牌。
 FirebaseMessagingService的onNewToken()方法是Firebase在推送令牌更新時自動調用的方法，
 您可以重寫這個方法來處理註冊令牌更新的邏輯，而無需顯式調用FirebaseInstanceId的方法。這樣更簡潔，更符合最新的Firebase推送標準。
+
+
+FCM token
+f7_wBFToQGeDOz-fcoDVBH:APA91bHE6-b2QS1AE5St0gZkVz16ZXGqA3BswJFmj_0gsUpxkUv9tR-569XvJ0Gd29VyJc02RuRrPIzvOh8GTdf8T4NMIw0eW-a1CL_CUm1glc1bb64hxubEV1iWnF5mcy6wEiW8SCyv
+
+企業版 FCM token
+fL7nKo7BTc-vYvlVyYktGO:APA91bFCngQSU_r7HT2Z7Rf2KlYHkXEhFhEfuZKiLr2f3cw4s52Qy_QBdxq6lbVJRSUC2Z7bJvmYha9iCRz9NXME4HXQKzWkz8DjcLzHvvLmYCI4vTPDszjKf5FSXyhLUvb92taoMZxi
+
+sdk.dir=C\:\\Users\\boyan.lin\\AppData\\Local\\Android\\Sdk
+
+
+
+
+Warning: This version only understands SDK XML versions up to 2 but an SDK XML file of version 3 was encountered. This can happen if you use versions of Android Studio and the command-line tools that were released at different times.
+這個警告通常表示 Android Studio 和命令行工具版本不兼容，建議升級 Android Studio 和命令行工具至最新版本以解決此問題。
+
+你可以打開 Android Studio，並從菜單中選擇 File -> Settings -> Appearance & Behavior -> System Settings -> Android SDK。
+在這裡，你可以看到當前的 Android SDK 版本以及可用的更新。請確認你的 Android SDK 已經更新到最新版本，然後重新運行項目，應該可以避免這個警告。
+
+
+
+
+
+發現專案build不起來是因為連接不到虛擬機，有可能是因為React Native init所建置的專案和android gradle版本不一致，所以雙方沒辦法連接
+嘗試過連接實體手機也是無法連接。
+Adb reverse tcp not working on android connected remotely
+https://stackoverflow.com/questions/46138780/adb-reverse-tcp-not-working-on-android-connected-remotely
+
+react-native解决installDebug問題
+https://blog.csdn.net/qq_32192725/article/details/87967508?spm=1001.2101.3001.6650.3&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-3-87967508-blog-75779929.pc_relevant_3mothn_strategy_and_data_recovery&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-3-87967508-blog-75779929.pc_relevant_3mothn_strategy_and_data_recovery&utm_relevant_index=4
+
+找到一個解法是用android studio 開啟React Native專案，IDE會把gradle版本自動更新到符合的版本，這個方法在新專案是可行的，在jitsi-meet專案又有問題。
+
+
+
+
+
+超詳細React Native環境搭建以及運行項目（Windows環境）
+https://blog.csdn.net/ljx1048900106/article/details/108282012#:~:text=%E7%8E%B0%E5%9C%A8%E4%BD%A0%E5%8F%AF%E4%BB%A5%E8%BF%90%E8%A1%8Creact-native%20run-android%E6%9D%A5%E5%9C%A8%E8%AE%BE%E5%A4%87%E4%B8%8A%E5%AE%89%E8%A3%85%E5%B9%B6%E5%90%AF%E5%8A%A8%E5%BA%94%E7%94%A8%E4%BA%86%E3%80%82%20%24%20react-native%20run-android,%E6%88%96%E8%80%85%20%24%20yarn%20android%202.
+
+
+
+
+https://benjaminnl.pixnet.net/blog/post/53362765-windows%E7%92%B0%E5%A2%83%E4%BD%BF%E7%94%A8linux%E7%9A%84make%E6%8C%87%E4%BB%A4
+
+
+
+
+

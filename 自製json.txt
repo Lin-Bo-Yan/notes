@@ -9,3 +9,7 @@
                             "}";
 
 \" → 跳脫自元 很重要 !
+
+"{\"thirdPartyIdentifier\": \"" + thirdPartyIdentifier + "\",  \"deviceId\": \"" + deviceId + "\",  \"loginType\":6 }"
+{"thirdPartyIdentifier": " + thirdPartyIdentifier + ",  deviceId: " + deviceId + ",  loginType:6 }
+
