@@ -27,7 +27,7 @@ npx react-native init 專案名稱
 npm install
 npm start
 
-
+npx react-native init node_modules
 
 
 
@@ -45,13 +45,82 @@ npx react-native upgrade
 
 
 
+在 Windows 上安裝 NodeJS
+https://learn.microsoft.com/zh-tw/windows/dev-environment/javascript/nodejs-on-windows
+
+
+列出目前安裝的 Node 版本 
+1. nvm ls
+
+請先查閱目前的 LTS 版本號碼，以安裝最新的穩定 LTS 版本Node.js (建議) 版本號碼： 
+2. nvm list available
+
+安裝目前版本的 Node.js 
+3. nvm install <版本>
+
+ nvm uninstall <版本>
+
+4. nvm use <版本>
+
+npm 升級
+
+更新到最新版本
+1. npm install -g npm
+
+更新到指定版本
+2. npm install npm@7.24.2 --force
+
+
+reactstrap
+https://www.npmjs.com/package/reactstrap
+
+
+
+
+
+如果遇到像是 Error: Command failed: gradlew.bat app:installDebug 或是 Execution failed for task ‘:app:installDebug’.
+可以試試依序下以下指令：
+
+cd android
+.\gradlew clean
+cd ..
+npm cache clean --force
+npm cache verify
+npm start 
+(control+C leave)
+npx react-native run-android
+
+
+
+
+
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-error Failed to install the app. Make sure you have the Android development environment set up: 
-https://reactnative.dev/docs/environment-setup.
 
 
-Error: Command failed: gradlew.bat app:installDebug -PreactNativeDevServerPort=8081
+deploy-css:
+ $(NODE_SASS) $(STYLES_MAIN) $(STYLES_BUNDLE) && \
 
-FAILURE: Build failed with an exception.
+deploy-init:
+ rm -fr $(DEPLOY_DIR)
+ mkdir -p $(DEPLOY_DIR)
+
+make dev 執行 Makefile腳本，位在：
+
+C:\Users\boyan.lin\Desktop\jitsi-meet
+
+
+
+C:\Users\boyan.lin\Desktop\jitsi-meet\node_modules\react-native-webrtc\android\libs
+
+C:\Users\boyan.lin\Desktop\jitsi-meet\node_modules\react-native\ReactAndroid\libs
+
+
+JavaScript 中 Cannot destructure Property of Undefined 错误
+https://www.jiyik.com/tm/xwzj/web_2042.html
+
+
+視訊網址：
+https://agentflow.flowring.com:8443/call/#/call/16003836388165550081632636384592396288/eyJkaXNwbGF5TmFtZSI6IiVFNiU5RCU4RSVFNyU4NyU5NSVFOCU5MCU4RCIsInVzZXJJZCI6ImYyIiwiYXZhdGFyIjoiaHR0cHM6XC9cL2FnZW50Zmxvdy5mbG93cmluZy5jb206ODQ0M1wvV2ViQWdlbmRhXC9kb3dubG9hZFBob3RvP3VzZXJJZD1SRTFWZDI5WmN6WnVhM0ZZUnpJeWVsVllVbTQzYW01WWRFWlhaRE5wVURBTkNsY21KQ01oUVRKRmFGWnpiaTk1ZVd3MFBRMEsmc2l6ZT1wIiwibGFsZVRva2VuIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnNiMmRwYmw5MGVYQmxJam9pZFhObGNpSXNJblZ6WlhKZmJtRnRaU0k2SW1ZeUlpd2laWGh3SWpveE5qYzRNVGN5TURBd0xDSnBZWFFpT2pFMk56Z3dPRFUyTURBc0ltUmxkbDlwWkNJNklqa3hNVEk0TjJFek9XTTRPV1UyTW1JaWZRLk1lN2k4VTVoTW9qcWtLZ0RyWU5wX2hMWV9tdUdveDd4OGVqSUlEdFExdVUiLCJtcXR0SG9zdCI6IndzczpcL1wvbGFsZWRldjEwLmZsb3dyaW5nLmNvbVwvbXF0dCIsImppdHNpRG9tYWluIjoiaHR0cHM6XC9cL2xhbGVkZ
+

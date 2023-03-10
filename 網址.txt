@@ -1,0 +1,62 @@
+華苓資料夾：
+ 1.git ：
+    1-1 Lale_android_Web：http://gitlab.flowring.com/lale/lale_android_web
+    1-2企業：http://gitlab.flowring.com/lale/lale_android_ent_web
+
+https://portal.flowring.com/WebAgenda/index.jsp
+https://agentflow.flowring.com:8443/WebAgenda/index.do
+https://laletest.flowring.com/WebAgenda/login.do
+http://hedgedoc.flowring.com/
+文件目錄：http://hedgedoc.flowring.com/XgXx8CeZRByO8rL4hSZeXA
+App開發規範：http://hedgedoc.flowring.com/SF5Q8pS4Q1aKyZKoLsZE6w
+使用 git 管理開發環境：https://qms.flowring.com:9080/pages/viewpage.action?pageId=42631271
+http://gitlab.flowring.com/
+Lale ToC：https://www.figma.com/file/AyGNNi0uxPJB06BK9Gd8bS/Lale-IM?t=llVBKzuNMgBPbc6W-0
+Lale 企業：https://www.figma.com/file/BDWktd9KU7L0DOQA454mDZ/Lale-%E4%BC%81%E6%A5%AD?node-id=0-1&t=kNuqX2Hjw9yaDzhb-0
+Lale 企業 App：https://qms.flowring.com:9080/pages/viewpage.action?pageId=50266584
+commit message：https://qms.flowring.com:9080/pages/viewpage.action?pageId=45812319
+產品測試管理：https://portal.flowring.com/WebAgenda/MIS/ProductTestMgt.jsp
+
+
+資料：
+ 1. 工具： 
+    1-1 posman：https://identity.getpostman.com/login?continue=https%3A%2F%2Fweb.postman.co%2F
+    1-2 GPT：https://chat.openai.com/auth/login
+    1-3 https://www.eclipse.org/paho/files/javadoc/index.html
+    1-4 https://www.diffchecker.com/
+    1-5 https://jsoneditoronline.org/#right=local.fibuci
+    1-6 http://json.parser.online.fr/
+    1-7 https://stackoverflow.com/
+
+https://hackmd.io/?nav=overview
+https://www.npmjs.com/package/@react-native-community/cli
+https://developer.android.com/
+https://www.runoob.com/java/java-stringbuffer.html
+https://www.alibabacloud.com/help/en/iot-platform/latest/use-the-paho-mqtt-android-client
+https://leonardocavagnis.medium.com/iot-101-from-hardware-to-cloud-part-iii-369c6ac1e046
+https://forasoft.com/blog/article/how-to-make-a-custom-android-call-notification-455
+
+http://hedgedoc.flowring.com/B_qavTBZSx-HH9qLw_Ngkw
+開發帳密：https://qms.flowring.com:9080/pages/viewpage.action?pageId=49874709
+辦公室推播類型：https://qms.flowring.com:9080/pages/viewpage.action?pageId=50921479
+http://hedgedoc.flowring.com/n4gcLvvdTiO_75u9qSqF6w
+http://laledev7.flowring.com:8080/2c_test_apk/index.html
+內部測試部署流程：http://hedgedoc.flowring.com/Qano0ZRuR9qnPrT8QJdYJA
+https://www.youtube.com/watch?v=6tEV6H07Fd8
+
+光科技時代：
+    1-1：光標籤座標系說明：https://www.lig.com.tw/lig-coorsys/
+    1-2：LiG SDK - 光時代：https://www.lig.com.tw/lig-sdk-page/
+    1-3：後台：https://cloud.lig.com.tw/sdk_applications
+
+Jitsi：
+    1-1：https://github.com/jitsi
+    1-2：https://jitsi.github.io/handbook/docs/dev-guide/dev-guide-android-sdk
+    1-3：https://www.cxyzjd.com/article/qq_28880087/107666449
+    1-4：https://www.cnblogs.com/grimm/p/14785517.html
+    1-5：https://community.jitsi.org/t/integrate-and-customize-jitsi-meet-sdk/21667/8
+    1-6：https://jitsi.github.io/handbook/docs/dev-guide/dev-guide-android-sdk/#jitsimeetactivitydelegate
+
+
+
+

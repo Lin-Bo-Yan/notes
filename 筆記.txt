@@ -57,3 +57,124 @@ https://benjaminnl.pixnet.net/blog/post/53362765-windows%E7%92%B0%E5%A2%83%E4%BD
 
 
 
+implementation fileTree(dir: 'libs', include: ['*.jar'])
+implementation 'androidx.appcompat:appcompat:1.4.1'
+implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+
+這是在 Android 應用程式的 build.gradle 文件中設置的 dependencies，用於添加所需的 Android 庫。具體而言：
+
+fileTree(dir: 'libs', include: ['*.jar'])：將 libs 目錄下的所有 jar 文件添加到項目中。
+implementation 'androidx.appcompat:appcompat:1.4.1'：添加 AndroidX 库中的 AppCompat 库，這是一個向後兼容的庫，可確保應用程式在不同版本的 Android 上運行一致。
+implementation 'androidx.constraintlayout:constraintlayout:2.1.3'：添加 ConstraintLayout 庫，這是一個用於設計 Android 用戶界面的庫。
+
+
+
+公司建立的jitsi server：
+https://laledev0.flowring.com/
+
+onConsoleMessage= 
+
+
+
+
+command= 
+downloadByUrl 個人聊天室 -> 下載圖片
+webOk 登入後呼叫
+Logout  設定 -> 登出
+getAPPVersion 設定 -> 關於Lale
+feedback 設定 -> 回報
+openQRcode 聊天 -> QRcode
+openWebView 個人聊天室 -> 點擊對方傳的url
+openPhoneWebView 個人猜測，判斷是開啟https://meet.jit.si/ 時呼叫
+updateRooms 創建群組時呼叫
+
+
+
+NewUrl
+openChrome 
+getAddressBook
+newLinkApp
+downloadByBytesBase64 -> 測試用
+tokenRefresh 告訴app端刷新token
+setRoomBackground
+share
+updateUser
+unDo
+
+
+
+
+
+inKeyguardRestrictedInputMode()
+該方法用於判斷當前的鎖屏狀態是否為受限輸入模式
+受限輸入模式是指當使用者設定了鎖屏密碼、PIN 碼、圖案等方式時，系統會在鎖屏時啟用一種保護機制
+滑動螢幕非密碼鎖也會判斷上鎖
+
+
+
+isKeyguardSecure()
+跟 inKeyguardRestrictedInputMode 差別在拿掉 滑動螢幕非密碼鎖會判定螢幕沒有上鎖
+不過滑掉app server 會判定沒在運作
+
+
+
+isKeyguardLocked()
+已鎖定的鎖屏狀態是指系統在使用者按下電源鍵後，系統會啟動一個鎖屏畫面，使用者必須進行解鎖操作才能進入系統。
+功能跟 inKeyguardRestrictedInputMode 一樣
+
+
+
+
+jitsi-meet 錯誤訊息：
+CreateProcess error=193, %1 不是有效的 Win32 應用程式。
+
+React版本：
+ v0.73.8
+
+
+
+
+AR 假資料
+
+//                    val lightId = LightID(
+//                        status = 1,
+//                        coordinateX = 0.41749913f,
+//                        coordinateY = 0.4111436f,
+//                        isDetected = true,
+//                        deviceId = 123456789L,
+//                        detectionTime = 3094,
+//                        decodedTime = 206,
+//                        isReady = true,
+//                        rotation = Vector3(0.56f, -0.20f, -0.13f),
+//                        translation = Vector3(-0.06f, -0.23f, 0.66f),
+//                        position = Vector3(-0.07f, -0.16f, 0.67f)
+//                    )
+
+
+下指令：
+npm install @jitsi/react-sdk
+他會在package.json裡面的dependencies欄位新增 "@jitsi/react-sdk": "^1.3.0"
+除此之外，還會產出 package-lock.json 
+
+
+
+npm install react-native-jitsi-meet
+
+npm install react-native-jitsi-meet-sdk
+
+
+
+
+
+工作日誌：
+開啟React-native專案，下指令npm install react-native-jitsi-meet --save
+將官方包裝好的 jitsi-meet SDK引進專案內
+
+這條指令會在 node_modules目錄底下產生 react-native-jitsi-meet 目錄
+點開目錄 -> android -> build.gradle，會找到：
+implementation ('org.jitsi.react:jitsi-meet-sdk:5.1.0') {transitive = true}
+
+除此之外，他會在根目錄package.json裡面的dependencies欄位新增 "react-native-jitsi-meet": "^3.1.0"
+並且產出 package-lock.json 
+
+很神奇的是，json文件的版本號跟build.gradle版本對不起來，這還需要研究
