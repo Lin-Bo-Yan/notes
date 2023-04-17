@@ -1,0 +1,5 @@
+利用BitmapDrawable物件 取出 圖片
+BitmapDrawable 最終 需要轉成 Bitmap
+File 取得 CachDir 內存路徑，你要建一個路徑給他
+File的mkdirs創建目錄
+new 出 FileOutputStream物件轉成uri

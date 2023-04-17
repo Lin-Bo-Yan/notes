@@ -87,7 +87,7 @@ openQRcode 聊天 -> QRcode
 openWebView 個人聊天室 -> 點擊對方傳的url
 openPhoneWebView 個人猜測，判斷是開啟https://meet.jit.si/ 時呼叫
 updateRooms 創建群組時呼叫
-
+share 在加好友的那邊 特殊加好友 寄信和簡訊，QRcode那邊的分享圖片
 
 
 NewUrl
@@ -97,11 +97,8 @@ newLinkApp
 downloadByBytesBase64 -> 測試用
 tokenRefresh 告訴app端刷新token
 setRoomBackground
-share
 updateUser
 unDo
-
-
 
 
 
@@ -151,20 +148,6 @@ AR 假資料
 //                    )
 
 
-下指令：
-npm install @jitsi/react-sdk
-他會在package.json裡面的dependencies欄位新增 "@jitsi/react-sdk": "^1.3.0"
-除此之外，還會產出 package-lock.json 
-
-
-
-npm install react-native-jitsi-meet
-
-npm install react-native-jitsi-meet-sdk
-
-
-
-
 
 工作日誌：
 開啟React-native專案，下指令npm install react-native-jitsi-meet --save
@@ -178,3 +161,206 @@ implementation ('org.jitsi.react:jitsi-meet-sdk:5.1.0') {transitive = true}
 並且產出 package-lock.json 
 
 很神奇的是，json文件的版本號跟build.gradle版本對不起來，這還需要研究
+
+
+webView在android5.0之後會自動設置同步功能，意思是說網頁瀏覽器的cookie狀態會直接跟app同步，確保webView和瀏覽器之間共享cookie
+如果沒有同步功能，那麼webView和瀏覽器之間就會有不同步衍伸的問題，例如說：webView 設置cookie，在瀏覽器並未同步，那麼訪問同一個網站時就會無法識別用戶
+
+
+=========================================
+
+API 19以上WebView緩存目錄
+Android4.4+當在項目中使用了WebView時，會在/data/data/package_name/目錄下生成一個app_webview文件夾(緩存索引)
+也會有一個cache文件夾(對應文件)
+
+不重要!!
+Android4.4以下存放在/data/data/package_name/databases(緩存索引)和/data/data/package_name/cache/webviewCacheChromunm(對應文件)
+
+
+webView的緩存模式：
+LOAD_CACHE_ONLY: 不使用網絡，只讀取本地緩存數據
+LOAD_DEFAULT: 根據cache-control決定是否從網絡上取數據。
+LOAD_CACHE_NORMAL: API level 17中已經廢棄, 從API level 11開始作用同LOAD_DEFAULT模式
+LOAD_NO_CACHE: 不使用緩存，只從網絡獲取數據.
+LOAD_CACHE_ELSE_NETWORK，只要本地有，無論是否過期，或者no-cache，都使用緩存中的數據。
+
+==================================================================================
+
+3/31 下班前把android 送審，確認nic 資料更新了沒，4/10 號上架完成，
+所以連假完有2天時間要注意送審結果，如果有問題需在兩天處理完成。
+
+==================================================================================
+
+點擊之後拿到fileId，url，如果沒有就去找他的暫存檔案位置，如果暫存位置也沒了，那就不讓他開。
+  
+單一下點擊事件觸發預覽，如果server的檔案30天後過期，那就去實體檔，如果連實體檔都沒有就是判定檔按過期
+下載佔存檔先判斷名稱是否存在，這段邏輯設計成跟download共用，加入列舉設計，然後將開啟檔案下載的動作切開寫成獨立class
+方便閱讀，還須多一層邏輯是如果server的檔案過期，要去實體找檔案
+
+==================================================================================
+
+
+https://play.google.com/console/u/0/developers/7401254602311634155/app/4973311250219533869/app-dashboard?timespan=thirtyDays
+
+urlWebView.loadUrl("http://docs.google.com/gview?embedded=true&url="+"YOUR_DOC_URL_HERE");
+
+
+/storage/emulated/0/Pictures/Lale/openfile/lale activity整理.xlsx
+/storage/emulated/0/Pictures/Lale/openfile/未命名簡報.pptx
+
+Pictures/Lale/openfile/Lale/openfile/未命名簡報.pptx
+
+http://docs.google.com/gview?embedded=true&url=laledev0.flowring.com/fileserver/file/download/7ef4ce7efc3848f495aa9c2adaf70a11
+https://laledev0.flowring.com/fileserver/file/download/7ef4ce7efc3848f495aa9c2adaf70a11
+
+Environment.DIRECTORY_PICTURES + File.separator + app_name + File.separator + "openfile";
+
+
+==================================================================================
+https://news.lale.im -> 這是快報的domain
+
+原本 lale server 因為是測試，url 會是這個：https://laledev0.flowring.com/laleweb
+原本 webview 因為是測試，url 會是這個：https://laletest.flowring.com/WebAgenda/eimApp/index.html#
+
+現在更改為：
+lale server：https://laleserver.lale.im/laleweb
+webview：https://laleserver.lale.im/imApp/index.html#
+
+
+==================================================================================
+
+
+開jira，把驗證版本的功能放上去，送QA測
+https://qms.flowring.com:8080/browse/LAC-584
+https://portal.flowring.com/WebAgenda/MIS/HotFixInsert.jsp
+
+1056
+該功能需要相機權限
+onShowFileChooser
+
+createVoideFile()
+==================================================================================
+
+api：
+https://laleserver.lale.im/laleweb/util/app/version/android
+https://laleserver.lale.im/laleweb/util/app/version
+
+
+==================================================================================
+
+將原始 Intent 的操作設置為新的 Intent 的操作是因為在這個程式碼中，新的 Intent 主要是用來傳遞從其他應用程式分享過來的圖片和文字描述的訊息，
+這些訊息是通過 Intent 的額外訊息（extras）傳遞的。為了確保這些額外訊息能夠正確地傳遞到目標 Activity 中，我們需要確保 Intent 的操作設置為原始 
+Intent 的操作，以確保它們之間的一致性。
+如果不這樣做，可能會出現意料之外的問題，例如原始 Intent 和新 Intent 中的額外訊息之間發生衝突，或者目標 Activity 無法正確地處理從新 Intent 
+中獲取的額外訊息。因此，為了保持操作的一致性，將原始 Intent 的操作設置為新 Intent 的操作是很重要的。
+
+
+拿到room_id才可以將檔案分享到room內，總共要進行三次交互，如果是圖片，我需要將圖片壓縮。
+
+==================================================================================
+
+https://qms.flowring.com:8080/browse/LAC-589
+https://qms.flowring.com:8080/browse/LAC-590
+https://qms.flowring.com:8080/browse/LAC-592
+
+【Android】檔案分享到第三方應用程式
+https://qms.flowring.com:8080/browse/LAC-600
+【Android】開啟檔案，如果不支援檔案類型則無法開啟
+https://qms.flowring.com:8080/browse/LAC-601
+【Android】外部 App 分享至 Lale，傳送檔名、圖片、文字給 web端
+https://qms.flowring.com:8080/browse/LAC-602
+
+
+新增的HotfixID=3699
+https://portal.flowring.com/WebAgenda/MIS/HotFixInsert.jsp
+
+==================================================================================
+
+
+shareFileToCloud(JSONObject data)
+multipleShareToWeb(Intent intent)
+
+jsp postMessage:
+
+
+int hashCode = fileName.hashCode();
+jsonObject.put("onlyKey",String.valueOf(hashCode));
+
+StringUtils.HaoLog("文字= "+jsonObject);
+StringUtils.HaoLog("joe= "+matcher.group());
+
+
+
+==================================================================================
+
+這是 Base64.encodeToString 方法的簽名，其中各個參數的意義如下：
+
+input：要進行編碼的原始數據的字節數组。
+offset：input 中要開始編碼的位置（偏移量）。
+len：要編碼的字節數
+flags：指定編碼時要使用的選項。可以是 DEFAULT、NO_WRAP、URL_SAFE 或 NO_PADDING。
+Base64.encodeToString 方法將指定的數據編碼為 Base64 字符串，然後返回編碼後的字符串。
+
+saveImage(fileName,getBase64FromPath(outputFile))
+
+==================================================================================
+
+=android 處理情況=
+
+(com.flowring.laletoc.tools.ui.main.webBody.MainWebActivity.java)：新增監聽單點預覽事件
+
+{code:title=public String postMessage(String json)|borderStyle=solid}
+        switch (command) {
+            //略過
+            case "quickLook":
+                            classificationFileType(data);
+        }
+{code}
+
+=修正程式=
+com.flowring.laletoc.tools.ui.main.webBody.MainWebActivity.java
+
+
+ExternalServerSetting
+https://laletest.flowring.com/SaaSServerCall
+String urlEnd = new ExternalServerSetting().call_service_url + "/#/call/" + roomSecret + "/" + dataEncode;
+
+對於通話，我們會建立一個url給jitsi 建立通話房間
+roomIdParse，msgIdParse，roomSecret，將以上資訊帶入 url 中開啟通話服務
+
+ 
+當拿不到 call_service_url 時會給預設的，既不是打api拿到
+
+甚麼時候會造成call_service_url 空值?
+UserControlCenter.getUserMinInfo().externalServerSetting.call_service_url.isEmpty()
+
+所以建立通話時候是用 預是的url 以roomIdParse，msgIdParse，roomSecret 組出新uri
+然後給web
+
+
+
+public class ExternalServerSetting implements Serializable {
+
+    public String messageServerUrl = "https://laleserver.lale.im/lalemessage"; //舊          //http://192.168.9.110:8080
+    public String jitsiServerUrl = "https://laleserver.lale.im";   //舊          //https://laledev0.flowring.com
+    public String mqttUrl = "wss://laleserver.lale.im/mqtt";          //舊          //wss://192.168.9.110:1883
+    public String callServiceUrl = "https://laleserver.lale.im/call"; //舊          // https://laletest.flowring.com/SaaSServerCall
+
+}
+
+private boolean responselogin(HttpReturn response) {
+        if (response.status == 200) {
+                UserMin thUserMin = new Gson().fromJson(new Gson().toJson(response.data), UserMin.class);
+                UserControlCenter.setLogin(thUserMin);
+                return true;
+        } else {
+                mView.showDialog("登入", response.msg);
+                return false;
+        }
+}
+
+==================================================================================
+
+
+
+

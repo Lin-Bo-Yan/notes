@@ -1,0 +1,82 @@
+一旦對方訂閱了之後，呼叫MqttCallback，實作 messageArrived，訂閱後得到的消息會執行到messageArrived(String topic, MqttMessage message)，
+如果是"個人通話狀態變更通知"回傳回來會收到json
+
+當對方打進來會收到：
+1.
+{
+  "type": "lale.call.request",
+  "content": {
+    "type": "audio",
+    "result": "incomming",
+    "requestEventId": null,
+    "startTs": null,
+    "endTs": null,
+    "duration": null,
+    "unreadCount": 2
+  },
+  "roomId": "room_1641622495566102528",
+  "clientId": null,
+  "id": "event_1641649235273318400",
+  "timestamp": 1680234652704,
+  "sender": "fb1641622315244584960"
+}
+和 2. 
+{
+  "type": "lale.call.status",
+  "content": {
+    "onCalling": true
+  },
+  "roomId": null,
+  "clientId": null,
+  "id": null,
+  "timestamp": 1680234652726,
+  "sender": null
+}
+
+========================================================================================================================================
+
+當對方掛掉之後會收到：
+1.
+{
+  "type": "lale.call.response",
+  "content": {
+    "type": "audio",
+    "result": "cancel",
+    "requestEventId": "event_1641649235273318400",
+    "startTs": null,
+    "endTs": null,
+    "duration": null
+  },
+  "roomId": "room_1641622495566102528",
+  "clientId": null,
+  "id": "event_1641649235273318400",
+  "timestamp": 1680234658078,
+  "sender": "fb1641622315244584960"
+}
+和 2.
+{
+  "type": "lale.call.status",
+  "content": {
+    "onCalling": false
+  },
+  "roomId": null,
+  "clientId": null,
+  "id": null,
+  "timestamp": 1680234658094,
+  "sender": null
+}
+
+========================================================================================================================================
+
+我打給對方時候會有設備上的差異，為了因應 iOS 有關通話部分的通知需要透過 voip 發送的關係，
+在 iOS 13 版造成的某些問題，所以所有的 Push event 的 message 部分統一都加上 roomName 的欄位
+
+{
+  "type": "lale.message.read",
+  "content": null,
+  "roomId": "room_1641622495566102528",
+  "clientId": null,
+  "id": null,
+  "timestamp": 1680235197291,
+  "sender": "boyan"
+}

@@ -1,0 +1,97 @@
+設定聊天室背景拍照功能無法使用，按照案例操作拍照功能會閃退，詳見「設定聊天室背景拍照功能無法使用.mp4」
+修正: 追加拍照功能隱藏實體路徑分享provider名稱錯誤造成的crash.
+處理情況：已處理.
+修正版本
+android Lale企業版 1.0.0.14
+測試環境 android Lale企業版 1.0.0.14
+備註：http://laledev7.flowring.com:8080/2c_test_apk/index.html
+修正程式:
+com.flowring.laleents.ui.FriendWebFragment.java
+com.flowring.laleents.ui.news.LaleTonWebViewFragment.java
+com.flowring.laleents.ui.settings.RoomBackgroundSettingFragment.java
+
+===========================================================================================================================
+
+Android 大小表單點日曆元件沒反應的問題
+修正: 顯示日曆元件屬於dialog，webview 需要於當前activity的context顯示，而不是使用Application的context
+處理情況：已處理.
+修正版本
+android Lale企業版 1.1.2.2
+測試環境 android Lale企業版 1.1.2.2
+備註：http://laledev7.flowring.com:8080/2c_test_apk/index.html
+修正程式:
+com.flowring.laleents.ui.main.webBody.MainWebActivity.java
+
+===========================================================================================================================
+
+Android 在 Lale App，ComboBox 下拉式選單，點選無反應。
+修正: webview 需要於當前activity的context顯示，而不是使用Application的context
+處理情況：已處理.
+修正版本
+android Lale企業版 1.1.2.2
+測試環境 android Lale企業版 1.1.2.2
+備註：http://laledev7.flowring.com:8080/2c_test_apk/index.html
+修正程式:
+com.flowring.laleents.ui.main.webBody.MainWebActivity.java
+
+===========================================================================================================================
+
+Android 在 Lale App，ChoiceBox 下拉式選單，點選無反應。
+修正: webview 需要於當前activity的context顯示，而不是使用Application的context
+處理情況：已處理.
+修正版本
+android Lale企業版 1.1.2.2
+測試環境 android Lale企業版 1.1.2.2
+備註：http://laledev7.flowring.com:8080/2c_test_apk/index.html
+修正程式:
+com.flowring.laleents.ui.main.webBody.MainWebActivity.java
+
+===========================================================================================================================
+
+
+jira 表單留言完之後，需要改狀態
+
+看到左邊 "可用的工作流程轉換" 會看到 "Confirm Issue"
+因為 Lale 企業 是 v2.x版，點選：
+
+1. 修正版本：
+   V2.x版
+2. 預計修正版本:
+   V2.X
+3. Confirm Issue
+
+
+再點選 Resolve Issue
+1. 同上步驟
+
+再點選 WaitToTest
+1. 同上步驟
+
+就會看到
+ Close Issue
+ Open Issue
+ Reopen Issue
+
+
+
+以上就是把 jira 表單狀態改為 WaitToTest 等待送測
+
+===========================================================================================================================
+
+HotFix送測：
+
+點選右上角：新增HotFix
+把剛剛更改 等待送測 狀態的jira 表單 拖曳到 "HotFix所包含之JIRA Issue"
+LC版號為送測的版本號
+
+https://qms.flowring.com:8080/browse/LAC-584
+
+HotFix新增，新增完後打電話給負責人請他們寫測案，測案好了之後負責人會通知，我就能進到自測環節，測完點Hotfix狀態改成排測，排QA
+可以從 測案狀態看到 未設計，因為負責人還沒寫測案。
+
+自測完成後，在產品 -> HotFix排測 -> 找到自己HotFix，更改狀態為"排測中"，通知QA
+
+===========================================================================================================================
+Lale ToC 版的，送QA測是bart負責，打分機 533  請bart 寫測案
+Lale 企業是瑞東負責
+===========================================================================================================================

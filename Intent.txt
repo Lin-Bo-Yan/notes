@@ -1,0 +1,119 @@
+Intent.EXTRA_STREAM：
+Intent.EXTRA_STREAM 是一個標準的 Android Intent Extra Key，用於在 Android 的 Intent 中傳遞資料。具體來說，它是用於傳遞檔案或資料流的 URI。
+在使用 Intent 分享檔案或傳遞資料流時，可以使用 Intent.EXTRA_STREAM 來將 URI 傳遞給接收方應用程式，以便接收方應用程式可以讀取並處理檔案或資料流。
+例如，當你使用 Android 的分享功能時，就可以使用 Intent.EXTRA_STREAM 來傳遞檔案的 URI 給其他應用程式。
+在接收方應用程式中，可以使用 Intent.getParcelableExtra() 方法來獲取 Intent.EXTRA_STREAM 的值，並進行後續處理。
+
+==================================================================================
+
+Intent.ACTION_SEND：
+Intent.ACTION_SEND 是一個發送操作的動作，表示要將某個資料或檔案分享給其他應用程式或人，
+例如分享文字、圖片、音樂等等。當您使用 Intent.ACTION_SEND 時，系統會顯示一個列表，
+該列表顯示您可以與之分享的所有應用程式，讓您選擇應用程式並將內容分享給它。
+
+==================================================================================
+
+Intent.ACTION_VIEW：
+Intent.ACTION_VIEW 是一個查看操作的動作，表示要查看某個檔案或資料，例如查看圖片、影片、PDF文件等等。
+當您使用 Intent.ACTION_VIEW 時，系統會尋找已經安裝在您的設備上的所有能夠處理該特定類型檔案的應用程式，
+讓您選擇應用程式並開啟檔案。
+
+==================================================================================
+
+Intent.EXTRA_STREAM：
+Intent.EXTRA_STREAM 是一個常量，用於指定要分享或發送的數據流（stream）的鍵名。它可以用在多種 Intent 中，
+比如 Intent.ACTION_SEND 和 Intent.ACTION_SEND_MULTIPLE。通過指定 Intent.EXTRA_STREAM，
+我們可以將一個或多個數據流（stream）附加到 Intent 中，以供其他應用程序使用。
+
+==================================================================================
+
+Intent.FLAG_ACTIVITY_SINGLE_TOP：
+FLAG_ACTIVITY_SINGLE_TOP 是一種 Activity 的啟動模式，它指定當 Activity 已經在頂部時，不會重新創建一個新的 Activity 實例，
+而是直接使用現有的 Activity 實例，並調用 onNewIntent() 方法來處理傳入的 Intent。
+使用 FLAG_ACTIVITY_SINGLE_TOP 啟動模式可以提高應用程式的效率和性能，因為它避免了不必要的 Activity 創建和銷毀操作，
+同時保證了 Activity 的顯示效果。
+在 AndroidManifest.xml 中，可以通過 android:launchMode="singleTop" 屬性來設置 Activity 的啟動模式為 FLAG_ACTIVITY_SINGLE_TOP。
+在代碼中，也可以使用 Intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP) 方法來設置 Activity 的啟動模式為 FLAG_ACTIVITY_SINGLE_TOP。
+
+==================================================================================
+
+Intent.EXTRA_ALLOW_MULTIPLE：
+Intent.EXTRA_ALLOW_MULTIPLE是一個Android Intent類中的常量，用於指定是否允許從目標活動選擇多個項目。
+當使用startActivityForResult()方法啟動一個Intent時，可以使用Intent.EXTRA_ALLOW_MULTIPLE常量來啟用多選功能。
+這樣，當使用者選擇了多個項目後，這些項目的URI會作為Intent的data返回到調用方的Activity中。
+例如，當使用者從文件管理器中選擇多個文件時，可以使用Intent.EXTRA_ALLOW_MULTIPLE來啟用多選功能，
+然後將選擇的文件URI作為Intent的data返回到調用方的Activity中，以供後續處理。
+
+==================================================================================
+
+Intent.ACTION_OPEN_DOCUMENT：
+Intent.ACTION_OPEN_DOCUMENT是一個Android Intent類中的常量，用於啟動一個允許使用者從本地文件系統或其他內容提供者（如Google Drive）
+中選擇文件的Activity。
+
+當使用ACTION_OPEN_DOCUMENT Intent時，系統會啟動一個文件選擇器，允許使用者瀏覽和選擇可用的文件。當使用者選擇一個文件時，
+該文件的URI會作為Intent的data返回到調用方的Activity中。
+使用ACTION_OPEN_DOCUMENT Intent時，可以使用一些其他的Intent類常量來限制可以選擇的文件類型、位置和其他屬性。
+例如，可以使用Intent.EXTRA_MIME_TYPES常量來指定只能選擇特定的MIME類型（如圖像、音頻或視頻文件），
+也可以使用Intent.EXTRA_ALLOW_MULTIPLE常量啟用多選功能，允許使用者同時選擇多個文件。
+總的來說，ACTION_OPEN_DOCUMENT Intent提供了一個標準的方式來讓Android應用程序使用內部和外部存儲設備中的文件。
+
+==================================================================================
+
+Intent.ACTION_GET_CONTENT：
+Intent.ACTION_GET_CONTENT是Android系統中的一個Intent Action，用於請求選擇要在應用程序中使用的特定類型的數據。
+當您向系統發送Intent.ACTION_GET_CONTENT時，系統會打開文件選擇器（如圖片、音頻、視頻等文件），
+並允許用戶從中選擇一個文件。選擇後，系統會將所選文件的內容返回給您的應用程序。這使得您的應用程序能夠方便地使用其他應用程序中的數據，
+而不必自己實現文件選擇器。
+請注意，Intent.ACTION_GET_CONTENT僅返回文件的URI（Uniform Resource Identifier），而不是文件本身。您需要使用ContentResolver來獲取文件內容。
+
+==================================================================================
+
+Intent.CATEGORY_OPENABLE：
+Intent.CATEGORY_OPENABLE是Android系統中的一個Intent Category，通常與Intent.ACTION_GET_CONTENT一起使用，
+用於指定可通過打開器打開的數據類型。
+當您向系統發送Intent.ACTION_GET_CONTENT時，並使用Intent.CATEGORY_OPENABLE來限制可打開的文件類型，
+系統將只顯示與指定數據類型相關的文件類型。這將使得在文件選擇器中僅顯示用戶可通過打開器打開的文件類型，
+提高了用戶體驗和應用程序的易用性。
+需要注意的是，Intent.CATEGORY_OPENABLE只有在指定了Intent.ACTION_GET_CONTENT時才會生效。
+同時，您的應用程序必須請求READ_EXTERNAL_STORAGE或WRITE_EXTERNAL_STORAGE權限才能訪問用戶的存儲空間。
+
+==================================================================================
+
+MediaStore.ACTION_VIDEO_CAPTURE：
+Intent intentVoideCamera = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+
+MediaStore.ACTION_VIDEO_CAPTURE 是 Android 中的一個常量，它用於啟動相機應用程序並捕捉視頻。
+使用這個常量，您可以創建一個 Intent 對象，該對象可以啟動系統相機應用程序，並且該應用程序將允許用戶錄製視頻。
+這個 Intent 對象還可以包含其他參數，例如視頻質量、持續時間、文件大小限制等等。
+使用 MediaStore.ACTION_VIDEO_CAPTURE 常量的一個常見示例是讓用戶從應用程序中捕捉視頻，並將其保存到本地設備的文件系統中。
+例如，在 Android 上開發一個視頻錄製應用程序時，您可以使用這個常量來啟動相機應用程序並捕捉視頻，
+然後將錄製的視頻保存到本地設備的文件系統中，以便稍後使用或與其他用戶共享。
+
+==================================================================================
+
+MediaStore.ACTION_IMAGE_CAPTURE 和 MediaStore.ACTION_VIDEO_CAPTURE 這兩個常量都是用於啟動 Android 系統的相機應用程序，但它們的作用不同：
+
+MediaStore.ACTION_IMAGE_CAPTURE 用於捕捉靜態圖像，即照片。當使用這個常量時，啟動的相機應用程序將允許用戶捕捉一個靜態圖像，
+例如一張照片，然後將其保存到設備的文件系統中。
+MediaStore.ACTION_VIDEO_CAPTURE 用於捕捉動態視頻。當使用這個常量時，啟動的相機應用程序將允許用戶錄製視頻，然後將其保存到設備的文件系統中。
+雖然這兩個常量都是用於相機應用程序，但它們的使用情境和結果不同。如果您需要捕捉靜態圖像，
+請使用 MediaStore.ACTION_IMAGE_CAPTURE 常量，如果您需要錄製動態視頻，請使用 MediaStore.ACTION_VIDEO_CAPTURE 常量。
+
+==================================================================================
+
+Intent.ACTION_CHOOSER：
+Intent.ACTION_CHOOSER 是 Android 中的一個常量，它用於創建一個活動選擇器，讓用戶選擇要使用的應用程序。
+使用這個常量，您可以創建一個 Intent 對象，該對象將搭載您要啟動的活動，並且您可以使用 Intent.createChooser() 方法來創建一個活動選擇器對話框，
+這個對話框將顯示所有可以處理您的 Intent 對象的應用程序。這樣，當用戶點擊其中一個應用程序時，這個應用程序將處理您的 Intent 對象。
+使用 Intent.ACTION_CHOOSER 常量的一個常見示例是在您的應用程序中分享內容。例如，如果您的應用程序允許用戶分享圖像，
+您可以創建一個 Intent 對象，該對象包含圖像的 URI，然後使用 Intent.createChooser() 方法創建一個活動選擇器，
+讓用戶選擇要使用的應用程序來分享這個圖像。這樣，用戶可以選擇使用電子郵件應用程序、短信應用程序或社交媒體應用程序等來分享這個圖像。
+
+==================================================================================
+
+Intent.FLAG_ACTIVITY_NEW_TASK：
+Intent.FLAG_ACTIVITY_NEW_TASK 是一個常量標記，表示在啟動活動時將其放置在新任務的頂部，而不是添加到現有任務中。
+它指定活動應該在其自己的任務中啟動，並且該任務應該成為任務堆棧中的根任務。此標誌通常用於在後台啟動活動時創建新任務，
+例如從服務中啟動活動。如果不設置此標誌，活動將被視為任務的一部分，並將添加到現有任務的頂部。
+
+==================================================================================

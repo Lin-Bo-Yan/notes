@@ -1,0 +1,29 @@
+點選相機會呼叫chooseFile()方法，呼叫系統相機，當系統返回結果時，onActivityResult() 方法會被自動調用，若選擇拍照上傳data會是null
+//取得拍照上傳的相片
+    Uri uri = Uri.fromFile(new File(currentPhotoPath));
+    if (mUploadMessage != null) {
+        mUploadMessage.onReceiveValue(new Uri[]{uri});
+        mUploadMessage = null;
+    }
+拍照完，回傳一串uri會是檔按路徑，不知道為什麼，相機拍完之後的檔案格式是mp3格式
+file:///data/user/0/com.flowring.laletoc/cache/Voide_20230406_185655.mp3
+
+發現呼叫 createVoideFile() 方法，照相完成後的檔案被建立成mp3格式
+
+
+
+createImageFile()
+state.equals(Environment.MEDIA_MOUNTED)
+==================================================================================
+
+【廣】客：
+1. 機率性發生進入廣客畫面顯示「502 Bad Gateway」，測下來 https://laleserver.lale.im/ 這個Domain不會有502，laledev0的Domain就會出現502
+
+2. 點擊草稿，刪除，會閃退APP，問題在於dialog產生時，抓不到上層activity，才產生crash，此問題已解決。
+
+3. 新增圖片，使用相機拍攝，無法成功上傳。
+但是退出APP用相機拍完照，再編輯EDM直接上傳圖片就可以成功上傳
+
+拍照完，回傳一串uri會是檔按路徑，不知道為什麼，相機拍完之後的檔案格式是mp3格式
+file:///data/user/0/com.flowring.laletoc/cache/Voide_20230406_185655.mp3，廣課那邊看能不能增加接受mp3格式?
+

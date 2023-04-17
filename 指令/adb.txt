@@ -1,0 +1,15 @@
+若想檢查設備有沒有連接到，可以執行下面指令：
+  1. adb devices
+
+指定特定裝置動作 adb -s "裝置名稱" 動作指令
+  1. adb -s RF8R425K2TL shell
+
+run-as com.flowring.laletoc
+
+
+參考資料：
+  https://ithelp.ithome.com.tw/articles/10241811
+
+
+jwt ， posman token設定， 網頁上傳的api ，room id
+

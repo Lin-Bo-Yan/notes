@@ -1,0 +1,42 @@
+外部應用程式分享會拿到檔按位置URI，利用"DocumentsContract.isDocumentUri"檢查URI是不是標準格式
+如果 DocumentsContract.isDocumentUri(context, uri) 方法返回 false，
+那麼這個 URI 可能是一個標準的 content 或 file URI。此時可以根據不同的 URI 方案進行處理。
+==================================================================================
+try 和 finally 結構用於保證程式碼的正常執行和資源的正確釋放。
+如果您在 try 塊中打開了一個資源，應該在 finally 塊中關閉該資源，以確保資源得到正確的釋放。
+finally 塊用於確保 Cursor 資源得到正確的釋放。即使在 try 塊中發生了異常，finally 塊中的程式碼也會被執行。
+==================================================================================
+
+Uri.fromFile(File file) 是一個靜態方法，用於將 File 對象轉換為 Uri 對象。在 Android 中，Uri 是一種表示資源的統一資源標識符，
+可以用於標識應用程序內的資源，如圖片、音頻、視頻、文件等。
+在上面的代碼示例中，new File(currentPhotoPath) 創建了一個文件對象，該文件對象包含了音頻文件的路徑。
+然後，Uri.fromFile() 方法將該文件對象轉換為一個 Uri 對象，用於在應用程序中訪問該音頻文件。
+在轉換過程中，Uri.fromFile() 方法會將文件的路徑添加到 file:// URL 中，並返回一個 Uri 對象，以便在應用程序中使用。
+因此，在上面的示例中，Uri 對象的值為 file:///data/user/0/com.flowring.laletoc/cache/Voide_20230407_152156.mp3，
+其中 file:// 表示這是一個文件類型的 Uri，/data/user/0/com.flowring.laletoc/cache/Voide_20230407_152156.mp3 是文件的完整路徑。
+
+==================================================================================
+
+onRequestPermissionsResult() 方法是一個回調方法，用於處理應用程序中發起的權限請求的結果。當應用程序請求需要某些危險權限時，
+系統會顯示一個權限請求對話框，詢問用戶是否允許應用程序獲取這些權限。當用戶做出選擇後，系統將在 Activity 上調用 onRequestPermissionsResult() 方法，
+以便應用程序可以處理權限請求的結果。
+具體來說，當應用程序請求危險權限時，系統會向用戶顯示一個權限請求對話框，該對話框會列出應用程序請求的權限。如果用戶授權了權限，
+則係統會調用 Activity 上的 onRequestPermissionsResult() 方法，並將 grantResults 參數設置為 PackageManager.PERMISSION_GRANTED。
+如果用戶拒絕了權限，則係統會將 grantResults 參數設置為 PackageManager.PERMISSION_DENIED。在 onRequestPermissionsResult() 方法中，
+應用程序可以根據用戶的選擇來執行相應的操作，例如繼續執行某些任務，或者向用戶顯示一個錯誤消息並關閉應用程序。
+
+==================================================================================
+
+private boolean responselogin(HttpReturn response) {
+        if (response.status == 200) {
+                UserMin thUserMin = new Gson().fromJson(new Gson().toJson(response.data), UserMin.class);
+                UserControlCenter.setLogin(thUserMin);
+                return true;
+        } else {
+                mView.showDialog("登入", response.msg);
+                return false;
+        }
+}
+
+==================================================================================
+

@@ -14,6 +14,7 @@ http://gitlab.flowring.com/
 Lale ToC：https://www.figma.com/file/AyGNNi0uxPJB06BK9Gd8bS/Lale-IM?t=llVBKzuNMgBPbc6W-0
 Lale 企業：https://www.figma.com/file/BDWktd9KU7L0DOQA454mDZ/Lale-%E4%BC%81%E6%A5%AD?node-id=0-1&t=kNuqX2Hjw9yaDzhb-0
 Lale 企業 App：https://qms.flowring.com:9080/pages/viewpage.action?pageId=50266584
+Lale ToC V2.0：https://qms.flowring.com:9080/display/laletoc/Lale+V2.0
 commit message：https://qms.flowring.com:9080/pages/viewpage.action?pageId=45812319
 產品測試管理：https://portal.flowring.com/WebAgenda/MIS/ProductTestMgt.jsp
 
@@ -57,6 +58,6 @@ Jitsi：
     1-5：https://community.jitsi.org/t/integrate-and-customize-jitsi-meet-sdk/21667/8
     1-6：https://jitsi.github.io/handbook/docs/dev-guide/dev-guide-android-sdk/#jitsimeetactivitydelegate
 
-
-
-
+https://www.gushiciku.cn/pl/gSln/zh-tw
+https://docs.google.com/spreadsheets/d/1Qoe0Sj17i_FttHKYctsj9KrmOplH8BqSdWYuiV60aSE/edit#gid=309762209
+https://techenum.com/android-content-uri-how-to-get-the-file-uri/#Caching_the_file_from_the_URI

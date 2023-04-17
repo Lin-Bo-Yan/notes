@@ -1,0 +1,491 @@
+用廣播做監聽器
+    
+==================================================================================   
+        DownloadManager downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+        downloadManager.enqueue(request);
+        long Id = downloadManager.enqueue(request);
+        listener(Id,data);
+
+
+          private BroadcastReceiver broadcastReceiver;
+    private void listener(final long Id,JSONObject data) {
+        // 註冊廣播監聽系統的下載完成事件。
+        IntentFilter intentFilter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                long ID = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
+                if (ID == Id) {
+                    StringUtils.HaoLog("dd= "+"完成");
+                    shareFileType(data);
+                }
+            }
+        };
+        registerReceiver(broadcastReceiver, intentFilter);
+    }  
+
+==================================================================================
+
+ File myFilePath = new File(Environment.getExternalStorageDirectory() + "/DB_BACK");
+            if (!myFilePath.exists()) {
+                myFilePath.mkdir();
+            }
+
+            File fileRestore = new File(Environment.getExternalStorageDirectory() + "/DB_BACK/DB_BACK_POS" + ".db");
+            if (fileRestore.exists()) {
+                InputStream in = new FileInputStream(fileRestore);
+                SQLiteDatabase db = getReadableDatabase();
+//                SQLite sqLite = new SQLite(context);
+//                SQLiteDatabase db = sqLite.getReadableDatabase();
+                FileOutputStream fw = new FileOutputStream(new File(db.getPath()));
+                db.close();
+//                sqLite.close();
+
+                byte data[] = new byte[in.available()];
+                in.read(data, 0, in.available());
+                fw.write(data);
+
+                fw.close();
+                in.close();
+
+                fileRestore.delete();
+                }
+==================================================================================
+存到內存
+
+   String fileName = "ONLINE.csv";
+            File fileRestore = new File(Environment.getExternalStorageDirectory() + File.separator + "DB_BACK" + File.separator + fileName)
+==================================================================================
+
+private void UploadCompression(){
+        String fileName = "DB_BACK_ORDER.db";
+        File backupFile = new File(Environment.getExternalStorageDirectory() + File.separator + "DB_BACK" + File.separator + fileName);
+        File zipFile = new File(Environment.getExternalStorageDirectory()+File.separator+"DB_BACK"+File.separator +"DB_BACK_ORDER.zip");
+        try{
+            InputStream input = new FileInputStream(backupFile);
+            ZipOutputStream zipOut = null;
+            zipOut = new ZipOutputStream(new FileOutputStream(zipFile));
+            zipOut.putNextEntry(new ZipEntry(backupFile.getName()));
+            int temp = 0;
+            while((temp = input.read())!=-1){
+                zipOut.write(temp);
+            }
+            input.close();
+            zipOut.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+==================================================================================
+
+        File folder = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), fileName);
+        if (!folder.exists()) {
+            folder.mkdirs(); // 創建子目錄
+        }
+        File file = new File(folder, fileName);
+        request.setDestinationUri(Uri.fromFile(file));
+==================================================================================
+event id = onlyKey
+[
+  {
+    "onlyKey": "event_1636913865210068992",
+    "name": "20210811_194151.jpg",
+    "url": "https://laledev0.flowring.com/fileserver/file/download/9a35af5787ad4766a48df375aa8a0321"
+  }
+]
+event_163691
+==================================================================================
+
+讀取目錄底下的檔案名稱
+File download = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                if(download.exists()) {
+                    File[] files = download.listFiles();
+                    for (File file : files) {
+                        if (file.isFile()) {
+                            String fileName = file.getName();
+                            StringUtils.HaoLog("dd= fileName " + fileName);
+                        }
+                    }
+                }
+==================================================================================
+    public static final String ACTION_DOWNLOAD_COMPLETE = "android.intent.action.DOWNLOAD_COMPLETE";
+    public static final String ACTION_NOTIFICATION_CLICKED = "android.intent.action.DOWNLOAD_NOTIFICATION_CLICKED";
+    public static final String ACTION_VIEW_DOWNLOADS = "android.intent.action.VIEW_DOWNLOADS";
+    public static final String COLUMN_BYTES_DOWNLOADED_SO_FAR = "bytes_so_far";
+    public static final String COLUMN_DESCRIPTION = "description";
+    public static final String COLUMN_ID = "_id";
+    public static final String COLUMN_LAST_MODIFIED_TIMESTAMP = "last_modified_timestamp";
+
+
+這些是 Android 下載管理器 (Download Manager) 類別中所使用的常數，具體說明如下：
+
+ACTION_DOWNLOAD_COMPLETE：下載完成廣播 (broadcast) 的動作名稱。
+ACTION_NOTIFICATION_CLICKED：點擊下載通知欄位 (notification) 的廣播動作名稱。
+ACTION_VIEW_DOWNLOADS：顯示下載清單的活動 (activity) 的動作名稱。
+COLUMN_BYTES_DOWNLOADED_SO_FAR：用於表示已經下載的資料大小的欄位名稱。
+COLUMN_DESCRIPTION：用於表示下載描述 (description) 的欄位名稱。
+COLUMN_ID：用於表示下載 ID 的欄位名稱。
+COLUMN_LAST_MODIFIED_TIMESTAMP：用於表示下載檔案最後修改時間的欄位名稱。
+這些常數可以在程式中用來註冊下載完成廣播接收器、建立下載通知欄位、顯示下載清單等等操作。
+例如，當下載完成後，可以透過註冊 ACTION_DOWNLOAD_COMPLETE 廣播接收器來接收下載完成通知，
+並在接收到通知後進行相應的處理；或者在進行下載時，可以使用 COLUMN_DESCRIPTION 欄位來設定下載描述，
+然後在建立下載通知欄位時顯示相應的描述資訊。
+
+==================================================================================
+
+Thread.currentThread().getName() 看到現在的 Thread 名稱
+==================================================================================
+
+public class ReadExcelFile {
+    public static void main(String[] args) throws IOException {
+        File file = new File("example.xlsx");
+        FileInputStream inputStream = new FileInputStream(file);
+        Workbook workbook = WorkbookFactory.create(inputStream);
+        Sheet sheet = workbook.getSheetAt(0);
+        for (Row row : sheet) {
+            for (Cell cell : row) {
+                System.out.print(cell.toString() + "\t");
+            }
+            System.out.println();
+        }
+        workbook.close();
+        inputStream.close();
+    }
+}
+
+==================================================================================
+URLConnection 可以得到檔案類型
+connection.getContentType()
+
+//URLConnection connection;
+//try{
+//    connection = new URL(uri).openConnection();
+//}catch (IOException e){
+//  StringUtils.HaoLog("cacheShareFileType connectionError=" + e);
+//  return;
+//}
+//final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH mm ss SSS");
+//String fileName = oldFileName == null ? sdf.format(new Date().getDate()) + FileUtils.toExtension(connection.getContentType()) : oldFileName;
+
+
+==================================================================================
+    private BroadcastReceiver broadcastReceiver;
+    private void listener(final long Id, String fileName, String tableOfContents) {
+        // 註冊廣播監聽系統的下載完成事件。
+        IntentFilter intentFilter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                long ID = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
+                if (ID == Id) {
+                    StringUtils.HaoLog("分享檔案下載動作完成");
+                    shareFileType(fileName,tableOfContents);
+                }
+            }
+        };
+        registerReceiver(broadcastReceiver, intentFilter);
+    }
+==================================================================================
+
+
+// 創建一個File對象，代表Excel檔案
+File file = new File("path/to/excel/file.xlsx");
+
+// 創建一個FileInputStream對象，用於讀取Excel檔案
+FileInputStream inputStream = new FileInputStream(file);
+
+// 創建一個XSSFWorkbook對象，代表整個Excel檔案
+XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
+
+// 獲取第一個工作表
+XSSFSheet sheet = workbook.getSheetAt(0);
+
+// 獲取第一行
+XSSFRow row = sheet.getRow(0);
+
+// 獲取第一列
+XSSFCell cell = row.getCell(0);
+
+// 讀取單元格中的值
+String value = cell.getStringCellValue();
+
+// 關閉工作簿和流
+workbook.close();
+inputStream.close();
+
+==================================================================================
+ // 開啟Excel文件
+        FileInputStream inputStream = new FileInputStream(new File("example.xlsx"));
+
+        // 建立工作簿對象
+        Workbook workbook = new XSSFWorkbook(inputStream);
+
+        // 選擇要操作的工作表
+        Sheet sheet = workbook.getSheetAt(0);
+
+        // 遍歷所有行
+        for (Row row : sheet) {
+
+            // 遍歷所有列
+            for (Cell cell : row) {
+
+                // 判斷單元格類型
+                switch (cell.getCellType()) {
+                    case STRING:
+                        System.out.print(cell.getStringCellValue() + "\t");
+                        break;
+                    case NUMERIC:
+                        System.out.print(cell.getNumericCellValue() + "\t");
+                        break;
+                    case BOOLEAN:
+                        System.out.print(cell.getBooleanCellValue() + "\t");
+                        break;
+                    default:
+                        System.out.print("\t");
+                }
+            }
+            System.out.println();
+        }
+
+        // 關閉工作簿和輸入流
+        workbook.close();
+        inputStream.close();
+ ==================================================================================
+Handler 切換執行續
+         if(folder.exists()){
+            StringUtils.HaoLog("檔案存在");
+            new Handler(Looper.getMainLooper()).post(() -> {
+                MainWebActivity.categoryFileType(folder);
+            });
+            //執行開檔
+        }
+ ==================================================================================
+
+  public ArrayList<ExcelBean> getExcelData(String xlsName, int index) {
+    ArrayList<ExcelBean> list = new ArrayList<>();
+    //获取文件管理器
+    AssetManager manager = context.getAssets();
+    try {
+      Workbook workbook = Workbook.getWorkbook(manager.open(xlsName));
+      Sheet sheet = workbook.getSheet(index);
+      //表格一共有多少行
+      int sheetRows = sheet.getRows();
+      //将数据添加到集合中
+      for (int i = 0; i < sheetRows; i++) {
+        ExcelBean bean = new ExcelBean();
+        //获取列的数据
+        bean.setChinese(sheet.getCell(0, i).getContents());
+        bean.setEnglish(sheet.getCell(1, i).getContents());
+        bean.setSpell(sheet.getCell(2, i).getContents());
+        list.add(bean);
+      }
+      workbook.close();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return list;
+  }
+
+==================================================================================
+
+檢查版本
+
+public boolean checkAppNeedUpdate() {
+        Request.Builder request = new Request.Builder()
+                .url(AllData.getMainServer() + "/util/app/version/android")
+                .get()
+                .addHeader("Content-Type", "application/json");
+        HttpReturn httpReturn = gethttpReturn(request);
+        String data = new Gson().toJson(httpReturn.data);
+        GetMinVersion dbVersion = new Gson().fromJson(data,GetMinVersion.class);
+        String appVersion = MainWebActivity.getVersionName(AllData.context);
+
+        if(dbVersion != null && dbVersion.version != null && !dbVersion.version.isEmpty()
+        && appVersion != null && !appVersion.isEmpty()){
+            Boolean newVersion = appVersion.equals(dbVersion.version);
+            if(newVersion){
+                return false;
+            } else {
+                return true;
+            }
+        }else {
+            StringUtils.HaoLog("googleVersion 為 null");
+            return false;
+        }
+    }
+
+
+
+    public void checkAppNeedUpdate() {
+        new Thread(() -> {
+            if (CloudUtils.iCloudUtils.checkAppNeedUpdate())
+                runOnUiThread(() -> {
+                    showUpgradeDialog();
+                });
+        }).start();
+    }
+
+new AlertDialog.Builder((Context) this)
+
+
+public class GetMinVersion {
+    public String osName = null;
+    public String version = null;
+}
+
+获取软件版本号，对应AndroidManifest.xml下android:versionName
+獲取軟件版本號，對應AndroidManifest.xml下android:versionName
+==================================================================================
+H5喚起android app，啟動關聯應用，在MAIN下面設定
+
+<intent-filter>
+    <action android:name="android.intent.action.VIEW" />
+    <category android:name="android.intent.category.DEFAULT" />
+    <category android:name="android.intent.category.BROWSABLE" />
+    <data android:scheme="https"
+        android:host="example.com"
+        android:pathPrefix="/lale_toc"/>
+</intent-filter>
+https://blog.csdn.net/YukimineRyuu/article/details/106063792
+https://juejin.cn/post/7097784616961966094
+
+<intent-filter>
+    <action android:name="android.intent.action.SEND" />
+    <category android:name="android.intent.category.DEFAULT" />
+    <data android:mimeType="*/*" />
+</intent-filter>
+
+==================================================================================
+
+Intent intent = new Intent(AllData.context, MainWebActivity.class);
+intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);// 將啟動模式設置為 FLAG_ACTIVITY_SINGLE_TOP
+intent.setType(getIntent().getType()); // 設置 Intent 的類型為從接收到的 Intent 中獲取的類型。
+
+Uri uri = getIntent().getParcelableExtra(Intent.EXTRA_STREAM);
+String extraText = getIntent().getStringExtra(Intent.EXTRA_TEXT);
+if (uri != null){ //從接收到的 Intent 中獲取圖片的 Uri 和文字描述，如果有圖片，就將接收到的 Intent 的所有額外訊息攜帶到新的 Intent 中。
+    intent.putExtras(getIntent());
+}
+intent.putExtra(Intent.EXTRA_TEXT, extraText);//將文字描述放入 Intent 的額外訊息中。
+intent.setAction(getIntent().getAction()); // android.intent.action.SEND
+// 將原始 Intent 的操作設置為新的 Intent 的操作。
+{
+    Intent intent1 = new Intent(getIntent().getAction());
+    intent1.setAction(getIntent().getAction());
+    if (uri != null){
+        intent1.putExtras(getIntent());
+    }
+    intent1.putExtra(Intent.EXTRA_TEXT, extraText);
+    LocalBroadcastManager.getInstance(this).sendBroadcast(intent1); //發送廣播訊息
+}
+startActivity(intent);
+finish();
+
+==================================================================================
+加上監聽器類型，廣播接收器才會接收到設置setType，預設是沒有接收類型
+try {
+    itFilter.addDataType("*/*");
+}catch (IntentFilter.MalformedMimeTypeException e){
+    StringUtils.HaoLog( e.toString());
+    e.printStackTrace();
+}
+
+==================================================================================
+接受分享多選的動作，接受到之後用陣列裝資料
+
+ArrayList<Uri> uris = getIntent().getParcelableArrayListExtra(Intent.EXTRA_STREAM);
+        if (uris != null){
+            //intent1.putExtras(getIntent());
+            for(Uri uri : uris){
+                StringUtils.HaoLog("BroadcastReceiver=" +" 2 "+ uri);
+            }
+         }
+
+==================================================================================
+接受分享多選的動作：這種處理方法不適合微信，因為微信多選分享檔案是壓縮成ZIP，所以ClipData會是null，在來
+會取不到URI和type，所以未來如果line可以多選分享說不定能用上
+
+        ClipData clipData = getIntent().getClipData();
+        if (clipData != null) {
+            // 處理多個共享的內容
+            for (int i = 0; i < clipData.getItemCount(); i++) {
+                Uri ClipDataUri = clipData.getItemAt(i).getUri();
+                StringUtils.HaoLog("dd= "+ClipDataUri);
+                // 處理共享的內容，例如保存到本地文件或在應用中顯示
+
+                ClipData.Item item = clipData.getItemAt(i);
+                String type = getContentResolver().getType(item.getUri());
+                //取得檔案type
+            }
+        } else {
+            Intent intent1 = new Intent(getIntent().getAction());
+            intent1.setAction(getIntent().getAction());
+            intent1.setType(getIntent().getType());
+            if (uri != null){
+                intent1.putExtras(getIntent());
+            }
+            intent1.putExtra(Intent.EXTRA_TEXT, extraText);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(intent1); //發送廣播訊息
+        }
+==================================================================================
+
+private void gotoShare(){
+    try {
+        JSONArray jsonArray = new JSONArray();
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("mimeType", "message");
+        jsonObject.put("string", "www.google.com");
+        jsonArray.put(jsonObject);
+        sendToWeb(new JSONObject().put("type","gotoShare").put("data",jsonArray).toString());
+    } catch (JSONException e) {
+        e.printStackTrace();
+    }
+}
+
+==================================================================================
+
+//創建照片路徑，getCacheDir()取得內部Cache路徑
+private File createImageFile() throws IOException {
+    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+    String imageFileName = "JPEG_" + timeStamp + ".jpg";
+    File image = new File(getCacheDir(), imageFileName);
+    currentPhotoPath = image.getAbsolutePath();
+    return image;
+}
+
+==================================================================================
+改寫方法：
+    public String getBase64FromPath(Uri uri) {
+        String base64 = "";
+        try {
+            InputStream inputStream = getContentResolver().openInputStream(uri);
+            byte[] buffer = new byte[inputStream.available() + 100];
+            int length = inputStream.read(buffer);
+            base64 = Base64.encodeToString(buffer, 0, length, Base64.DEFAULT);
+            inputStream.close();
+        } catch (IOException e) {
+            StringUtils.HaoLog("錯誤訊息"+e);
+            e.printStackTrace();
+        }
+        return base64;
+    }
+
+==================================================================================
+    String thumbnail = getBase64FromPath(imageUri);
+    try {
+        JSONArray jsonArray = new JSONArray();
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("onlyKey","hashcode");
+        jsonObject.put("mimeType",type);
+        jsonObject.put("name",fileName);
+        jsonObject.put("thumbnail",thumbnail);
+        jsonArray.put(jsonObject);
+        sendToWeb(new JSONObject().put("type","gotoShare").put("data",jsonArray).toString());
+    } catch (JSONException e) {
+        e.printStackTrace();
+    }
+==================================================================================
