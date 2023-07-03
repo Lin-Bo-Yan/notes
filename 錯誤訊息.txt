@@ -9,3 +9,47 @@ NetworkOnMainThreadException
 在 Android 上，所有的網路操作都應該在後台執行緒 (background thread) 上進行，以避免阻塞主執行緒，從而使應用程序變得無響應或甚至崩潰。
 為了解決這個錯誤，你可以將網路操作移至後台執行緒上，例如使用 AsyncTask、Thread 或者 Runnable。
 或者你可以關閉 Android 的主執行緒上網路操作的限制，但這不是一個好的解決方案，因為這樣可能會導致應用程序崩潰或變得不穩定。
+
+E/AndroidRuntime: FATAL EXCEPTION: Thread-11
+    Process: com.flowring.laletoc, PID: 13017
+    java.lang.NullPointerException: Attempt to read from field 'java.lang.String com.flowring.laletoc.model.user.UserMin.token' on a null object reference in method 'com.flowring.laletoc.model.HttpReturn com.flowring.laletoc.tools.cloud.api.CloudUtils.reToken()'
+
+
+這是一個致命的例外錯誤 (FATAL EXCEPTION)，指出在 CloudUtils.reToken() 方法中發生了空物件引用 (NullPointerException)。錯誤的原因是在該方法中嘗試讀取一個 null 物件參考的 com.flowring.laletoc.model.user.UserMin.token 字段。
+具體地，在 CloudUtils.java 檔案的第 1678 行，程式碼嘗試存取一個 UserMin 物件的 token 字段，但該 UserMin 物件是 null。因此，當嘗試訪問 null 物件的字段時，引發了 NullPointerException。
+要解決這個問題，您需要確保在該方法中使用的 UserMin 物件不是 null。您可以在使用 UserMin 物件之前進行空值檢查，或者在相應的程式碼中確保該物件已經正確初始化。
+請檢查 CloudUtils.reToken() 方法中相關的程式碼，確保在使用 UserMin 物件的 token 字段之前，該物件已經被正確地初始化並設置了值。    
+
+
+
+================================================================================================================================================================================================================================================
+webView 引起的 SSL憑證過期
+關鍵字：
+super.onReceivedSslError(view, handler, error)
+
+
+錯誤訊息：
+2023-05-16 09:09:00.076 25482-25482 HaoLog (Zy...read=main　 com.flowring.laleents                D  還活著 onReceivedSslError error=primary error: 4 certificate: Issued to: CN=*.flowring.com;
+                                                                                                    Issued by: CN=R3,O=Let's Encrypt,C=US;
+                                                                                                     on URL: https://agentflow.flowring.com:8443/WebAgenda/eimApp/index.html#/
+2023-05-16 09:09:00.095 25482-25482 HaoLog (Zy...read=main　 com.flowring.laleents                D  還活著 onPageFinished=https://agentflow.flowring.com:8443/WebAgenda/eimApp/index.html#/
+
+參考資料：
+https://stackoverflow.com/questions/36553190/check-in-the-onreceivedsslerror-method-of-a-webviewclient-if-a-certificate-is
+
+SSL憑證過期，會讓webView拿不到網頁，用戶就會看到Loading畫面太久。
+從程式碼面向看來會呼叫 @Override onReceivedSslError(WebView view, SslErrorHandler handler, SslError error)，
+super.onReceivedSslError(view, handler, error);
+這是webView自己預設的方法
+如果想要修改預設方法，想要忽略來自SSL憑證過期的問題，就在這段程式之前寫方法。
+忽略SSL的解法：
+handler.proceed();
+注意：handler不是線程handler，而是 SslErrorHandler
+
+雖然你可以忽略SSL憑證來達到結果，但SSL是一個安全機制，不應該隨便忽略它
+應該要從最根本的問題解決，那就要跟後端協議，看要怎麼處理。
+================================================================================================================================================================================================================================================
+
+
+
+

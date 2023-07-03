@@ -1,0 +1,192 @@
+取得自己的使用者資訊
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbl90eXBlIjoidXNlciIsInVzZXJfbmFtZSI6Impha2UwNCIsImRldl9wbGF0Zm9ybSI6IiIsImV4cCI6MTY4Mzg4NjAyMywiaWF0IjoxNjgzNzk5NjIzLCJkZXZfaWQiOiI5MTEyODdhMzljODllNjJiIn0.cXWkleXo7ypAjAd-MzOoDRNVhMH7z4yKfwYm1BrmbgU
+
+deviceId:911287a39c89e62b 嚴手機
+
+deviceId:45b008240e3c3ae0 公司手機
+
+阿寶手機
+169336c6ab01f1bc
+
+{
+    "status": 200,
+    "msg": "Success",
+    "data": {
+        "phone": "0911111114",
+        "email": "test4@test.com",
+        "displayName": "Handsomeboy",
+        "gender": 2,
+        "birthday": "1975-10-05",
+        "residence": "新竹縣",
+        "intro": "",
+        "theme": "#AF51DD",
+        "residenceDisplay": "ALL",
+        "phoneDisplay": "ALL",
+        "emailDisplay": "ALL",
+        "qrCodeDisplay": "ALL",
+        "isAllowDirectJoinMe": false,
+        "isBlockStrangerMessage": false,
+        "lastUpdatedTime": "2023-02-21 07:39:26.477",
+        "userId": "jake04",
+        "password": null,
+        "passwordHash": null,
+        "loginType": 0,
+        "thirdPartyIdentifier": "",
+        "deviceId": "45b008240e3c3ae0",
+        "devicePlatform": "",
+        "avatar": "db8a03503b1241bb8f588785e59aa89a",
+        "avatarUrl": "https://laledev0.flowring.com/fileserver/file/download/db8a03503b1241bb8f588785e59aa89a",
+        "avatarThumbnailUrl": "https://laledev0.flowring.com/fileserver/file/thumbnail/db8a03503b1241bb8f588785e59aa89a",
+        "background": "f2dae7cd5c4b40f38cfde9d13eded82e",
+        "backgroundUrl": "https://laledev0.flowring.com/fileserver/file/download/f2dae7cd5c4b40f38cfde9d13eded82e",
+        "createdTime": "2023-01-19 05:56:46.236",
+        "webagendaUrl": "https://laletest.flowring.com/WebAgenda",
+        "isEnabled": true,
+        "authorities": [],
+        "enabled": true,
+        "accountNonLocked": true,
+        "accountNonExpired": true,
+        "credentialsNonExpired": true
+    }
+}
+
+
+Facebook JSON = 
+這邊的id代表文件上的第三方識別碼(thirdPartyIdentifier)
+{
+  "id": "2833596216754336",
+  "name": "梁賓先",
+  "email": "service@tiota.org.tw",
+  "picture": {
+    "data": {
+      "height": 50,
+      "is_silhouette": false,
+      "url": "https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=2833596216754336&height=50&width=50&ext=1686705193&hash=AeTu-a2c3KvhP9Ja4PU",
+      "width": 50
+    }
+  }
+}
+
+=================================================================================================================================
+
+A：
+理論上，登入前應該要用這支去確認是否已有行動裝置登入過，有的話要跳警告使用者登入的話會把前一個登入的裝置登出，
+我知道的行為是這樣，詳細的你要問
+
+Q：
+我問一下  /user/mobile/logged 要在一般登入和第三方登入之前使用 問題是第三方登入之前 我從哪獲取userId？
+A：
+你拿的到identifier對嗎?我會調整一下你需要傳的key, 需要你傳 logintype + userId or thirdPartyIdentifier
+
+
+Q：
+@LinSu 我確定一下 toc 的話 登出是要先執行
+POST /user/logout
+然後執行
+PUT /push/device/allowed
+還是說兩個並沒有順序性？
+A：
+沒有，logout只針對 device, push 則針對推播註冊資料
+
+
+
+
+登入前應該要用這支去確認是否已有行動裝置登入過，有的話要跳警告使用者登入的話會把前一個登入的裝置登出
+
+
+如果 loginType == 0，userId必填
+如果 loginType 不等於 0，thirdPartyIdentifier必填
+deviceId必填
+
+
+
+LoginThirdParty
+
+
+
+a手機登入,B手機重複登入，B手機跳出dialog提醒：是否要把a手機踢出登入狀態,
+確定，a手機登出，跳出dialog提醒：你有其他裝置登入。
+
+
+loginType= 0
+userId= jake04
+thirdPartyIdentifier=
+deviceId=45b008240e3c3ae0
+
+
+loginType=0
+userId=jake04
+thirdPartyIdentifier=
+deviceId=911287a39c89e62b
+
+
+
+//檢查使用者是否已有登入過的行動裝置
+String deviceID = Settings.Secure.getString(getActivity().getContentResolver(), Settings.Secure.ANDROID_ID);
+String userId = edit_account.getText().toString();
+Boolean noRepeatDevice = ((ILoginActivityView) requireActivity()).getLoginPresenter().alreadyLoddedIn("0",userId,"",deviceID);
+if(noRepeatDevice){
+    ((ILoginActivityView) requireActivity()).getLoginPresenter().Login(userId, edit_password.getText().toString());
+} else {
+    //跳出 dialog
+    StringUtils.HaoLog("alreadyLoddedIn= "+"跳出 dialog");
+}
+
+
+
+
+
+
+
+LineLoginResult{responseCode=SUCCESS, lineProfile=LineProfile{displayName='華苓科技', userId='U7bcc914f61455e0c0acab07c9875a198', pictureUrl='null', statusMessage='null'}, lineIdToken=LineIdToken{issuer='https://access.line.me', subject='U7bcc914f61455e0c0acab07c9875a198', audience='1653438100', expiresAt=Mon May 15 15:52:41 GMT+08:00 2023, issuedAt=Mon May 15 14:52:41 GMT+08:00 2023, authTime=null, nonce='Wa-WoNPDPRk', name='華苓科技', picture='null', phoneNumber='null', email='null', gender='null', birthdate='null', address=null, givenName='null', givenNamePronunciation='null', middleName='null', familyName='null', familyNamePronunciation='null'}, friendshipStatusChanged=null, lineCredential=LineCredential{accessToken=#####, scopes=[Scope{code='profile'}, Scope{code='openid'}]}, errorData=LineApiError{httpResponseCode=-1, message=''}}
+
+{
+  "displayName": "華苓科技",
+  "userId": "U7bcc914f61455e0c0acab07c9875a198",
+  "pictureUrl": "null",
+  "statusMessage": "null"
+}
+
+
+當我進來時後檢查app版本所使用預設domain
+checkAppNeedUpdate https://laledev0.flowring.com/laleweb
+當拿到使用者詳細資訊後把af_url替換 AllData.setMainServer()
+然後下次使用 checkAppNeedUpdate檢查版本就會是af_url，因為不這樣做就會出現：
+java.lang.IllegalArgumentException: Expected URL scheme 'http' or 'https' but no colon was found
+這個原因是因為拿到詳細資訊後af是沒有 lale_server，它只有af_url，所以第二次檢查版本就會拿null去連線，造成錯誤。
+
+checkAppNeedUpdate https://laledev0.flowring.com/laleweb
+af_url https://agentflow.flowring.com:8443/WebAgenda
+lale_server null
+WFCI_URL http://192.168.9.53:8083
+getMainServer https://agentflow.flowring.com:8443/WebAgenda
+checkAppNeedUpdate https://agentflow.flowring.com:8443/WebAgenda
+
+
+
+
+
+
+
+UserControlCenter.getUserMinInfo().eimUserData.af_url
+String deviceToken = instanceIdResult.getToken();
+
+
+
+https://agentflow.flowring.com:8443/WebAgenda
+http://192.168.9.53:8083
+http://192.168.9.53:8083
+
+
+deviceToken=c9It7_i5RlmyqiK0fElN8B:APA91bErkTaWyOEu9hCn2Hh0Nhjmba8PQ_eFHuNakN3pzu2H8YW8OgYTN0P6ZeLH-MZhfrViYMtPpp_u_4LlVUJEHg_T-GDng3a3F85U5JdLrN5cMeYC7laM3V-ieE3eG67KaP7M4UdW
+
+domain=http://192.168.9.53:8083
+userId=f5
+
+
+
+
+
+
+

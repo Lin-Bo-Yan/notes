@@ -40,3 +40,15 @@ private boolean responselogin(HttpReturn response) {
 
 ==================================================================================
 
+Fragment setArguments 解釋這個方法：
+setArguments() 是 Fragment 類別的一個方法，它可以設定一個 Bundle 物件作為該 Fragment 的參數。
+這個參數可以在 Fragment 建立後，但在加入到 Activity 中前設定。
+在 Fragment 中取得這些參數可以透過 getArguments() 方法。因為當 Fragment 被回收後，可以使用 setArguments() 來重新傳遞參數。
+使用 setArguments() 設定參數的範例：
+
+MyFragment fragment = new MyFragment();
+Bundle args = new Bundle();
+args.putString("key", "value");
+fragment.setArguments(args);
+
+==================================================================================

@@ -342,14 +342,12 @@ public class GetMinVersion {
 ==================================================================================
 H5喚起android app，啟動關聯應用，在MAIN下面設定
 
-<intent-filter>
-    <action android:name="android.intent.action.VIEW" />
-    <category android:name="android.intent.category.DEFAULT" />
-    <category android:name="android.intent.category.BROWSABLE" />
-    <data android:scheme="https"
-        android:host="example.com"
-        android:pathPrefix="/lale_toc"/>
-</intent-filter>
+    <intent-filter android:autoVerify="true">
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <data android:scheme="laletoc"/>
+    </intent-filter>
 https://blog.csdn.net/YukimineRyuu/article/details/106063792
 https://juejin.cn/post/7097784616961966094
 
@@ -489,3 +487,476 @@ private File createImageFile() throws IOException {
         e.printStackTrace();
     }
 ==================================================================================
+縮圖：
+
+    public static File bitmapToFile(Bitmap bitmap, File file) {
+        try {
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+            byte[] bitmapdata = bos.toByteArray();
+
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(bitmapdata);
+            fos.flush();
+            fos.close();
+
+            return file;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    public static Bitmap getPicThumbnail(final Context context, final File file) {
+        try {
+            int size = (int) CommonUtils.convertDpToPixel(60, context);
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+
+            if (file.exists()) {
+                BitmapFactory.decodeFile(file.getPath(), options);
+                options.inSampleSize = calculateInSampleSize(options, size, size);
+                options.inJustDecodeBounds = false;
+                return BitmapFactory.decodeFile(file.getPath(), options);
+            }
+        } catch (Exception e) {
+
+        }
+        return null;
+    }
+
+
+    static public Bitmap getCropBitmap(Bitmap bitmap) {
+        int destSize = bitmap.getWidth();
+        if (bitmap.getWidth() > bitmap.getHeight())
+            destSize = bitmap.getHeight();
+
+        int startX = (bitmap.getWidth() - destSize) / 2;
+        int startY = (bitmap.getHeight() - destSize) / 2;
+        Bitmap cropBitmap = Bitmap.createBitmap(bitmap, startX, startY, destSize, destSize);
+
+        return cropBitmap;
+    }
+
+縮圖：
+https://disp.cc/b/KnucklesNote/9C95
+
+搜尋：
+public static Bitmap decodeSampledBitmapFromFile(String file, int reqWidth, int reqHeight)
+
+Bitmap dd = CommonUtils.createPhotoSticker(outputFile.getPath(),50,50);
+
+
+
+==================================================================================
+
+public static void getChatRoomThumbnail(File file){
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(file.getAbsolutePath(),options);
+
+}
+
+BitmapFactory.decodeFile()第一個參數放絕對路徑
+file.getAbsolutePath()取得檔案絕對路徑
+getAbsolutePath()返回的路徑字符串可能是特定操作系統的格式
+getPath() 方法的返回值取決於你在創建 File 對象時使用的路徑是相對還是絕對路徑
+
+==================================================================================
+清除快取：
+
+public static void checkExternalSharing(Context context){
+    Resources resources = context.getResources();
+    String app_name = resources.getString(R.string.app_name);
+    String tableOfContents = Environment.DIRECTORY_PICTURES + File.separator + app_name + File.separator + "externalSharing";
+    File download = Environment.getExternalStoragePublicDirectory(tableOfContents);
+    StringUtils.HaoLog("checkExternalSharing " + download);
+    if(download.exists()) {
+        File[] files = download.listFiles();
+        for (File file : files) {
+            if (file.isFile()) {
+                String fileName = file.getName();
+                StringUtils.HaoLog("checkExternalSharing " + fileName);
+                deleteExternalSharing(file);
+            }
+        }
+    }
+}
+
+    private static void deleteExternalSharing(File file){
+        if(file.isFile()){
+            file.delete();
+        }
+    }
+    
+==================================================================================
+電話擴音問題：
+AudioManager.MODE_NORMAL、
+AudioManager.MODE_RINGTONE、
+AudioManager.MODE_CALL_SCREENING
+
+AudioManager.MODE_IN_CALL、
+AudioManager.MODE_IN_COMMUNICATION、
+
+
+void saveCurrentVolume(){
+    AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+    int CurrentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+    int mode = audioManager.getMode();
+    boolean phoneOn = audioManager.isSpeakerphoneOn();
+
+    StringUtils.HaoLog("saveCurrentVolume= "+CurrentVolume);//setCommunicationDevice  clearCommunicationDevice
+    StringUtils.HaoLog("saveCurrentVolume mode= "+mode);
+    StringUtils.HaoLog("saveCurrentVolume phoneOn= "+phoneOn);
+}
+
+if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(WebJitisiMeetActivity.this, Manifest.permission.MODIFY_AUDIO_SETTINGS)) {
+    permissions.add(Manifest.permission.MODIFY_AUDIO_SETTINGS);
+}
+
+
+<uses-permission android:name="android.permission.RECORD_AUDIO" /> <!-- 錄製音訊 -->
+<uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" /> <!-- 控制揚聲器 -->
+
+==================================================================================
+
+/**
+* 額外自訂義推送資訊
+*/
+private String HashMapToJson(String userId, String domain){
+    String[] keyValuePairs = new String[] { "userId", userId, "domain", domain };
+    Gson json = new Gson();
+    return json.toJson(keyValuePairs);
+}
+
+
+==================================================================================
+
+private boolean checkPublishPermission() {
+    List<String> permissions = new ArrayList<>();
+
+    if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(WebJitisiMeetActivity.this, Manifest.permission.CAMERA)) {
+        permissions.add(Manifest.permission.CAMERA);
+    }
+    if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(WebJitisiMeetActivity.this, Manifest.permission.RECORD_AUDIO)) {
+        permissions.add(Manifest.permission.RECORD_AUDIO);
+    }
+
+    if (permissions.size() != 0) {
+        //ActivityCompat.requestPermissions(WebJitisiMeetActivity.this, (String[]) permissions.toArray(new String[0]), 667);
+        WebJitisiMeetActivity.this.requestPermissions((String[]) permissions.toArray(new String[0]),667);
+        return false;
+    }
+    return true;
+}
+
+==================================================================================
+
+public HttpAfReturn getJhttpAfReturn(Request.Builder request) {
+    OkHttpClient client = getUnsafeOkHttpClient().newBuilder().build();
+    try {
+        Response response = client.newCall(request.build()).execute();
+        String body = response.body().string();
+        StringUtils.HaoLog("body=" + body);
+        HttpAfReturn httpReturn = new Gson().fromJson(body, HttpAfReturn.class);
+        StringUtils.HaoLog("getJhttpAfReturn");
+        StringUtils.HaoLog(response.header("url") + " " + httpReturn.success + " " + httpReturn.data);
+        StringUtils.HaoLog("getJhttpAfReturn end");
+        return httpReturn;
+    } catch (IOException | JsonSyntaxException e) {
+        e.printStackTrace();
+    }
+    return new HttpAfReturn();
+}
+
+
+HttpReturn gethttpReturn(Request.Builder request) {
+    OkHttpClient client = getUnsafeOkHttpClient().newBuilder().build();
+    try {
+        Response response = client.newCall(request.build()).execute();
+        if (response.code() == 200) {
+            String body = response.body().string();
+            StringUtils.HaoLog("body=" + body);
+            HttpReturn httpReturn = new Gson().fromJson(body, HttpReturn.class);
+            if (httpReturn != null) {
+                StringUtils.HaoLog(response.request().url().toString(), httpReturn);
+                return httpReturn;
+            } else
+                StringUtils.HaoLog(response.request().url() + " " + response.code() + " body=" + body);
+        }
+    } catch (IOException | IllegalStateException e) {
+        StringUtils.HaoLog("gethttpReturn error=" + request + " " + e.toString());
+        e.printStackTrace();
+    }
+    return new HttpReturn();
+}
+==================================================================================
+Android清除WebView缓存
+
+    public void clearCach(){
+        try {
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+                CookieManager.getInstance().removeAllCookies(null);
+            } else {
+                CookieSyncManager.createInstance(getApplicationContext());
+                CookieManager.getInstance().removeAllCookie();
+                CookieSyncManager.getInstance().sync();
+            }
+            new WebView(getApplicationContext()).clearCache(true);
+            File cacheFile = new File(getCacheDir().getParent() + "/app_webview");
+            clearCacheFolder(cacheFile,System.currentTimeMillis());
+            StringUtils.HaoLog("clearCach= "+System.currentTimeMillis());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public static int clearCacheFolder(File dir, long time){
+        int deletedFiles = 0;
+        if(dir != null && dir.isDirectory()){
+            try {
+                for(File child : dir.listFiles()){
+                    if(child.isDirectory()){
+                        deletedFiles +=  clearCacheFolder(child, time);
+                    }
+                    if(child.lastModified() < time){
+                        if(child.delete()){
+                            deletedFiles++;
+                        }
+                    }
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return deletedFiles;
+    }
+
+==================================================================================
+
+儲存String到 緩存路徑 getCacheDir().getAbsolutePath()：
+
+    public static void saveWebViewVersion(String data, Context context) {
+        String fileName = "webViewVersion.txt";
+        String filePath = context.getCacheDir().getAbsolutePath() + File.separator + fileName;
+        try {
+            File file = new File(filePath);
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(data.getBytes());
+            fos.close();
+            StringUtils.HaoLog("文件保存成功");
+        } catch (IOException e) {
+            e.printStackTrace();
+            StringUtils.HaoLog("保存文件失敗"+e);
+        }
+    }
+
+讀取txt檔案回傳String
+    public static String readTextFromFile(Context context) {
+        String fileName = "webViewVersion.txt";
+        String filePath = context.getCacheDir().getAbsolutePath() + File.separator + fileName;
+        StringBuilder stringBuilder = new StringBuilder();
+        try {
+            File file = new File(filePath);
+            FileInputStream fis = new FileInputStream(file);
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader bufferedReader = new BufferedReader(isr);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                stringBuilder.append(line);
+            }
+            bufferedReader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return stringBuilder.toString();
+    }
+
+
+==================================================================================
+
+    public void getWebVersion() {
+        new Thread(() -> {
+            try {
+                URL url = new URL(getMainWebURL(false));
+                Document doc = Jsoup.parse(url, 3000);
+                Element bodyElement = doc.body();
+                String bodyContent = bodyElement.text();
+                //取得版號，存到cash目錄下txt檔
+                String fileName = "webViewVersion.txt";
+                //String filePath = getCacheDir().getAbsolutePath() + File.separator + fileName;
+                String tableOfContents = Environment.DIRECTORY_PICTURES + File.separator + "Lale 企業" + File.separator + fileName;
+                File file = new File(tableOfContents);
+                if(file.exists()){
+                    //如果存在判斷檔案內版本是否不同，如果為true，則存檔以及清除cash
+                    String oldVersion = FileUtils.readTextFromFile(file);
+                    if(!oldVersion.equals(bodyContent)){
+                        FileUtils.saveWebViewVersion(MainWebActivity.this, bodyContent);
+                        cleanWebviewCache();
+                    }
+                } else {
+                    //如果不存在表示為第一次使用app，則存檔以及清除cash
+                    FileUtils.saveWebViewVersion(MainWebActivity.this, bodyContent);
+                    cleanWebviewCache();
+                }
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
+==================================================================================
+
+URL 轉  Bitmap：
+
+public static Bitmap getBitmapFromURL(String imageUrl) {
+    try {
+        URL url = new URL(imageUrl);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setDoInput(true);
+        connection.connect();
+        InputStream input = connection.getInputStream();
+        Bitmap bitmap = BitmapFactory.decodeStream(input);
+        return bitmap;
+    } catch (Exception e) {
+        e.printStackTrace();
+        return null;
+    }
+}
+==================================================================================
+
+影片縮圖，回傳 Bitmap物件，回傳就能呼叫resizeAndConvertToBase64()方法做縮圖
+
+public static Bitmap getVideoThumbnail(String videoPath) {
+    Bitmap thumbnail = null;
+    try {
+        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+        retriever.setDataSource(videoPath);
+        int width = Integer.parseInt(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH));
+        int height = Integer.parseInt(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT));
+        // 獲取第一幀圖像
+        thumbnail = retriever.getFrameAtTime(0, MediaMetadataRetriever.OPTION_CLOSEST);
+        if (thumbnail != null) {
+            // 按照指定的寬高進行縮放
+            thumbnail = Bitmap.createScaledBitmap(thumbnail, width, height, false);
+        }
+        retriever.release();
+    } catch (Exception e) {}
+    return thumbnail;
+}
+
+==================================================================================
+
+MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+retriever.setDataSource(file.getPath());
+String width = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH);
+String height = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT);
+
+if(".jpg".equals(fileType(file.getName()))){
+  String pic = ThumbnailUtils.resizeAndConvertToBase64(file.getPath(),50);
+  jsonObject.put("thumbnail",pic);
+} else {
+  Bitmap originalBitmap = ThumbnailUtils.getVideoThumbnail(file.getPath());
+  String pic = ThumbnailUtils.resizeAndConvertToBase64(originalBitmap,50);
+  jsonObject.put("thumbnail",pic);
+}
+
+==================================================================================
+
+Build.VERSION.SDK_INT  →  是一個表示設備當前 Android 版本的整數值。 29
+Build.VERSION_CODES.LOLLIPOP  →  是一個表示 Android  21版本的整數常量。 
+
+
+==================================================================================
+firebase 推播 棄用之替代寫法，FirebaseMessaging
+
+FirebaseMessaging.getInstance().getToken().addOnSuccessListener(new OnSuccessListener<String>() {
+    @Override
+    public void onSuccess(String s) {         
+    }
+});
+
+
+FirebaseMessaging.getInstance().getToken().addOnSuccessListener(deviceToken -> {
+            if (!TextUtils.isEmpty(deviceToken)) {
+                SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(AllData.context);
+                new Thread(() -> {
+                    HttpReturn pu;
+                    try {
+                        JSONObject UserIds = new JSONObject(pref.getString("UserIds", "{}"));
+                        StringUtils.HaoLog("UserIds= " + UserIds);
+                        StringUtils.HaoLog("deviceToken= " + deviceToken);
+
+                        if (UserIds.length() <= 1){
+                            String userId = UserControlCenter.getUserMinInfo().userId;
+                            String uuid = Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
+                            String customerProperties = HashMapToJson(userId,AllData.getMainServer(),false, "");
+                            pu = CloudUtils.iCloudUtils.setPusher(userId, deviceToken, uuid, customerProperties);
+                        } else {
+                            String userId = UserControlCenter.getUserMinInfo().userId;
+                            String uuid = Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
+                            UserControlCenter.switchAccounts(userId);
+                            pu = CloudUtils.iCloudUtils.updatePusher(userId, uuid);
+                        }
+                        StringUtils.HaoLog("setPusher=" + pu);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    activity.runOnUiThread(() -> {
+                        activity.finish();
+                    });
+                }).start();
+            }
+        });
+
+==================================================================================
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginLeft="42dp"
+                android:layout_marginRight="42dp"
+                android:layout_marginBottom="15dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:orientation="horizontal">
+
+屬性介紹：
+android:focusable="true"
+
+用於指定視圖是否可以獲得焦點。
+當您將 android:focusable 屬性設置為 true 時，表示該視圖可以獲得焦點。焦點是指當使用者與應用程序交互時，
+應用程序中的視圖元素可以接收和處理使用者輸入的能力。
+
+以下是一些常見的用法和注意事項：
+使用者交互：當一個視圖可以獲得焦點時，使用者可以通過點擊、觸摸或其他交互方式將焦點設置到該視圖上。
+例如，EditText 預設是可以獲得焦點的，用戶可以點擊 EditText 並開始輸入文本。
+鍵盤焦點：當視圖獲得焦點時，系統會將鍵盤焦點設置到該視圖上，這意味著用戶可以通過鍵盤進行相應的操作，
+例如輸入文本或使用方向鍵進行導航。
+聚焦順序：如果多個視圖都可以獲得焦點，則根據聚焦順序，系統將在這些視圖之間進行焦點切換。
+您可以使用 android:nextFocusUp、android:nextFocusDown、android:nextFocusLeft、android:nextFocusRight 
+等屬性來指定焦點切換的順序。
+
+請注意以下幾點：
+預設情況下，大多數視圖（如 Button、EditText 等）都可以獲得焦點，但某些視圖（如 TextView）可能不具備焦點能力，
+除非您明確將 android:focusable 設置為 true。
+如果一個視圖的父級視圖（例如 LinearLayout）具有 android:focusable="true" 的屬性，則該視圖也將繼承父級視圖的焦點能力，
+即使該視圖本身沒有明確設置 android:focusable 屬性。
+您可以使用 android:focusableInTouchMode 屬性來指定視圖是否可以在觸摸模式下獲得焦點。
+總之，android:focusable="true" 屬性用於指定視
+
+==================================================================================
+
+
+
+
+
+
+
+
+
+
+
+

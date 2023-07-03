@@ -1,0 +1,144 @@
+
+Q：後端拿到同一個使用者裡面有4組token，需要追是哪裡傳入token
+
+掃QR會取得：
+{
+  "af_token": "",
+  "qrcode_info_url": "https://portal.flowring.com/WebAgenda/api/dau/EIM/qrcode/info"
+}
+
+掃QR會取得使用者資訊：
+EimUserData(使用者資訊)
+
+af_mem_id = thirdPartyIdentifier
+{
+    "success": true,
+    "message": "OK",
+    "errorMessage": "",
+    "data": {
+        "isLaleAppEim": true,
+        "isLaleAppWork": true,
+        "af_url": "https://portal.flowring.com/WebAgenda",
+        "af_mem_id": "MEM32008167271105935",
+        "af_login_id": "boyan.lin",
+        "af_token": "",
+        "af_wfci_service_url": "",
+        "lale_third_party_identifier": "MEM32008167271105935",
+        "lale_server": "https://freim.flowring.com/laleweb",
+        "lale_token": "",
+        "lale_user_id": "boyan.lin",
+        "lale_external_server_info": {
+            "messageServerUrl": "https://freim.flowring.com/lalemessage",
+            "jitsiServerUrl": "https://freim.flowring.com",
+            "mqttUrl": "wss://freim.flowring.com/mqtt"
+        },
+        "refresh_token": "",
+        "call_service_url": "https://portal.flowring.com/call",
+        "isLaleCall": true
+    },
+    "total": 1,
+    "code": 200,
+    "stackTrace": ""
+}
+
+
+
+
+
+{
+    "status": 200,
+    "msg": "Success",
+    "data": {
+        "userId": "testpd003",
+        "displayName": "testpd003",
+        "avatarUrl": "",
+        "avatarThumbnailUrl": "",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbl90eXBlIjoidXNlciIsInVzZXJfbmFtZSI6InRlc3RwZDAwMyIsImV4cCI6MTY4MjczNDU2MCwiaWF0IjoxNjgyNjQ4MTYwLCJkZXZfaWQiOiI0NWIwMDgyNDBlM2MzYWUwIn0.8Vbf1e_iKkYssI3qbk34mh_x6Rmm_MB7pZdCM6o_ecI",
+        "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZWZyZXNoX3R5cGUiOiJ1c2VyIiwic3BlY2lmaWNhdGlvbl9pZCI6IjQ1YjAwODI0MGUzYzNhZTAiLCJ1c2VyX25hbWUiOiJ0ZXN0cGQwMDMiLCJleHAiOjE2ODMyNTI5NjAsImlhdCI6MTY4MjY0ODE2MH0.EpMY5MjQClJDBpqtfLEMMl15Xamz_Xf_ChbfoZQSgEw",
+        "expiration": 1682734560000,
+        "refreshExpiration": 1683252960000,
+        "externalServerSetting": {
+            "messageServerUrl": "https://laleserver.lale.im/lalemessage",
+            "jitsiServerUrl": "https://laleserver.lale.im",
+            "mqttUrl": "wss://laleserver.lale.im/mqtt",
+            "callServiceUrl": "https://laleserver.lale.im/call"
+        }
+    }
+}
+
+
+{
+    "status": 200,
+    "msg": "Success",
+    "data": {
+        "userId": "jasonmas",
+        "displayName": "FR799 馬浚寧",
+        "avatarUrl": "https://laleserver.lale.im/fileserver/file/download/UDSEcbaExSeBriRvsAqBXTbt",
+        "avatarThumbnailUrl": "https://laleserver.lale.im/fileserver/file/thumbnail/UDSEcbaExSeBriRvsAqBXTbt",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbl90eXBlIjoidXNlciIsInVzZXJfbmFtZSI6Imphc29ubWFzIiwiZXhwIjoxNjgyNzM0NzEzLCJpYXQiOjE2ODI2NDgzMTMsImRldl9pZCI6IjQ1YjAwODI0MGUzYzNhZTAifQ.FR4ogi0VL2ZUpsJMPrVpfYhCF9Slmssg1IyedZ_sVqg",
+        "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZWZyZXNoX3R5cGUiOiJ1c2VyIiwic3BlY2lmaWNhdGlvbl9pZCI6IjQ1YjAwODI0MGUzYzNhZTAiLCJ1c2VyX25hbWUiOiJqYXNvbm1hcyIsImV4cCI6MTY4MzI1MzExMywiaWF0IjoxNjgyNjQ4MzEzfQ.77o1itJ67_d_WvtQDP6tgOiC4xOSv_oSafNZ9h05tS0",
+        "expiration": 1682734713000,
+        "refreshExpiration": 1683253113000,
+        "externalServerSetting": {
+            "messageServerUrl": "https://laleserver.lale.im/lalemessage",
+            "jitsiServerUrl": "https://laleserver.lale.im",
+            "mqttUrl": "wss://laleserver.lale.im/mqtt",
+            "callServiceUrl": "https://laleserver.lale.im/call"
+        }
+    }
+}
+
+
+
+userInfo.webagendaUrl 拿到：
+https://laleserver.lale.im/WebAgenda
+
+
+getAfToken：
+/api/auth/lale/aftoken
+
+getCompanyList：
+/api/dau/enterprise/all/current-user
+
+UserControlCenter.getAfToken()
+
+
+
+{
+    "success": true,
+    "message": "OK",
+    "errorMessage": "",
+    "data": {
+        "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0cGQwMDMiLCJhdWQiOiJNRU04MDAzMTY3ODk1ODYwNTQxNCIsImlzcyI6IkxhbGVXb3JrIiwibmFtZSI6InRlc3RwZDAwMyIsImV4cCI6MTY4MzI1NjI4OCwiaWF0IjoxNjgyNjUxNDg4fQ.TdynSvkxjoI5lP5TO17bsM_wqBYK32wnajsy5LxHeOw"
+    },
+    "total": 1,
+    "code": 200,
+    "stackTrace": ""
+}
+
+
+
+
+
+
+https://afsaas.lale.im/WebAgenda
+
+
+
+public static void getMainUserWebagendaUrl(CallbackUtils.messageReturn callback)
+
+去取得 getMainUserInfo 時候
+
+
+
+取得自己的使用者資訊
+public static void getMainUserInfo(CallbackUtils.userReturn callback) 
+
+路徑= /data/user/0/com.flowring.laletoc/files
+====================================================================================================
+
+
+
+
+
+

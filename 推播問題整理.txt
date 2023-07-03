@@ -38,9 +38,6 @@
 
 
 
-sdk.dir=C\:\\Users\\boyan.lin\\AppData\\Local\\Android\\Sdk
-
-.gitignore
 
 
 

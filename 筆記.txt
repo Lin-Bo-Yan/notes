@@ -9,26 +9,13 @@ FirebaseMessagingService的onNewToken()方法來獲取註冊令牌。
 FirebaseMessagingService的onNewToken()方法是Firebase在推送令牌更新時自動調用的方法，
 您可以重寫這個方法來處理註冊令牌更新的邏輯，而無需顯式調用FirebaseInstanceId的方法。這樣更簡潔，更符合最新的Firebase推送標準。
 
-
-FCM token
-f7_wBFToQGeDOz-fcoDVBH:APA91bHE6-b2QS1AE5St0gZkVz16ZXGqA3BswJFmj_0gsUpxkUv9tR-569XvJ0Gd29VyJc02RuRrPIzvOh8GTdf8T4NMIw0eW-a1CL_CUm1glc1bb64hxubEV1iWnF5mcy6wEiW8SCyv
-
-企業版 FCM token
-fL7nKo7BTc-vYvlVyYktGO:APA91bFCngQSU_r7HT2Z7Rf2KlYHkXEhFhEfuZKiLr2f3cw4s52Qy_QBdxq6lbVJRSUC2Z7bJvmYha9iCRz9NXME4HXQKzWkz8DjcLzHvvLmYCI4vTPDszjKf5FSXyhLUvb92taoMZxi
-
 sdk.dir=C\:\\Users\\boyan.lin\\AppData\\Local\\Android\\Sdk
-
-
-
 
 Warning: This version only understands SDK XML versions up to 2 but an SDK XML file of version 3 was encountered. This can happen if you use versions of Android Studio and the command-line tools that were released at different times.
 這個警告通常表示 Android Studio 和命令行工具版本不兼容，建議升級 Android Studio 和命令行工具至最新版本以解決此問題。
 
 你可以打開 Android Studio，並從菜單中選擇 File -> Settings -> Appearance & Behavior -> System Settings -> Android SDK。
 在這裡，你可以看到當前的 Android SDK 版本以及可用的更新。請確認你的 Android SDK 已經更新到最新版本，然後重新運行項目，應該可以避免這個警告。
-
-
-
 
 
 發現專案build不起來是因為連接不到虛擬機，有可能是因為React Native init所建置的專案和android gradle版本不一致，所以雙方沒辦法連接
@@ -42,19 +29,11 @@ https://blog.csdn.net/qq_32192725/article/details/87967508?spm=1001.2101.3001.66
 找到一個解法是用android studio 開啟React Native專案，IDE會把gradle版本自動更新到符合的版本，這個方法在新專案是可行的，在jitsi-meet專案又有問題。
 
 
-
-
-
 超詳細React Native環境搭建以及運行項目（Windows環境）
 https://blog.csdn.net/ljx1048900106/article/details/108282012#:~:text=%E7%8E%B0%E5%9C%A8%E4%BD%A0%E5%8F%AF%E4%BB%A5%E8%BF%90%E8%A1%8Creact-native%20run-android%E6%9D%A5%E5%9C%A8%E8%AE%BE%E5%A4%87%E4%B8%8A%E5%AE%89%E8%A3%85%E5%B9%B6%E5%90%AF%E5%8A%A8%E5%BA%94%E7%94%A8%E4%BA%86%E3%80%82%20%24%20react-native%20run-android,%E6%88%96%E8%80%85%20%24%20yarn%20android%202.
 
 
-
-
 https://benjaminnl.pixnet.net/blog/post/53362765-windows%E7%92%B0%E5%A2%83%E4%BD%BF%E7%94%A8linux%E7%9A%84make%E6%8C%87%E4%BB%A4
-
-
-
 
 
 implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -67,15 +46,10 @@ fileTree(dir: 'libs', include: ['*.jar'])：將 libs 目錄下的所有 jar 文�
 implementation 'androidx.appcompat:appcompat:1.4.1'：添加 AndroidX 库中的 AppCompat 库，這是一個向後兼容的庫，可確保應用程式在不同版本的 Android 上運行一致。
 implementation 'androidx.constraintlayout:constraintlayout:2.1.3'：添加 ConstraintLayout 庫，這是一個用於設計 Android 用戶界面的庫。
 
-
-
 公司建立的jitsi server：
 https://laledev0.flowring.com/
 
 onConsoleMessage= 
-
-
-
 
 command= 
 downloadByUrl 個人聊天室 -> 下載圖片
@@ -119,15 +93,8 @@ isKeyguardLocked()
 已鎖定的鎖屏狀態是指系統在使用者按下電源鍵後，系統會啟動一個鎖屏畫面，使用者必須進行解鎖操作才能進入系統。
 功能跟 inKeyguardRestrictedInputMode 一樣
 
-
-
-
 jitsi-meet 錯誤訊息：
 CreateProcess error=193, %1 不是有效的 Win32 應用程式。
-
-React版本：
- v0.73.8
-
 
 
 
@@ -147,20 +114,6 @@ AR 假資料
 //                        position = Vector3(-0.07f, -0.16f, 0.67f)
 //                    )
 
-
-
-工作日誌：
-開啟React-native專案，下指令npm install react-native-jitsi-meet --save
-將官方包裝好的 jitsi-meet SDK引進專案內
-
-這條指令會在 node_modules目錄底下產生 react-native-jitsi-meet 目錄
-點開目錄 -> android -> build.gradle，會找到：
-implementation ('org.jitsi.react:jitsi-meet-sdk:5.1.0') {transitive = true}
-
-除此之外，他會在根目錄package.json裡面的dependencies欄位新增 "react-native-jitsi-meet": "^3.1.0"
-並且產出 package-lock.json 
-
-很神奇的是，json文件的版本號跟build.gradle版本對不起來，這還需要研究
 
 
 webView在android5.0之後會自動設置同步功能，意思是說網頁瀏覽器的cookie狀態會直接跟app同步，確保webView和瀏覽器之間共享cookie
@@ -241,42 +194,6 @@ onShowFileChooser
 createVoideFile()
 ==================================================================================
 
-api：
-https://laleserver.lale.im/laleweb/util/app/version/android
-https://laleserver.lale.im/laleweb/util/app/version
-
-
-==================================================================================
-
-將原始 Intent 的操作設置為新的 Intent 的操作是因為在這個程式碼中，新的 Intent 主要是用來傳遞從其他應用程式分享過來的圖片和文字描述的訊息，
-這些訊息是通過 Intent 的額外訊息（extras）傳遞的。為了確保這些額外訊息能夠正確地傳遞到目標 Activity 中，我們需要確保 Intent 的操作設置為原始 
-Intent 的操作，以確保它們之間的一致性。
-如果不這樣做，可能會出現意料之外的問題，例如原始 Intent 和新 Intent 中的額外訊息之間發生衝突，或者目標 Activity 無法正確地處理從新 Intent 
-中獲取的額外訊息。因此，為了保持操作的一致性，將原始 Intent 的操作設置為新 Intent 的操作是很重要的。
-
-
-拿到room_id才可以將檔案分享到room內，總共要進行三次交互，如果是圖片，我需要將圖片壓縮。
-
-==================================================================================
-
-https://qms.flowring.com:8080/browse/LAC-589
-https://qms.flowring.com:8080/browse/LAC-590
-https://qms.flowring.com:8080/browse/LAC-592
-
-【Android】檔案分享到第三方應用程式
-https://qms.flowring.com:8080/browse/LAC-600
-【Android】開啟檔案，如果不支援檔案類型則無法開啟
-https://qms.flowring.com:8080/browse/LAC-601
-【Android】外部 App 分享至 Lale，傳送檔名、圖片、文字給 web端
-https://qms.flowring.com:8080/browse/LAC-602
-
-
-新增的HotfixID=3699
-https://portal.flowring.com/WebAgenda/MIS/HotFixInsert.jsp
-
-==================================================================================
-
-
 shareFileToCloud(JSONObject data)
 multipleShareToWeb(Intent intent)
 
@@ -303,24 +220,6 @@ Base64.encodeToString 方法將指定的數據編碼為 Base64 字符串，然�
 
 saveImage(fileName,getBase64FromPath(outputFile))
 
-==================================================================================
-
-=android 處理情況=
-
-(com.flowring.laletoc.tools.ui.main.webBody.MainWebActivity.java)：新增監聽單點預覽事件
-
-{code:title=public String postMessage(String json)|borderStyle=solid}
-        switch (command) {
-            //略過
-            case "quickLook":
-                            classificationFileType(data);
-        }
-{code}
-
-=修正程式=
-com.flowring.laletoc.tools.ui.main.webBody.MainWebActivity.java
-
-
 ExternalServerSetting
 https://laletest.flowring.com/SaaSServerCall
 String urlEnd = new ExternalServerSetting().call_service_url + "/#/call/" + roomSecret + "/" + dataEncode;
@@ -337,29 +236,249 @@ UserControlCenter.getUserMinInfo().externalServerSetting.call_service_url.isEmpt
 所以建立通話時候是用 預是的url 以roomIdParse，msgIdParse，roomSecret 組出新uri
 然後給web
 
+聊天室傳過來會攜帶roomid
+道觀通知會收到一長串json
 
 
-public class ExternalServerSetting implements Serializable {
+道觀通知不會攜帶roomid
+聊天室傳過來會攜帶roomid
 
-    public String messageServerUrl = "https://laleserver.lale.im/lalemessage"; //舊          //http://192.168.9.110:8080
-    public String jitsiServerUrl = "https://laleserver.lale.im";   //舊          //https://laledev0.flowring.com
-    public String mqttUrl = "wss://laleserver.lale.im/mqtt";          //舊          //wss://192.168.9.110:1883
-    public String callServiceUrl = "https://laleserver.lale.im/call"; //舊          // https://laletest.flowring.com/SaaSServerCall
-
-}
-
-private boolean responselogin(HttpReturn response) {
-        if (response.status == 200) {
-                UserMin thUserMin = new Gson().fromJson(new Gson().toJson(response.data), UserMin.class);
-                UserControlCenter.setLogin(thUserMin);
-                return true;
-        } else {
-                mView.showDialog("登入", response.msg);
-                return false;
-        }
-}
+系統才不管你是哪種通知，反正通知超過4則系統就會收合
+這時候mainActivity收roomid就會是null
 
 ==================================================================================
+
+自定義推播會有
+
+{
+    "title":"系統通知",
+    "body":"您已在其他裝置登入，此裝置已自動登出",
+    "userID":userID,
+    "serverURL":serverURL
+}
+
+================================================================================================
+
+
+is_lale_message_received()方法：
+如果 等於lale.message.received 回傳true，
+MessageInfo.getText() lale.message.received 為true
+回傳JSONObject(content).optString("msg");
+
+
+RoomMinInfo class裡面包含 "群組" ，個人1對1 (目前看起來)
+群組 room.type = 6
+個人1對1 room.type = 1
+
+
+RoomMinInfo：
+room_1658393321464266752     room.id
+測試群組                      room.name
+6                            room.type
+李燕萍加入群組                room.last_msg
+1684228988818                room.last_msg_time
+0                            room.unread_count
+group_1658393321464266753    room.groupId
+                              room.avatarUrl
+                              room.groupAdmin
+0                            room.topTime
+true                         room.isNotification
+1                            room.status
+0                            room.call_status
+
+================================================================================================
+ToC：
+git cherry-pick
+git cherry-pick --continue
+
+單一裝置登入處理，配合server 一起調整測試：
+ea1ebd4
+0742882
+65bc0bb
+33fe7b4
+34e5521
+0ec3bd5
+c2a47a8
+ad364a7
+bfe2b5a
+
+
+c27cd49
+480fa3a
+abff42e
+f263430
+3318d27
+8427f60
+
+feat: 群內成員收到推播顯示：
+c152627
+803679f
+c34f07c
+a19db19
+
+
+b7a4b0d   style:一些變數整理
+3685ae1   style:新增Log
+4671edb   setPusher ，新增欄位：額外自訂義推送資訊
+8c4c1aa   登出失敗關閉Pusher
+9d57014   權限結構優化
+5557551   修改伺服器錯誤後的處理流程
+
+
+void shareToWeb(Intent intent)
+
+================================================================================================
+華苓科技 (公佈欄管理者 : 莊千慧;莊昀霓;劉沛榆) (板主 : 莊千慧)
+
+================================================================================================
+
+
+修復錯誤的 OpenSSL 版本
+OpenSSL 1.1.1d in lib/x86/libsqlcipher.so
+
+unzip -p Yourapp.apk | strings | grep "OpenSSL"
+
+================================================================================================
+訊息回收會走MQTT
+updateMsg
+
+
+這牽扯到一個問題是 這邊的設計是
+這邊檢查辦公維護是透過app打api 去問server的
+目前是
+1.開啟app時 執行/ann/in-range/{given_time}
+2.到達開始維護時間  執行/ann/in-range/{given_time}
+3.api 503   執行/ann/in-range/{given_time}
+
+我剛問brice 如果是有lale的那種打api 是會透過webMessage 把api error 告訴app端
+但是純辦公版本打 af的api 出錯是不會告訴app的
+也就是說 純辦公版本在即時通知使用者辦公維護這點應該是會出問題
+
+
+你是不是忘了已經改成長token了? 我前幾天應該有跟你們說過
+機制我已經改了，現在如果是行動裝置的token我會給 long-live的token ，除非是沒有紀錄行動裝置登入的token才是走原本機制
+如果你要測試原本的行為應該在dev10 tob的環境測試
+toc tob 取得 token 時效性已根據登入的裝置有所不同，目前dev0我已上版此功能
+
+
+================================================================================================
+
+
+QRcode info那隻api 很慢
+然後第三方簡易登入失敗
+
+https://agentflow.flowring.com:8443/WebAgenda    /api/dau/EIM/qrcode/info
+https://portal.flowring.com/WebAgenda            /api/dau/EIM/qrcode/info
+
+
+================================================================================================
+
+    public static void setAnnouncementServer(String announceServer) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        pref.edit().putString("AnnounceServer",announceServer).apply();
+        AnnounceServer = announceServer;
+    }
+
+
+    這邊在set的時候是null
+    所以取值時會出錯
+
+碼農日常-『Android studio』螢幕截圖Screen Shot實作
+https://thumbb13555.pixnet.net/blog/post/331207995-screenshot
+
+FileProvider 第三方應用開啟 (example: open pdf)
+https://hackmd.io/@fd-javaAndroid/SyTn1b0FK
+
+
+浮水印位置：畫面哪個位置
+浮水印內容：用戶名，日期，編號?(無法取得員工編號)
+
+
+
+
+
+PDFView:
+implementation 'com.github.barteksc:android-pdf-viewer:3.2.0-beta.1'
+
+AndroidPdfViewer
+implementation 'com.joanzapata.pdfview:android-pdfview:1.0.4@aar'
+
+PdfRenderer
+
+
+
+開啟PDF：
+https://github.com/groupdocs-watermark/GroupDocs.Watermark-for-Java/tree/master/Examples
+
+https://gist.github.com/aspose-com-gists/b5f7f2262b678f17cf0d7b1e318d092e
+
+https://github.com/thebabush/pdf-strip-watermark/blob/master/src/main/java/it/fuck/kenoph/Main.java
+
+https://github.com/LibrePDF/OpenPDF/blob/master/pdf-toolbox/src/test/java/com/lowagie/examples/general/copystamp/AddWatermarkPageNumbers.java
+
+https://github.com/qmetric/pdf-manipulation/blob/master/src/main/java/com/qmetric/pdf/manipulation/pdfbox/PdfBoxWatermark.java
+
+
+
+
+使用Android打印框架自定義文檔：Android提供了打印框架，您可以通過創建打印適配器（Print Adapter）來自定義文檔。您可以在打印適配器的onWrite()方法中渲染頁面並將它們寫入PDF文件。詳細資訊和代碼示例可以參考Android開發者文檔中的"打印自定義文檔"（https://developer.android.google.cn/training/printing/custom-docs?hl=zh-cn）。
+使用MuPdf庫：MuPdf是一個輕量級且功能豐富的PDF處理庫，它可以用於在Android應用程序中讀取和標註PDF文件。您可以下載MuPdf的源代碼，並將其集成到您的應用程序中。有關詳細信息和示例代碼，您可以參考"Android App集成MuPdf，實現Pdf閱讀、編輯、標記等功能"（http://www.longluo.me/blog/2021/08/01/Android-Pdf-Viewer/）。
+使用AndroidPdfViewer庫：AndroidPdfViewer是一個Java實現的Android PDF查看器庫，您可以使用它在應用程序中顯示和查看PDF文件。您可以在PDF查看器的佈局中使用FrameLayout覆蓋自定義的WaterMarkView，該視圖負責在畫布上生成和繪製浮水印文字。這種方法不會將浮水印嵌入到PDF文件本身，而是在渲染時動態添加浮水印。有關詳細信息和代碼示例，您可以參考"CSDN博客中的android PDFview加載PDF&PDF加水印"（https://blog.csdn.net/qq_36488374/article/details/88187474）。
+使用"android-pdfview"庫：這是一個用於實現PDF查看功能的庫。它包括PDF閱讀、目錄導航、縮略圖導航等功能。該庫的示例代碼和佈局文件可以在"Android原生PDF功能實現"（https://www.cnblogs.com/qixingchao/p/11658226.html）中找到。該文章還提到了實現PDF預覽縮略圖的方法和相關類。
+使用PdfRenderer類：PdfRenderer是Android 5.0（API級別21）引入的一個類，用於渲染和顯示PDF文件。您可以使用PdfRenderer將PDF頁面渲染到Bitmap上，然後在應用程序中顯示。這種方法對於基本的PDF查看功能來說是適合的。有關不同方法的詳細比較和代碼示例，可以參考"android:加載PDF幾種方法匯總對比"（https://www.jianshu.com/p/f68e1087ea36）。
+希望這些資訊對您有所幫助！如果您有其他問題，請隨時提問。
+
+
+LEP-148
+mupdf-android-viewer
+
+
+Android App集成MuPdf，實現Pdf閱讀、編輯、標記等功能
+http://www.longluo.me/blog/2021/08/01/Android-Pdf-Viewer/
+https://github.com/ArtifexSoftware/mupdf-android-viewer.git
+git://git.ghostscript.com/mupdf-android-viewer.git
+
+https://github.com/longluo/DroidPdf.git
+https://www.mupdf.com/releases/index.html
+
+
+
+https://github.com/PSPDFKit/pspdfkit-android-catalog
+https://github.com/PSPDFKit/pspdfkit-android-simple-example
+https://github.com/YemreCenan/-Creating-Pdf-file-with-itext7.git
+git clone --recursive 
+
+
+我的個人資訊api
+/api/dau/personalData
+錯誤狀態碼= 400
+
+AF 環境是.9.53
+
+
+
+
+String fileName = "webViewVersion.txt";
+String filePath = getCacheDir().getAbsolutePath() + File.separator + fileName;
+File file = new File(filePath);
+String oldVersion = FileUtils.readTextFromFile(file);
+StringUtils.HaoLog("fff= "+oldVersion);
+
+
+
+
+
+
+fly
+jerry
+Him25121919
+
+
+
+LEP-161 App 跳出更新版本，點擊後會跳到 Lale，不是 Lale企業
+
+
+
 
 
 

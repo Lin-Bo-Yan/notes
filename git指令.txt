@@ -27,6 +27,7 @@
      * git remote -v 查詢後的遠端分支
        如果已經關聯了就可以不用
      * git push <remote> --delete <old_name>
+     * git push origin --delete <old_name>
 兩種方法都可以
 
 3. 將新的本地分支推到遠端並建立及追蹤新的遠端分支。
@@ -41,3 +42,33 @@
 
 
 =========================================
+遠端分支 merge 回 master：
+
+1. 確認您目前在 master 分支上，若不在的話，請使用 git checkout master 切換到 master 分支上。
+
+2. 從遠端倉庫拉取最新的 fix 分支，可以使用以下指令：
+   * git fetch origin <分支>
+
+3. 將 fix 分支合併至 master 分支，可以使用以下指令：(此時 branch master)
+   * git merge origin/<分支>
+
+* git push origin master
+
+=========================================
+刪除遠端分支
+* git push origin --delete <分支>
+=========================================
+
+另一種合併方式（使用 rebase）
+https://gitbook.tw/chapters/branch/merge-with-rebase
+
+
+=========================================
+包含所有 git的模組全部clone下來
+
+* git clone --recursive <url>
+
+=========================================
+
+
+

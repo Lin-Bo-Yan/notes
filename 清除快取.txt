@@ -1,0 +1,105 @@
+    public String getMainWebURL(Boolean isWebDomain) {
+        UserMin userMin = UserControlCenter.getUserMinInfo();
+        if (userMin != null &&
+                userMin.eimUserData != null &&
+                userMin.eimUserData.af_url != null){
+            if(isWebDomain){
+                return userMin.eimUserData.af_url + "/eimApp/index.html#/";
+            } else {
+                return userMin.eimUserData.af_url + "/eimApp/version.txt";
+            }
+        }
+        return "";
+    }
+
+
+    public void getWebVersion() {
+        UserControlCenter.getWebVersion(getMainWebURL(false), new CallbackUtils.messageReturn() {
+            @Override
+            public void Callback(String message) {
+                //取得版號，存到cash目錄下txt檔
+                String fileName = "webViewVersion.txt";
+                String filePath = getCacheDir().getAbsolutePath() + File.separator + fileName;
+                File file = new File(filePath);
+                if(file.exists()){
+                    //如果存在判斷檔案內版本是否不同，如果為true，則存檔以及清除cash
+                    String oldVersion = FileUtils.readTextFromFile(file);
+                    StringUtils.HaoLog("getWebVersion= 舊版本 "+oldVersion);
+                    StringUtils.HaoLog("getWebVersion= 新版本 "+message);
+                    if(!oldVersion.equals(message)){
+                        FileUtils.saveWebViewVersion(message,file);
+                        cleanWebviewCache();
+                    }
+                } else {
+                    StringUtils.HaoLog("getWebVersion= 第一次使用 "+message);
+                    //如果不存在表示為第一次使用app，則存檔以及清除cash
+                    FileUtils.saveWebViewVersion(message,file);
+                    cleanWebviewCache();
+                }
+            }
+        });
+    }
+
+
+
+
+
+    public static void getWebVersion(String url, CallbackUtils.messageReturn messageReturn){
+        new Thread(() -> {
+            String version = CloudUtils.iCloudUtils.webVersion(url);
+            messageReturn.Callback(version);
+        }).start();
+    }
+
+
+
+
+    @Override
+    public String webVersion(String url) {
+        Request.Builder request = new Request.Builder()
+                .url(url)
+                .get();
+        OkHttpClient client = getUnsafeOkHttpClient().newBuilder().build();
+        try {
+            Response response = client.newCall(request.build()).execute();
+            if (response.code() == 200){
+                return response.body().string();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            StringUtils.HaoLog("getWebVersion error=" + request + " " + e);
+        }
+        return "";
+    }
+
+    public static void saveWebViewVersion(String data, File file) {
+        try {
+            FileOutputStream fos = new FileOutputStream(file,false); // 在保存文件之前需要先删除文件的内容，設置追加參數為 false
+            fos.write(data.getBytes());
+            fos.close();
+            StringUtils.HaoLog("getWebVersion= "+"文件保存成功");
+        } catch (IOException e) {
+            e.printStackTrace();
+            StringUtils.HaoLog("getWebVersion= "+"保存文件失敗"+e);
+        }
+    }
+
+    public static String readTextFromFile(File file) {
+        StringBuilder stringBuilder = new StringBuilder();
+        try {
+            FileInputStream fis = new FileInputStream(file);
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader bufferedReader = new BufferedReader(isr);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                stringBuilder.append(line);
+            }
+            bufferedReader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            StringUtils.HaoLog("readTextFromFile= "+e);
+        }
+        return stringBuilder.toString();
+    }
+
+
