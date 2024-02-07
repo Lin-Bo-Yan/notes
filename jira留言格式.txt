@@ -1,21 +1,29 @@
 
 ==================================================================================
-=android 處理情況=
-由後端提供自訂資料，登入註冊推播時放入userId和serverDomain，存到後端DB
-當無網路登出，推播未關閉，等到恢復網路後因為前面已經登出，畫面是尚未登入的狀態
-這時候網路已經恢復就會收到推播，比對userId和serverDomain是否一致，如果是就刪除推播
 
-=修正程式=
-MyFirebaseMessagingService.java
 
-=預計修正版本=
-1.1.2.10
+h4.{color:blue}=android 處理情況={color}
+登入頁新增語系切換按鈕
+切換後關閉app，再次開啟會是更改後的語系
+登入後，提供js讓個人設定的語系切換按鈕切換app的語系
+
+h4.{color:blue} =修正程式= {color}
+MainWebActivity.java
+DialogUtils.java
+EimLoginActivity.java
+SharedPreferencesUtils.java
+String.xml
+ic_multilingual.png
+
+h4.{color:blue} =預計修正版本= {color}
+1.4.0.0
 
 
 
 ==================================================================================
 
 =android 處理情況=
+
 
 (com.flowring.laletoc.tools.ui.main.webBody.MainWebActivity.java)：新增監聽單點預覽事件
 
@@ -29,6 +37,43 @@ MyFirebaseMessagingService.java
 
 =修正程式=
 com.flowring.laletoc.tools.ui.main.webBody.MainWebActivity.java
+
+
+===========================================================================================================================
+{color:red}
+{color}
+
+
+h3.{color:green}說明 {color}
+* {color:blue}問題：{color}
+* {color:blue}原因：{color}
+* {color:blue}修正：{color}
+* {color:blue}Hofix：{color}
+
+h3.{color:green}=處理= {color}
+h4.{color:green}=處理情況= {color}
+h4.{color:green}=處理說明= {color}
+h4.{color:green}=修改內容= {color}
+h4.sample.java
+* 修正/防呆: XXXXXXXXXXXX。
+{code:title=sample.java|borderStyle=solid}
+........比較程式段
+{code}
+
+h4.{color:green}=修正版本= {color}
+Agentflow: 4.0
+
+h4.{color:green}=測試環境= {color}
+||OS |windows 10|
+||DB |SQL SERVER 2016|
+||Browser |IE11、Chrome、Edge、Safari、Firefox|
+||Web Server |Tomcat-8|
+||Java |JDK 1.8|
+||備註： |None|
+
+h4.{color:green}=修改程式= {color}
+@WebAgenda
+
 
 ===========================================================================================================================
 
@@ -83,6 +128,9 @@ Lale 企業是瑞東負責
 
 後續處理：
 <p><span style="color: rgb(0, 0, 0);"></span></p>
+
+範例：
+信驊 23761 Lale每天都被登出：<ol><li>修正帳號密碼登入引起crash，修正後帳號錯誤以及密碼錯誤皆會跳出訊息</li><li>開jira LEP-221，HotfixID=3922，請QA寫測案，自測項目，排測，送 google送審</li></ol><p><br></p>\
 
 
 ===========================================================================================================================

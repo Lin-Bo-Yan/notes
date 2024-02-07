@@ -1,0 +1,33 @@
+
+考慮使用弱引用
+如果您的全局數據涉及到對大型對象或可能導致內存洩漏的對象的引用，考慮使用 WeakReference。這樣一來，
+即使全局管理器仍持有對象的引用，這些對象也可以在記憶體不足時被垃圾收集器回收。
+
+使用 WeakReference 時，您需要確保在引用的對象被垃圾收集器清除之前，始終有一個強引用指向它。
+
+
+public class GlobalDataManager {
+    private static final GlobalDataManager ourInstance = new GlobalDataManager();
+    private WeakReference<JSONObject> closeWebViewData;
+    public static GlobalDataManager getInstance() {
+        return ourInstance;
+    }
+
+    private GlobalDataManager() {
+    }
+
+    public void setCloseWebViewData(JSONObject data) {
+        closeWebViewData = new WeakReference<>(data);
+    }
+
+    public JSONObject getCloseWebViewData() {
+        return closeWebViewData != null ? closeWebViewData.get() : null;
+    }
+
+    public void clearCloseWebViewData() {
+        if (closeWebViewData != null) {
+            closeWebViewData.clear();
+            closeWebViewData = null;
+        }
+    }
+}

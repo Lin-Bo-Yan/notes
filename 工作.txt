@@ -1,7 +1,0 @@
-刪除多開項目：
-https://qms.flowring.com:8080/browse/LAC-648
-
-LEP-161 App 跳出更新版本，點擊後會跳到 Lale，不是 Lale企業
-
-
-

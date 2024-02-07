@@ -13,3 +13,21 @@
 "{\"thirdPartyIdentifier\": \"" + thirdPartyIdentifier + "\",  \"deviceId\": \"" + deviceId + "\",  \"loginType\":6 }"
 {"thirdPartyIdentifier": " + thirdPartyIdentifier + ",  deviceId: " + deviceId + ",  loginType:6 }
 
+String info = "{" +
+        "\"wmtmplId\": \"wmtmpl_default\"," +
+        "\"name\": \"Watermark_Logo\"," +
+        "\"pageDirect\": \"vertical\"," +
+        "\"image\": \"https://agentflow.flowring.com:8443/WebAgenda/downloadPhoto?userId=dVI3V1pyVFQ3bUlHU1J0SmNEbGVKVFNqenc4eUhlK1gNClcmJCMhQWRYVjM0cWI1bTRZPQ0K&size=p\"," +
+        "\"imageScale\": 100.0," +
+        "\"imageOpacity\": 50.0," +
+        "\"textContent\": \"姓名：${memName}\n部門：${depName}\n職務：${roleName}\"," +
+        "\"textFont\": \"DFKai-SB\"," +
+        "\"textColor\": \"#999999\"," +
+        "\"textSize\": 20.0," +
+        "\"textOpacity\": 50.0," +
+        "\"textRotate\": 45.0," +
+        "\"isDefault\": true" +
+        "}";
+
+
+

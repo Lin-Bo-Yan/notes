@@ -51,4 +51,226 @@ Bundle args = new Bundle();
 args.putString("key", "value");
 fragment.setArguments(args);
 
+
+==================================================================================
+Q：
+content://com.android.providers.media.documents/document/document%3A12976
+
+這個格式是取得系統的路徑嗎
+
+
+
+A：
+這個是一種特殊的URI稱為Content URI，用於在Android系統中存取應用間共享的數據，包括一些系統資源。在這個例子中，這個URI對應到一個存在於媒體儲存的文件。
+"content://"開頭表示這是一個Content URI， "com.android.providers.media.documents"是共享數據的Content Provider的識別符號，通常這是Android系統的媒體存儲。
+最後的"document%3A12976"是這個Content Provider中特定數據的識別符號，"%3A"是冒號":"的URL編碼。
+你可以用ContentResolver接口通過這個URI來存取這個數據。例如，你可以用ContentResolver的openInputStream()方法來開啟這個文件的輸入流。但請注意，你需要用戶授予你相應的許可權才能存取這些數據。
+ContentResolver contentResolver = context.getContentResolver();
+InputStream inputStream = contentResolver.openInputStream(uri);
+
+
+==================================================================================
+
+在 Java 中，有許多常用的集合類別和泛型，這些集合類別和泛型用於儲存和操作資料。 以下是一些常見的 Java 集合類別和泛型：
+
+集合類別（Collections）：
+ArrayList：
+
+實作了動態數組，可以自動擴展大小。
+允許快速隨機存取元素。
+LinkedList：
+
+實作了雙向鍊錶，適用於需要頻繁插入和刪除元素的情況。
+HashSet：
+
+基於哈希表的集合，不允許重複元素。
+TreeSet：
+
+基於紅黑樹的有序集合，元素按照自然順序或自訂順序排序。
+HashMap：
+
+基於哈希表的鍵值對存儲，鍵不允許重複。
+TreeMap：
+
+基於紅黑樹的有序鍵值對存儲，根據鍵的自然順序或自訂順序排序。
+LinkedHashMap：
+
+基於哈希表和雙向鍊錶的鍵值對存儲，保持插入順序。
+Stack：
+
+堆疊資料結構，通常用於後進先出（LIFO）的操作。
+Queue：
+
+佇列資料結構，通常用於先進先出（FIFO）的操作。
+泛型（Generics）：
+泛型類別：
+
+允許在類別或介面中使用類型參數，以使類別或介面具有通用性。
+例如：ArrayList<E>，其中 <E> 表示元素的類型參數。
+泛型方法：
+
+允許在方法中使用類型參數，以實現通用的方法。
+例如：public <T> T findMax(List<T> list)，其中 <T> 表示方法的型別參數。
+通配符（Wildcard）：
+
+使用 ? 表示通配符，用於表示未知類型。
+例如：List<?> 表示一個未知類型的清單。
+上界限定（Upper Bound）：
+
+使用 <? extends T> 表示通配符的上界，限制通配符只能是 T 類型或其子類型。
+下界限定（Lower Bound）：
+
+使用 <? super T> 表示通配符的下界，限制通配符只能是 T 類型或其父型別。
+
+
+==================================================================================
+
+Future是一個表示非同步計算結果的介面。 它提供了方法來檢查計算是否完成，等待計算完成，並檢索計算結果。 
+Future通常與ExecutorService一起使用，後者可以執行表示為Callable或Runnable物件的任務。
+
+public class ConvertHEICToPNGTask implements Callable<File> {
+    private File input;
+    private Context context;
+
+    public ConvertHEICToPNGTask(File input, Context context) {
+        this.input = input;
+        this.context = context;
+    }
+
+    @Override
+    public File call() throws Exception {
+        String filrName = "";
+        if (input.getName().endsWith(".HEIC")) {
+            //處理檔案名稱
+            String name = input.getName().substring(0,input.getName().length()-5);
+            filrName = String.format("HEIC_%s.png", name);
+        } else if(input.getName().endsWith(".heic")){
+            String name = input.getName().substring(0,input.getName().length()-5);
+            filrName = String.format("heic_%s.png", name);
+        }
+        // 將輸入文件轉換為 Uri
+        Uri heicUri = Uri.fromFile(input);
+        // 建立輸出文件
+        File output = new File(input.getParentFile(), filrName);
+        // 檢查檔案大小，如果大於1MB，就需要壓縮
+        long fileSizeInMB = input.length() / (1024 * 1024);
+        int quality = fileSizeInMB > 1 ? 50 : 100;  // 如果大於1MB，壓縮率設為50，否則100
+        // 開啟 HEIC 檔案並將其解碼成 Bitmap
+        try (ParcelFileDescriptor pfd = context.getContentResolver().openFileDescriptor(heicUri, "r")) {
+            if (pfd != null) {
+                FileDescriptor fd = pfd.getFileDescriptor();
+                Bitmap bitmap = BitmapFactory.decodeFileDescriptor(fd);
+                // 壓縮 Bitmap 為 PNG 格式並將其保存在輸出文件中
+                try (FileOutputStream out = new FileOutputStream(output)) {
+                    bitmap.compress(Bitmap.CompressFormat.PNG, quality, out);
+                }
+            }
+        }
+        // 回傳轉換後的 PNG 文件
+        return output;
+    }
+}
+
+
+ExecutorService executor = Executors.newSingleThreadExecutor();
+Future<File> future = executor.submit(new ConvertHEICToPNGTask(file,AllData.context));
+//在呼叫future.get()之前，可以執行其它操作
+
+try {
+     File pngFile = future.get(30, TimeUnit.SECONDS);  // 最多等待30秒
+     HttpReturn httpReturn = CloudUtils.iCloudUtils.sendFile(roomId, pngFile);
+     if(httpReturn.status == 200){
+          fileReturn.Callback(httpReturn,pngFile);
+     }
+}catch (InterruptedException | ExecutionException | TimeoutException e){
+     StringUtils.HaoLog("webSideSendFile= 錯誤 "+e);
+} finally {
+     executor.shutdown();  //關閉 executor!
+}
+
+
+1. 使用Executors.newSingleThreadExecutor()建立了一個單執行緒的ExecutorService。
+
+2. 定義了一個Callable<File>任務
+
+3. 透過executor.submit(Callable<File>)提交任務，並立即傳回一個Future<File>物件。
+
+4. 在呼叫future.get()之前，可以執行其它操作。如果結果尚未準備好，get方法會阻塞。
+
+5. 最後，一定要記得呼叫executor.shutdown()來正確地關閉ExecutorService。
+
+
+另外，Future提供的幾個關鍵方法：
+
+cancel(boolean mayInterruptIfRunning): 嘗試取消任務的執行。
+isCancelled(): 如果任務在完成前被取消了，則傳回true。
+isDone(): 如果任務完成了，無論是正常結束、異常，還是被取消，都回傳true。
+get(): 等待計算完成，並取得其結果。
+get(long timeout, TimeUnit unit): 如果必要，最多等待指定的時間才能取得結果，然後或傳回結果，或拋出一個TimeoutException。
+
+※ 需要注意的是，Future.get()方法是阻塞的，它會等到任務完成並傳回結果，或在任務執行過程中拋出異常。
+雖然任務是非同步執行的，但獲取結果可能是同步等待的，這可能會導致當前執行緒暫時處於不活動狀態。
+如果不希望阻塞，可以先透過isDone檢查任務是否已完成。
+
+實現了Callable接口時，它必須覆寫（override）call()方法。Callable接口是一個泛型接口，代表了可能會花一些時間完成的任務，並且能夠返回一個結果。
+這與Runnable接口相似，但是Runnable的run()方法不返回結果並且不能拋出受檢查的異常（checked exceptions）。
+Callable接口通常用於執行緒池（比如ExecutorService）中，當提交了一個Callable任務時，可以返回一個Future對象，該對象可以用來查詢任務是否完成，並且可以獲取任務的結果。
+
+
+==================================================================================
+StringUtils.HaoLog("權限檢查= 手機設備幾版?" + Build.VERSION.SDK_INT);
+StringUtils.HaoLog("權限檢查= 是否大於33?" + (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU));
+
+
+android SDK 29 = 手機板本：android 10
+android SDK 31 = 手機板本：android 12
+
+
+dddf= 31
+dddf= 30
+==================================================================================
+
+在程式設計中，assert 是一種用於在程式運行時驗證某個條件是否為真的機制。 
+當使用 assert 語句時，你可以指定一個布林表達式，如果該表達式的結果為 false，則會引發 AssertionError 異常。
+在生產環境中，通常會停用 assert 語句，因為它們會導致應用程式崩潰。 
+但在開發和測試階段，它們可以幫助開發人員快速發現和解決潛在的問題和錯誤。
+
+==================================================================================
+
+Installed Build Tools revision 33.0.0 is corrupted. Remove and install again using the SDK Manager.
+Android Studio 錯誤“已安裝的建置工具修訂版 31.0.0 已損壞”
+https://stackoverflow.com/questions/68387270/android-studio-error-installed-build-tools-revision-31-0-0-is-corrupted
+
+==================================================================================
+
+android studio 打包成aar
+
+https://www.linkedin.com/pulse/converting-android-native-app-react-native-compatibility
+
+
+https://www.konstantinfo.com/blog/appending-react-native-features-into-android-and-ios-apps/
+
+
+https://docs.expo.dev/workflow/prebuild/
+
+https://blog.stackademic.com/using-react-native-as-an-sdk-in-your-native-android-app-5c4b6b40ad5f
+
+
+Android開發Direct local .aar file dependencies are not supported when building an AAR 的問題
+
+https://www.cnblogs.com/guanxinjing/p/17012120.html
+
+
+
+react native build aar
+https://juejin.cn/s/react%20native%20build%20aar
+
+https://blog.csdn.net/wangwo1991/article/details/129123146
+
+
+錯誤文章
+
+https://blog.csdn.net/Mr_Tony/article/details/122324046
+
+https://www.jianshu.com/p/cd75a805ad60
 ==================================================================================

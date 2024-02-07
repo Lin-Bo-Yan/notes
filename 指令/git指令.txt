@@ -1,0 +1,198 @@
+【Git】取消追蹤檔案
+
+1. 如果要解除單一檔案或是資料夾，可以用：
+   ● git rm --cached filename    
+   ● git rm -r --cached foldername 
+
+2. 若是要解除多個的話，則可以直接把所有檔案追蹤，這樣比較快(但不要亂用)：
+   ● git rm -r --cached .
+
+3. 新增 .gitignore 規則   
+   ● 接下來在 .gitignore 內加入新的規則，像我是要忽略 log 檔案，所以就在 .gitignore 下加入：
+
+4. 最後重新 add，commit
+
+=========================================
+
+【Git】重新命名本地分支及遠端分支
+
+1. 重新命名本地分支名稱。<old_name>為舊的分支名稱；<new_name>為新的分支名稱。
+   ● git branch -m <old_name> <new_name>
+
+2. 刪除遠端的舊分支。
+   2-1：
+     ● git push origin :<old_name>
+
+   2-2：
+     ● git remote -v 查詢後的遠端分支
+       如果已經關聯了就可以不用
+     ● git push <remote> --delete <old_name>
+     ● git push origin --delete <old_name>
+
+刪除舊有的 remote
+     ● git remote remove origin
+
+兩種方法都可以
+
+3. 將新的本地分支推到遠端並建立及追蹤新的遠端分支。
+   ● git push <remote> -u <new_name>
+   ● git push origin -u <new_name>
+
+=========================================
+
+如果您想將 master 分支移動到當前 HEAD 指向的提交，可以使用以下命令：
+
+1. git branch -f master HEAD
+
+
+=========================================
+遠端分支 merge 回 master：
+
+1. 確認您目前在 master 分支上，若不在的話，請使用 git checkout master 切換到 master 分支上。
+
+2. 從遠端倉庫拉取最新的 fix 分支，可以使用以下指令：
+   ● git fetch origin <分支>
+
+3. 將 fix 分支合併至 master 分支，可以使用以下指令：(此時 branch master)
+   ● git merge origin/<分支>
+
+   ● git push origin master
+
+=========================================
+刪除遠端分支
+● git push origin --delete <分支>
+=========================================
+
+另一種合併方式（使用 rebase）
+https://gitbook.tw/chapters/branch/merge-with-rebase
+
+
+=========================================
+包含所有 git的模組全部clone下來
+
+● git clone --recursive <url>
+
+=========================================
+
+本地 merge 步驟(與遠端 merge 步驟有些許不一樣)：
+
+1. 切换到你想要合併到的分支
+例如想要將<分支> merge 到 <master> 上
+
+   ● git checkout <master>
+
+2. 將想要複製的分支合併到當前分支：
+
+   ● git merge <分支>
+
+這樣，<分支>的所有修改就會被合併到<master>中。
+
+※ 注意，如果兩個分支有衝突，Git會提示你解決衝突，然後再提交合併。
+
+==================================================================================
+
+
+rebase 遇到的情況：
+
+
+1. 修改目前的 Commit
+如果需要，可以現在進行代碼更改。更改完成後，可以使用以下指令將變更添加到暫存區。
+
+   ● git add <file-path>
+
+2. 更新目前的 Commit
+一旦你對你的更改感到滿意，你可以使用以下指令來修改當前的 commit，沒有解決衝突時使用。
+
+   ● git commit --amend
+
+3. 繼續 Rebase 過程
+當你完成對當前 commit 的編輯並且想繼續 rebase 的過程時，可以使用以下指令，衝突被解決並且文件被添加。
+
+   ● git rebase --continue
+
+4. 查看和編輯後續 Commits
+如果你想在繼續之前查看或編輯後續的 commits，你可以使用 git rebase --edit-todo 來查看和編輯接下來的指令。
+
+   ● git rebase --edit-todo
+
+5. 檢查工作區
+確保在你繼續之前，你的工作區是乾淨的。git status
+
+6. 放棄目前操作
+   ● git rebase --abort
+
+==================================================================================
+
+把多個 Commit 合併成一個 Commit
+
+   ● git squash
+
+==================================================================================
+
+修改歷史 commit訊息
+
+1. 要修改 Git 的最後一個 commit 訊息，使用以下指令：
+
+   ● git commit --amend -m "新的 commit 訊息"
+
+
+2. 使用交互式 rebase，使用以下步驟：
+
+修改 HEAD 之前的 n 個 commit 訊息
+
+   ● git rebase -i HEAD~n
+
+   1. 這會開啟一個編輯器，列出了你選擇的 commits。在你想要修改訊息的 commit 前面，把 pick 改成 reword 或簡單地改成 r。
+   2. 保存並關閉編輯器。Git 會讓你重新編輯每個你標記為 reword 的 commit 訊息。
+   3. 跟隨提示修改 commit 訊息，然後保存並關閉編輯器。
+   4. 當所有 commit 訊息都被修改後，Git 的 rebase 操作會完成。
+
+所以如果已經推送了 commits 到遠端倉庫，你會需要用 git push origin branch_name --force（或 --force-with-lease，這是一個更安全的選項）來覆蓋遠端歷史。
+
+
+
+==================================================================================
+克隆指定分支：
+
+   ● git clone -b "<分支>" --single-branch url
+
+
+==================================================================================
+
+
+在專案中，查看所有可用的 Gradle 任務，這會列出所有的任務，包括用於打包的任務。
+   ● ./gradlew tasks
+
+在命令的輸出中尋找像 assembleRelease 或類似的任務。這些任務通常用於生成 AAR 檔案。
+
+
+找到了相關的打包任務，輸入命令：
+   ● ./gradlew assembleRelease
+
+或是特定的 module：
+   ● ./gradlew :module-name:assembleRelease
+   ● ./gradlew :mylibrary:assembleRelease
+
+執行完任務後，檢查您的 build/outputs/aar/ 目錄以確認 AAR 檔案是否已經生成。
+
+
+運行帶有 --warning-mode all 的構建：這將顯示所有棄用警告的詳細信息，包括它們來自您的腳本還是使用的插件。 運行命令：
+   ● ./gradlew assembleRelease --warning-mode all
+
+
+運行命令以取得更多日誌
+   ● ./gradlew assembleRelease --stacktrace
+   ● ./gradlew assembleRelease --debug
+
+
+清掉gradle設定
+   ● ./gradlew clean
+
+
+專門針對Mainifest進行編譯
+   ● ./gradlew processDebugManifest --stacktrace
+
+
+==================================================================================
+
+

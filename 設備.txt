@@ -1,0 +1,91 @@
+String board = Build.BOARD;
+        StringUtils.HaoLog("ddd= 品牌名稱1 "+board);
+        // 品牌名稱
+        String brand = Build.BRAND;
+        StringUtils.HaoLog("ddd= 品牌名稱 "+brand);
+
+        // 設備名稱
+        String device = Build.DEVICE;
+        StringUtils.HaoLog("ddd= 設備名稱 "+device);
+        // 版本號碼
+        String display = Build.DISPLAY;
+        StringUtils.HaoLog("ddd= 版本號碼 "+display);
+        // 設備識別碼
+        String fingerprint = Build.FINGERPRINT;
+        StringUtils.HaoLog("ddd= 設備識別碼 "+fingerprint);
+        // 版本號碼
+        String id = Build.ID;
+        StringUtils.HaoLog("ddd= 版本號碼 "+id);
+        // 製造商
+        String manufacturer = Build.MANUFACTURER;
+        StringUtils.HaoLog("ddd= 製造商 "+manufacturer);
+        // 產品名稱
+        String product = Build.PRODUCT;
+        StringUtils.HaoLog("ddd= 產品名稱 "+product);
+        // 設備描述
+        String tags = Build.TAGS;
+        StringUtils.HaoLog("ddd= 設備描述 "+tags);
+
+        // USER
+        String user = Build.USER;
+        StringUtils.HaoLog("ddd= USER "+user);
+        // Android版本
+        String androidVersion = Build.VERSION.RELEASE;
+        StringUtils.HaoLog("ddd= Android版本 "+androidVersion);
+
+        String deviceModel = Build.MODEL;
+        StringUtils.HaoLog("ddd= 設備型號 "+deviceModel);
+
+
+品牌名稱1 a31
+品牌名稱 samsung
+設備名稱 a31
+版本號碼 SP1A.210812.016.A315GZHU1DVH1
+設備識別碼 samsung/a31zh/a31:12/SP1A.210812.016/A315GZHU1DVH1:user/release-keys
+版本號碼 SP1A.210812.016
+製造商 samsung
+產品名稱 a31zh
+設備描述 release-keys
+USER dpi
+Android版本 12
+
+
+https://abgne.tw/android/android-code-snippets/android-os-build-information.html
+
+
+
+
+
+String deviceModel = Build.MODEL;
+StringUtils.HaoLog("ddd= 設備型號 "+deviceModel);
+
+// Android版本
+String androidVersion = Build.VERSION.RELEASE;
+StringUtils.HaoLog("ddd= Android版本 "+androidVersion);
+
+// 製造商
+String manufacturer = Build.MANUFACTURER;
+StringUtils.HaoLog("ddd= 製造商 "+manufacturer);
+
+// 設備名稱
+String device = Build.DEVICE;
+StringUtils.HaoLog("ddd= 設備名稱 "+device);
+
+
+設備型號 SM-A315G
+Android版本 10
+製造商 samsung
+設備名稱 a31
+
+
+
+接口：
+
+var command = {
+    command:'openWebView'
+    data:{
+        url:
+    }
+}
+
+window.laleIm.postMessage(JSON.stringify(command));

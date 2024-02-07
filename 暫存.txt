@@ -1,0 +1,368 @@
+================================================
+
+implementation fileTree(dir: 'libs', include: ['*.jar','*.aar'])
+implementation fileTree(dir: 'libs', include: ['*.aar'])
+
+
+
+出現這個錯誤：
+Manifest merger failed with multiple errors, see logs
+而甚麼都沒有說明清楚表示說出大事了，要通靈了!!
+
+在 application，
+加上 
+tools:node="replace" 
+tools:replace="android:allowBackup,android:icon,android:label,android:theme"
+
+
+implementation files('libs\\index.android.bundle.jar')
+implementation files('libs/index.android.bundle.jar')
+
+implementation files('libs/app-release.aar')
+
+絕對路徑
+implementation files('C:/path-to-your-aar/app-release.aar')
+
+
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+import org.jitsi.meet.MainActivity;
+StringUtils.HaoLog("ddd= " + MainActivity.RESTRICTION_SERVER_URL);
+
+C:\Users\boyan.lin\AndroidStudioProjects\test1
+
+
+boyanJitsi
+
+
+
+
+Caused by: org.gradle.api.internal.artifacts.ivyservice.DefaultLenientConfiguration$ArtifactResolveException: Could not resolve all files for configuration ':app:debugRuntimeClasspath'.
+
+Caused by: org.gradle.api.internal.artifacts.ivyservice.DefaultLenientConfiguration$ArtifactResolveException: Could not resolve all files for configuration ':app:debugRuntimeClasspath'.
+
+
+https://blog.csdn.net/jdsjlzx/article/details/127771068
+
+
+================================================
+
+
+
+
+
+JitsiMeetConferenceOptions內增加
+    private String displayName;
+    private String userId;
+    private String avatar;
+    private String callType;
+    private String roomName;
+    private String isGroupCall;
+並寫相對應的set 實作private void openPhoneWebView(JSONObject data)
+
+
+
+
+displayName = "古董";
+userId = "f0";
+avatar = "https://t1.tp88.net/uploads/allimg/2201/co220124230622-0.jpg";
+callType = "Voide";
+roomName = "通話測試房間";
+isGroupCall = "false";
+
+
+
+
+getUrl(UserControlCenter.getUserMinInfo().displayName,
+                                UserControlCenter.getUserMinInfo().userId,
+                                UserControlCenter.getUserMinInfo().avatarThumbnailUrl,
+                                UserControlCenter.getUserMinInfo().token,
+                                UserControlCenter.getUserMinInfo().externalServerSetting.mqttUrl,
+                                UserControlCenter.getUserMinInfo().externalServerSetting.jitsiServerUrl,
+                                callMessageInfo.getCallRequest().type,
+                                callMessageInfo.id,
+                                callMessageInfo.room_id,
+                                roomName,
+                                isGroup);
+
+
+
+
+
+<activity
+    android:name=".ui.widget.jitsiMeet.JitisiMeetActivity"
+    android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+    android:screenOrientation="portrait"
+    android:launchMode="singleTask"
+    android:supportsPictureInPicture="true"
+    android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
+    android:windowSoftInputMode="stateHidden|adjustNothing"
+    android:exported ="true"/>
+
+
+
+
+
+
+
+
+public void join(JitsiMeetConferenceOptions options) {
+        if (this.jitsiView  != null) {
+            this.jitsiView .join(options);
+        } else {
+            JitsiMeetLogger.w("Cannot join, view is null");
+        }
+    }
+
+
+
+
+    func showCallWebView()
+    {
+        var pipViewCoordinator: PiPViewCoordinator?
+        //var jitsiMeetView: JitsiMeetView?
+        
+        Log.Info("showCallWebView \(Thread.current.name ?? "")")
+        DispatchQueue.main.async {
+            let config = WKWebViewConfiguration()
+            config.websiteDataStore = WKWebsiteDataStore.nonPersistent()
+            
+            config.userContentController = WKUserContentController()
+            config.userContentController.add(self, name: "laleIm")
+            config.allowsInlineMediaPlayback = true
+            config.preferences.javaScriptEnabled = true
+            
+            //        config.mediaTypesRequiringUserActionForPlayback = .all
+            //        config.allowsInlineMediaPlayback = true
+            //        config.allowsPictureInPictureMediaPlayback = true
+            
+            //charles add
+                let jitsiMeetView = JitsiMeetView()
+                jitsiMeetView.delegate = self
+                let options = JitsiMeetConferenceOptions.fromBuilder { (builder) in
+                    builder.setVideoMuted(false)
+                    builder.serverURL = URL(string: self.jitsiDomain ?? "")
+                    // for JaaS use the obtained Jitsi JWT
+                    // builder.token = "SampleJWT"
+                    builder.room = "qazwsxd"//self.roomName
+                    builder.setFeatureFlag("welcomepage.enabled", withValue: false)
+                    // Set different feature flags
+                    //builder.setFeatureFlag("toolbox.enabled", withBoolean: false)
+                    //builder.setFeatureFlag("filmstrip.enabled", withBoolean: false)
+                }
+                jitsiMeetView.join(options)
+
+                // Enable jitsimeet view to be a view that can be displayed
+                // on top of all the things, and let the coordinator to manage
+                // the view state and interactions
+                pipViewCoordinator = PiPViewCoordinator(withView: jitsiMeetView)
+                //pipViewCoordinator?.configureAsStickyView(withParentView: self.owView)
+                pipViewCoordinator?.configureAsStickyView()
+                
+                // animate in
+                jitsiMeetView.alpha = 0
+                pipViewCoordinator?.show()
+                //owView.addSubview(jitsiMeetView)
+            
+            //
+            let appdelegate = UIApplication.shared.delegate as! AppDelegate
+            appdelegate.isCallForeground = false
+            appdelegate.isCallLoadingFinish = false
+            //        setAirplayButton()
+            
+            
+        }
+        
+    }
+
+
+
+
+
+private URL buildURL(String urlStr){
+        try {
+            return new URL(urlStr);
+        } catch (MalformedURLException e){
+            StringUtils.HaoLog("錯誤：" + e);
+            return null;
+        }
+    }
+
+    private void setJitsiMeetConferenceDefaultOptions() {
+        JitsiMeetConferenceOptions defaultOptions
+                = new JitsiMeetConferenceOptions.Builder()
+                .setServerURL(buildURL(getIntent().getStringExtra("jitsiDomain")))
+                .setRoom(getIntent().getStringExtra("displayName"))
+                .setToken(getIntent().getStringExtra("laleToken"))
+                .setFeatureFlag("avatar", getIntent().getStringExtra("avatar"))
+                .setFeatureFlag("callType", getIntent().getStringExtra("callType"))
+                .setFeatureFlag("isGroupCall", getIntent().getBooleanExtra("isGroupCall", false))
+                .setFeatureFlag("welcomepage.enabled", false)
+                .setFeatureFlag("toolbox.enabled", false)
+                .setFeatureFlag("filmstrip.enabled", false)
+                .build();
+        JitsiMeet.setDefaultConferenceOptions(defaultOptions);
+    }
+
+
+
+
+
+
+
+
+
+
+implementation platform('com.google.firebase:firebase-bom:26.0.0')
+
+Default FirebaseApp is not initialized in this process com.flowring.laleents. Make sure to call FirebaseApp.initializeApp(Context)
+
+
+
+
+
+ Play 管理中心的資料安全性表單
+ https://android-developers.googleblog.com/2023/04/giving-people-more-control-over-their-data.html
+
+ import com.google.firebase.messaging.FirebaseMessaging;
+
+
+
+
+
+
+ docker exec -it eclipse bash
+
+
+
+C:\Program Files\Android\Android Studio\
+
+
+
+
+
+
+
+
+org.gradle.api.InvalidUserDataException: Included build 'C:\Users\boyan.lin\Desktop\jitsi-meet-android\node_modules\react-native-gradle-plugin' does not exist
+
+
+
+def androidSourcesDir = new File(
+    parentDir,
+    'node_modules/react-native'
+)
+
+
+
+
+
+if (rootProject.ext.has('reactNativeAndroidRoot')) {
+    defaultDir = rootProject.ext.get('reactNativeAndroidRoot')
+  } else {
+    defaultDir = new File(
+      projectDir,
+      '/../../../../node_modules/react-native/android'
+    )
+  }
+
+
+
+
+
+
+
+
+jitsi-meet-android/node_modules/@giphy/react-native-sdk/android
+
+
+Build file 'C:\Users\boyan.lin\Desktop\jitsi-meet-android\node_modules\@giphy\react-native-sdk\android\build.gradle' line: 90
+
+
+A problem occurred evaluating project ':react-native-giphy'.
+> Ambiguous method overloading for method java.io.File#<init>.
+  Cannot resolve which method to invoke for [null, class java.lang.String] due to overlapping prototypes between:
+
+
+builder.sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0]);
+
+JitsiMeetConferenceOptions options = null;
+        options = new JitsiMeetConferenceOptions.Builder()
+            .setConfigOverride("_serverURL","https://laledev10.flowring.com")
+            .setConfigOverride("_roomId","17275141420316098561732644678613991424")
+            .setConfigOverride("_displayName","古董")
+            .setConfigOverride("_userId","f0")
+            .setConfigOverride("_token","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbl90eXBlIjoidXNlciIsInVzZXJfbmFtZSI6ImYxMSIsImRldl9wbGF0Zm9ybSI6ImFuZHJvaWQiLCJleHAiOjE3MDIxMDUwNTIsImlhdCI6MTcwMjAxODY1MiwiZGV2X2lkIjoiOTExMjg3YTM5Yzg5ZTYyYiJ9.MNh7cmIbg_Gf7FMZYsicSokv9HhvFX4oU84bbbLtdUc")
+            .setConfigOverride("_avatar","https://upload.wikimedia.org/wikipedia/zh/thumb/6/69/Nahida_in_Genshin_Impact.jpg/220px-Nahida_in_Genshin_Impact.jpg")
+            //.setConfigOverride("_pip.enabled",true)
+            .setConfigOverride("_roomName","古董")
+            .setConfigOverride("_isGroupCall",true)
+            //.setConfigOverride("_welcomepage.enabled",true)
+            .build();
+JitsiMeetActivity.launch(this,options);
+
+
+
+JitsiMeetConferenceOptions options = new JitsiMeetConferenceOptions.Builder()
+    .setConfigOverride("serverURL","https://laledev10.flowring.com")
+    .setConfigOverride("roomId","17275141420316098561732644678613991424")
+    .setConfigOverride("displayName","古董")
+    .setConfigOverride("userId","f0")
+    .setConfigOverride("token","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbl90eXBlIjoidXNlciIsInVzZXJfbmFtZSI6ImYxMSIsImRldl9wbGF0Zm9ybSI6ImFuZHJvaWQiLCJleHAiOjE3MDIxMDUwNTIsImlhdCI6MTcwMjAxODY1MiwiZGV2X2lkIjoiOTExMjg3YTM5Yzg5ZTYyYiJ9.MNh7cmIbg_Gf7FMZYsicSokv9HhvFX4oU84bbbLtdUc")
+    .setConfigOverride("avatar","https://upload.wikimedia.org/wikipedia/zh/thumb/6/69/Nahida_in_Genshin_Impact.jpg/220px-Nahida_in_Genshin_Impact.jpg")
+    .setConfigOverride("roomName","古董")
+    .setConfigOverride("isGroupCall",true)
+    .build();
+
+JitsiMeetActivity.launch(EimLoginActivity.this,options);
+
+
+
+
+
+
+
+
+
+ public void fun() {
+        // 在這裡寫入 fun() 方法的實現
+
+        JitsiMeetConferenceOptions options = null;
+
+        try {
+            options = new JitsiMeetConferenceOptions.Builder().setServerURL(new URL("https://laledev10.flowring.com"))
+                    .setFeatureFlag("pip.enabled",  true)
+                    .setFeatureFlag("welcomepage.enabled",  false)
+                    .setFeatureFlag("readOnlyName",  true)
+                    .setFeatureFlag("prejoinpage.enabled",  false)
+                    .setFeatureFlag("meeting-name.enabled",  true)
+                    .setFeatureFlag("raise-hand.enabled",  false)
+                    .setFeatureFlag("reactions.enabled",  false)
+                    .setFeatureFlag("recording.enabled",  false)
+                    .setRoom("17330146026833838081733014620853108736")
+                    .setToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbl90eXBlIjoidXNlciIsInVzZXJfbmFtZSI6ImYwIiwiZGV2X3BsYXRmb3JtIjoiaW9zIiwiZXhwIjoxNzAyMTAwODYxLCJpYXQiOjE3MDIwMTQ0NjEsImRldl9pZCI6IjI5ODVDRkZELUM0NjctNDM2Qi1BNjE0LTg3MjZCMUYwQ0QwQiJ9.MII51sCjh-1YaLxC4CGMIUeuO4mbAq15OWlwM9-JPuI")
+                    .build().setDisplayName("古董").setAvatar("https://upload.wikimedia.org/wikipedia/zh/thumb/6/69/Nahida_in_Genshin_Impact.jpg/220px-Nahida_in_Genshin_Impact.jpg").setUserId("f0").setCallType("Voide").setIsGroupCall("true").setRoomName("古董");
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+        JitsiMeetActivity.launch(this,options);
+
+    }
+
+
+
+================================================================================================
+
+1. 對APP熟悉度有進步，希望可以對產品有更多想法與建議
+2. 可以思考一下對工作上有幫助方式或是課程，可以讓開發更快速讓自已有所成長
+3. 在開發細節上還是要多與 IOS 工程師溝通互想了解作法
+
+
+
+
+================================================================================================

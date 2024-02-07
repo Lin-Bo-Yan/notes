@@ -9,7 +9,35 @@ run-as com.flowring.laletoc
 
 參考資料：
   https://ithelp.ithome.com.tw/articles/10241811
-
+  https://home.gamer.com.tw/artwork.php?sn=5296090
 
 jwt ， posman token設定， 網頁上傳的api ，room id
+
+
+
+通過 adb 命令啟動 Android 應用的主 Activity 通常使用以下格式的命令：
+
+  *  adb shell am start -n <package_name>/<activity_name>
+
+※注意：
+安裝 adb 工具需要放到指定位置，就是你自己本機的 Android Studio 目錄後面，例如：
+C:\Program Files\Android\Android Studio\bin\platform-tools
+
+===========================================================================
+wsl 工具
+
+你可以在 window 系統上安裝 wsl工具，然後就能模擬 linux 環境了，
+
+你可以在 Windows 終端機中使用 wsl 命令前綴來運行 Linux 命令：
+  *  wsl ls
+
+啟用 WSL 功能：
+
+  *  wsl --install
+
+
+
+這個命令用於列出已連接到USB總線上的設備。在終端中運行以下命令：
+
+  *  lsusb
 

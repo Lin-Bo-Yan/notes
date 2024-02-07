@@ -949,14 +949,773 @@ android:focusable="true"
 
 ==================================================================================
 
+如何設計一個具有仰角效果的按鈕
+https://stackoverflow.com/questions/63895028/how-to-design-a-button-with-elevation-effect
+
+==================================================================================
+
+public static String NowTime(){
+    long timestamp = System.currentTimeMillis();
+    Date date = new Date(timestamp);
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    String dateString = sdf.format(date);
+    return dateString;
+}
+
+==================================================================================
+
+            @Override
+            public void onPermissionRequest(final PermissionRequest request) {
+                String[]  PermissionRequest=request.getResources();
+                for (int i = 0; i < PermissionRequest.length; i++) {
+                    StringUtils.HaoLog("onPermissionRequest:"+PermissionRequest[i]);
+                    if(PermissionRequest[i].equals("android.webkit.resource.AUDIO_CAPTURE")) {
+                        if(PermissionUtils.checkPermission(MainWebActivity.this,"android.permission.RECORD_AUDIO")){
+                            
+                        } else {
+                            runOnUiThread(()->{
+                                requestPermissions(new String[]{"android.permission.RECORD_AUDIO"}, 466);
+                            });
+                        }
+                    }
+                }
+                request.grant(request.getResources());
+            }
+
+==================================================================================
+
+版本號更新：
+大版號.中版號.小板號.小小板號
+每次小改版都會習慣改小小板號，如果小小板號已經到9
+一定要進位，例如：
+1.1.3.9，下次就是 1.1.4.0
+因為判斷版本更新需要同位數
+
+==================================================================================
+
+private void wvGoBack() {
+    StringUtils.HaoLog("wvGoBack= 已經進來 "+needBack);
+    if(webView.canGoBack()) {
+        webView.goBack();
+        StringUtils.HaoLog("wvGoBack= 成功返回上一頁 "+webView.canGoBack());
+    } else {
+        StringUtils.HaoLog("wvGoBack= 沒有上一頁，無法返回 "+webView.canGoBack());
+    }
+}
+
+==================================================================================
+
+        if (requestCode == DefinedUtils.REQUEST_IMAGE_PICKER) {
+            ArrayList<Media> images = data.getParcelableArrayListExtra(PickerConfig.EXTRA_RESULT);
+            if (images == null) {
+                return;
+            }
+            int imageSize = images.size();
+            Uri[] uris = new Uri[imageSize];
+            File[] files = new File[imageSize];
+            for (int i = 0; i < imageSize; i++) {
+                Media media = images.get(i);
+                File picture = new File(media.path);
+                uris[i] = Uri.fromFile(picture);
+                files[i] = picture;
+            }
+            if (!DefinedUtils.roomId.isEmpty()) {
+                // sendFileInfo 通知選擇結果
+                sendFileInfo(files);
+                // sendFile 逐筆回傳上傳結果
+                recursiveUpload(DefinedUtils.roomId, files, 0);
+                // 假的 Uri 陣列以滿足 ValueCallback
+                uris = new Uri[0];
+            }
+
+            if (mUploadMessage != null) {
+                mUploadMessage.onReceiveValue(uris);
+                mUploadMessage = null;
+            }
+        }
+
+if (index >= files.length) {
+    // 所有檔案都已經上傳完成，結束遞迴，清除 roomId
+    DefinedUtils.roomId = "";
+    return;
+}
+
+==================================================================================
+
+    public static void HaoLog(String data, int showC) {
+        StackTraceElement[] stes = Thread.currentThread().getStackTrace();
+
+        // 確保showC不超過stes的長度
+        showC = Math.min(showC, stes.length - 1);
+
+        // 忽略 "MainAppCompatActivity.java" 和 "MessageBaseActivity.java" 的訊息
+        while (showC < stes.length &&
+                (stes[showC].getFileName().equals("MainAppCompatActivity.java") ||
+                        stes[showC].getFileName().equals("MessageBaseActivity.java"))) {
+            showC++;
+        }
+
+        if (showC < stes.length) {
+            String tag = "HaoLog (" + stes[showC].getFileName() + ":" + stes[showC].getLineNumber() + ") ";
+            tag += stes[showC].getMethodName() + " Thread=" + Thread.currentThread().getName() + "　 ";
+
+            // 數據為null的情況
+            if (data == null) {
+                Log.d(tag, "null");
+            }
+            // 數據長度超過最大限制的情況
+            else if (data.length() > MAX_LOG) {
+                // 將數據分段輸出
+                int startIndex = 0;
+                while (startIndex < data.length()) {
+                    int endIndex = Math.min(startIndex + MAX_LOG, data.length());
+                    Log.d(tag, data.substring(startIndex, endIndex));
+                    startIndex = endIndex;
+                }
+            } else {
+                // 正常輸出數據的情況
+                Log.d(tag, data);
+            }
+        }
+    }
+
+在這個修改中，我們做了幾項主要的變更：
+
+簡化了對showC值的檢查。透過Math.min來確保showC不會超過stes的長度。
+使用一個while迴圈來忽略MainAppCompatActivity.java和MessageBaseActivity.java的訊息，這使得你能夠忽略更多的檔案，只需要在迴圈中添加額外的條件。
+在處理長數據的地方，使用了一個更簡單的while迴圈來分段輸出數據，而不是像原來那樣需要重複相同的程式碼來處理長度剛好是MAX_LOG倍數和不是MAX_LOG倍數的兩種情況。
+這些改進都是基於讓程式碼更容易讀取和理解的目標，同時也保持了原來的功能不變。
+
+==================================================================================
+
+    public static boolean version(String appVersion, String dbVersion) {
+        String[] appVersionParts = appVersion.split("\\.");
+        String[] dbVersionParts = dbVersion.split("\\.");
+        int length = Math.min(appVersionParts.length, dbVersionParts.length);
+        for (int i = 0; i < length; i++) {
+            int appPart = Integer.parseInt(appVersionParts[i]);
+            int dbPart = Integer.parseInt(dbVersionParts[i]);
+            if (dbPart > appPart) {
+                return true;
+            } else if (dbPart < appPart) {
+                return false;
+            }
+        }
+        if (dbVersionParts.length > appVersionParts.length) {
+            return true;
+        }
+        return false;
+    }
+
+Boolean appVersionInt = StringUtils.version(appVersion,dbVersion.version);
+
+這個方法首先將版本號拆分為各個部分，然後從左至右比較各部分。如果某部分的dbVersion大於appVersion，則立即返回true。
+如果某部分的dbVersion小於appVersion，則立即返回false。如果所有部分都相等，那麼具有更多部分的版本被視為更大的版本。
+
+==================================================================================
+DownloadManager 下載檔案
+
+if (cursor.moveToFirst()) {
+    int statusIndex = cursor.getColumnIndex(DownloadManager.COLUMN_STATUS);
+    int status = cursor.getInt(statusIndex);
+    if (status == DownloadManager.STATUS_FAILED) {
+        int reasonIndex = cursor.getColumnIndex(DownloadManager.COLUMN_REASON);
+        int reason = cursor.getInt(reasonIndex);
+    }
+}
+cursor.close();
+
+==================================================================================
+使用okhttp get方法下載檔案
+https://blog.csdn.net/u014361280/article/details/130729619
+
+private void judgmentFileName(JSONObject data, ActionType type)
+
+void getFile(String url, String fileName);
+
+
+    public void getFile(String url,String fileName) {
+        Request.Builder request = new Request.Builder()
+                .url(url)
+                .get();
+        OkHttpClient client = getUnsafeOkHttpClient().newBuilder().build();
+        client.newCall(request.build()).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    throw new IOException("Unexpected code " + response);
+                } else {
+                    try{
+                        InputStream inputStream = response.body().byteStream();
+                        File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                        File outFile = new File(downloadsDir, fileName);
+                        OutputStream out = new FileOutputStream(outFile);
+                        byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
+                        int len;
+                        while ((len = inputStream.read(buffer)) != -1) {
+                            out.write(buffer, 0, len);
+                        }
+                        out.close();
+                        inputStream.close();
+                    } catch (FileNotFoundException e) {
+                        StringUtils.HaoLog("無法打開閱讀 " + e);
+                    } catch (IOException e) {
+                        StringUtils.HaoLog("無法打開閱讀 " + e);
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+
+CloudUtils.iCloudUtils.getFile(data.optString("url"), null);
+CloudUtils.iCloudUtils.getFile(data.optString("url"), data.optString("fileName"));
+
+==================================================================================
+系统顯示大小設置
+系统顯示字體大小設置
+    DisplayMetrics displayMetrics = new DisplayMetrics();
+    getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+    int height = displayMetrics.heightPixels;
+    int width = displayMetrics.widthPixels;
+
+
+    Configuration configuration = getResources().getConfiguration();
+    float fontScale = configuration.fontScale;
+    int densityDpi = configuration.densityDpi;
+
+    StringUtils.HaoLog("dddd= "+height);
+    StringUtils.HaoLog("dddd= "+width);
+
+==================================================================================
+
+CommonUtils.showToast(MainWebActivity.this,getLayoutInflater(),message,false);
+
+==================================================================================
+
+long downloadId = dm.enqueue(request);
+// 建立一個查詢物件
+DownloadManager.Query query = new DownloadManager.Query();
+// 將你的下載ID加入到查詢中
+query.setFilterById(downloadId);
+Cursor cursor = dm.query(query);
+    try {
+        if (cursor.moveToFirst()) {
+            int columnIndex = cursor.getColumnIndex(DownloadManager.COLUMN_STATUS);
+            // 取得下載狀態
+            int status = cursor.getInt(columnIndex);
+            switch (status) {
+                case DownloadManager.STATUS_SUCCESSFUL:
+                    // 下載成功
+                    sendToWeb(new JSONObject().put("type", "downloadFile").put("data", new JSONObject().put("isSuccess", true)).toString());
+                    break;
+                case DownloadManager.STATUS_FAILED:
+                    // 下載失敗
+                    sendToWeb(new JSONObject().put("type", "downloadFile").put("data", new JSONObject().put("isSuccess", false)).toString());
+                    break;
+            }
+        }
+    } catch (JSONException | NullPointerException e) {
+        e.printStackTrace();
+    }
+
+==================================================================================
+
+外部分享阻擋svg：
+
+List<String> acceptedMimeTypes = specificExtension();
+boolean support = !acceptedMimeTypes.contains(getIntent().getType());
+if(support){
+    LocalBroadcastManager.getInstance(this).sendBroadcast(intent1); //發送廣播訊息
+    startActivity(intent);
+} else {
+    CommonUtils.showToast(shareActivity.this,getLayoutInflater(),"檔案類型不支援",false);
+}
+
+private List<String> specificExtension(){
+    List<String> acceptedMimeTypes = Arrays.asList("image/svg+xml");
+    return acceptedMimeTypes;
+}
+
+==================================================================================
+
+動態設定app當前執行語言的方法
+http://fishtsaii91.blogspot.com/2018/03/android-studio-android-app-app.html
+https://thumbb13555.pixnet.net/blog/post/333199480-supportdifferentlanguages
+https://hackmd.io/@YingChiao/Hy9zH54WH
+https://github.com/hgncxzy/MultiLanguageSwitch/tree/master
+https://www.itread01.com/article/1489292421.html
+
+
+public static void setLocaleForMainAppCompat(Context context, String languageCode) {
+    Resources res = context.getResources();
+    Configuration config = new Configuration(res.getConfiguration());
+    Locale newLocale;
+    String delimiter = languageCode.contains("_") ? "_" : "-";
+    String[] langCountry = languageCode.split(delimiter);
+    if (langCountry.length == 2) {
+        newLocale = new Locale(langCountry[0], langCountry[1]);
+    } else {
+        newLocale = new Locale(languageCode);
+    }
+    config.setLocale(newLocale);
+    context.createConfigurationContext(config);
+    res.updateConfiguration(config, res.getDisplayMetrics());
+}
+
+
+==================================================================================
+
+
+快報 scheme 設置，設置在MAIN
+
+<intent-filter android:autoVerify="true">
+    <action android:name="android.intent.action.VIEW" />
+    <category android:name="android.intent.category.DEFAULT" />
+    <category android:name="android.intent.category.BROWSABLE" />
+
+    <data
+        android:scheme="https"
+        android:host="news.lale.im" />
+</intent-filter>
+
+String url = "https://news.lale.im/_news/article/" + artId + "?token=$token";
+AsynNetUtils.NewsPOST
+
+
+Intent intent2 = getIntent(); 
+Uri data = intent2.getData();
+if(data != null){
+    String scheme = data.getScheme();
+    String host = data.getHost();
+    String path = data.getPath();
+    String query = data.getQuery();
+    StringUtils.HaoLog("testWebActivity BroadcastReceiver " + data);
+    StringUtils.HaoLog("testWebActivity BroadcastReceiver " + path);
+}
+
+
+android.intent.action.SEND
+image/jpeg
+
+android.intent.action.VIEW
+==================================================================================
+
+在專案內引用 jitsi-meet 套件
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        maven {
+            url "https://repo.eclipse.org/content/repositories/paho-snapshots/"
+        }
+        maven {
+            url "https://github.com/jitsi/jitsi-maven-repository/raw/master/releases"
+        }
+    }
+}
+
+/************* jitsi **************/
+implementation ('org.jitsi.react:jitsi-meet-sdk:2.8.2') { transitive = true }
+
+==================================================================================
+
+
+JSONArray settingsArray = new JSONArray();
+JSONObject screenshotSetting = new JSONObject();
+JSONObject downloadSetting = new JSONObject();
+JSONObject fileExtSetting = new JSONObject();
+JSONObject watermarkSetting = new JSONObject();
+    try {
+        screenshotSetting.put("settingKey", "screenshot_forbidden");
+        screenshotSetting.put("settingValue", "false");
+        screenshotSetting.put("additionalValue", "");
+        settingsArray.put(screenshotSetting);
+
+        downloadSetting.put("settingKey", "download_forbidden");
+        downloadSetting.put("settingValue", "false");
+        downloadSetting.put("additionalValue", "");
+        settingsArray.put(downloadSetting);
+
+        fileExtSetting.put("settingKey", "restrict_file_ext");
+        fileExtSetting.put("settingValue", "false");
+        fileExtSetting.put("additionalValue", "");
+        settingsArray.put(fileExtSetting);
+
+        watermarkSetting.put("settingKey", "download_watermark");
+        watermarkSetting.put("settingValue", "false");
+        watermarkSetting.put("additionalValue", "");
+        settingsArray.put(watermarkSetting);
+
+    } catch (JSONException e){
+        e.printStackTrace();
+    }
+
+====================================================================================================
+
+要取得設備的IPv4和IPv6位址，你需要檢索不同網路介面上的這些位址：
+
+public static void getIpAddresses(Context context) {
+    try {
+        Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
+        while (networkInterfaces.hasMoreElements()) {
+            NetworkInterface networkInterface = networkInterfaces.nextElement();
+            Enumeration<InetAddress> inetAddresses = networkInterface.getInetAddresses();
+            while (inetAddresses.hasMoreElements()) {
+                InetAddress inetAddress = inetAddresses.nextElement();
+                if (!inetAddress.isLoopbackAddress()) {
+                    if (inetAddress instanceof Inet6Address) {
+                        StringUtils.HaoLog("ddd= IPv6 Address " + inetAddress.getHostAddress());
+                    } else {
+                        StringUtils.HaoLog("ddd= IPv4 Address " + inetAddress.getHostAddress());
+                    }
+                }
+            }
+        }
+    } catch (Exception e) {
+            e.printStackTrace();
+    }
+}
+
+
+取得設備的本機 IP 位址，取得的ip為 IPv4：
+
+private static String getLocalIpAddress(Context context) {
+    WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+    if (wifiManager != null) {
+         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+        int ipAddress = wifiInfo.getIpAddress();
+
+        // 格式化 IP 地址
+        String ip = String.format("%d.%d.%d.%d",
+                (ipAddress & 0xff),
+                (ipAddress >> 8 & 0xff),
+                (ipAddress >> 16 & 0xff),
+                (ipAddress >> 24 & 0xff));
+
+        return ip;
+    } else {
+        StringUtils.HaoLog("ddd= "+"WifiManager is null");
+        return null;
+    }
+}
+
+====================================================================================================
+
+private static Bitmap calculateImageReductionRatio(Bitmap bitmap, int bitmapWidth, int canvasWidth, int bitmapHeight, int canvasHeight){
+    // 計算寬度和高度的比率
+    float widthRatio = (float) canvasWidth / (float) bitmapWidth;
+    float heightRatio = (float) canvasHeight / (float) bitmapHeight;
+    // 使用較小的比率來縮小影像
+    float scale = Math.min(widthRatio, heightRatio) * 0.8f;
+    // 設定圖片縮放比例
+    Matrix matrix = new Matrix();
+    matrix.postScale(scale, scale);
+
+    // 使用Matrix物件對Bitmap進行縮放
+    bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmapWidth, bitmapHeight, matrix, true);
+    return bitmap;
+}
+
+====================================================================================================
+
+okhttp 執行網路請求 get拿到 Bitmap 物件
+
+@Override
+    public Bitmap urlToBitmap(String imageUrl) {
+        Request.Builder request = new Request.Builder()
+                .url(imageUrl)
+                .get();
+
+        OkHttpClient client = getUnsafeOkHttpClient().newBuilder()
+                .connectTimeout(15, TimeUnit.SECONDS)
+                .writeTimeout(15, TimeUnit.SECONDS)
+                .readTimeout(15, TimeUnit.SECONDS)
+                .build();
+
+        try {
+            Response response = client.newCall(request.build()).execute();
+            if(response.code() == 200){
+                ResponseBody responseBody = response.body();
+                InputStream input = responseBody.byteStream();
+                Bitmap bitmap = BitmapFactory.decodeStream(input);
+                input.close();
+                return bitmap;
+            }
+        } catch (IOException | JsonSyntaxException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+====================================================================================================
+
+
+// 獲取水印文字的寬度和高度
+float textWidth = paint.measureText(labels.get(0));
+float textHeight = paint.getTextSize();
+// 計算文字的左上角位置，使它們都位於畫布中心
+int textLeft = (canvasWidth - (int)textWidth) / 2;
+int textTop = (canvasHeight + (int)textHeight) / 2;
+
+// rotate 方法將整個畫布旋轉指定的角度（degress），以下改成旋轉文字角度
+canvas.rotate(-degress, textLeft + textWidth / 2, textTop - textHeight / 2);
+
+這段程式邏輯
+
+1. float textWidth = paint.measureText(labels.get(0));：這一行程式碼使用 paint 物件的 measureText 方法來測量水印文字 labels 中的第一個元素的寬度，並將結果存儲在 textWidth 中。
+
+2. float textHeight = paint.getTextSize();：這一行程式碼使用 paint 物件的 getTextSize 方法來獲取設置的文字大小，並將結果存儲在 textHeight 中。
+
+3. int textLeft = (canvasWidth - (int)textWidth) / 2;：這一行程式碼計算了水印文字的左上角的 x 座標，使文字位於畫布水平中心。它減去文字寬度的一半，以確保文字水平居中。
+
+4. int textTop = (canvasHeight + (int)textHeight) / 2;：這一行程式碼計算了水印文字的左上角的 y 座標，使文字位於畫布垂直中心。它將文字高度的一半添加到畫布高度的一半，以確保文字垂直居中。
+
+5. canvas.rotate(-degress, textLeft + textWidth / 2, textTop - textHeight / 2);：這一行程式碼使用 canvas 的 rotate 方法來旋轉畫布，以改變水印文字的角度。-degress 是旋轉的角度，並且旋轉中心點是 textLeft + textWidth / 2（文字中心的 x 座標）和 textTop - textHeight / 2（文字中心的 y 座標）。這樣，水印文字將以指定的角度旋轉，使其擺放在畫布中心。
+
+====================================================================================================
+
+做一個三個按鈕的訊息框，按鈕可以隨意更改數量(1~3個按鈕)
+
+
+public static void showDialogWebMessage(Context context, String title, List<String> buttons, List<CallbackUtils.noReturn> callbacks) {
+        runOnUiThread(() -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                    .setTitle(title);
+
+            List<String> translatedButtons = new ArrayList<>();
+            for (String button : buttons) {
+                String translatedButton = translateButton(button);
+                translatedButtons.add(translatedButton);
+            }
+
+            if (translatedButtons.size() > 0) {
+                builder.setPositiveButton(translatedButtons.get(0), (dialog, which) -> {
+                    dialog.dismiss();
+                    callbacks.get(0).Callback();
+                });
+            }
+
+            if (translatedButtons.size() > 1) {
+                builder.setNegativeButton(translatedButtons.get(1), (dialog, which) -> {
+                    dialog.dismiss();
+                    callbacks.get(1).Callback();
+                });
+            }
+
+            if (translatedButtons.size() > 2) {
+                builder.setNeutralButton(translatedButtons.get(2), (dialog, which) -> {
+                    dialog.dismiss();
+                    callbacks.get(2).Callback();
+                });
+            }
+            builder.setCancelable(false).create().show();
+        });
+    }
+
+
+private static String translateButton(String button) {
+        switch (button) {
+            case "logout":
+                return "登出";
+            case "ok":
+                return "確定";
+            default:
+                return button;
+        }
+    }
+
+====================================================================================================
+
+
+private void showDialog(){
+    List<String> buttons = new ArrayList<>();
+    buttons.add("1");
+    buttons.add("2");
+    buttons.add("3");
+
+    List<CallbackUtils.noReturn> callbacks = new ArrayList<>();
+    for (int i = 0; i < buttons.size(); i++) {
+        final int buttonIndex = i;
+        CallbackUtils.noReturn callback = new CallbackUtils.noReturn() {
+            @Override
+            public void Callback() {
+                String button = buttons.get(buttonIndex);
+                StringUtils.HaoLog("ddd= " + button);
+            }
+        };
+        callbacks.add(callback);
+    }
+    DialogUtils.showCustomizedDialog(MainWebActivity.this,"標題1","內容2",buttons,callbacks);
+}
+
+====================================================================================================
+
+const postToApp = (command) => {
+  if (isIOS) {
+    window.webkit.messageHandlers.laleIm.postMessage(JSON.stringify("{\"command\":\"closeWeb\"}"))
+  } else {
+    window.laleIm.postMessage(JSON.stringify("{\"command\":\"closeWeb\"}"))
+  }
+}
+
+====================================================================================================
+取得當前的 activity：
+
+public boolean isAppInForeground() {
+    ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+    List<ActivityManager.RunningTaskInfo> tasks = activityManager.getRunningTasks(1);
+
+    if (tasks.size() > 0) {
+        ComponentName topActivity = tasks.get(0).topActivity;
+        if (topActivity.getPackageName().equals(context.getPackageName())) {
+            // 應用程序處於前台
+            return true;
+        }
+    }
+
+    return false;
+}
+
+public boolean isMainActivityInForeground() {
+    ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+    List<ActivityManager.RunningTaskInfo> tasks = activityManager.getRunningTasks(1);
+
+    if (tasks.size() > 0) {
+        ComponentName topActivity = tasks.get(0).topActivity;
+        if (topActivity.getClassName().equals("com.example.MainActivity")) {
+            // MainActivity處於前台
+            return true;
+        }
+    }
+
+    return false;
+}
+
+或是更簡單的方法：
+public static  String page = "";
+
+@Override
+protected void onResume() {
+    super.onResume();
+    page = this.getClass().getName();
+}
+
+if(MainAppCompatActivity.page.equals(WebJitisiMeetActivity.class.getName()))
+
+====================================================================================================
+
+
+public static void runOnUiThread(Runnable runnable, long delayInMs) {
+    Class var3 = UiThreadUtil.class;
+    synchronized (UiThreadUtil.class) {
+        if (sMainHandler == null) {
+            sMainHandler = new Handler(Looper.getMainLooper());
+        }
+    }
+    sMainHandler.postDelayed(runnable, delayInMs);
+}
+
+1.方法定義：public static void runOnUiThread(Runnable runnable, long delayInMs) - 這是一個公共靜態方法，接受一個 Runnable 對象和一個延遲時間（毫秒）作為參數。
+
+2.同步區塊：使用 synchronized (UiThreadUtil.class) 確保同時只有一個線程可以執行同步塊內的代碼。這是為了避免在多線程環境中同時創建多個 Handler 實例。
+
+3.檢查並創建 Handler：代碼首先檢查靜態變量 sMainHandler 是否為 null。如果是，則創建一個新的 Handler 關聯到主UI線程的消息循環器（Looper.getMainLooper()）。這樣做是為了確保接下來的操作都在主UI線程上執行。
+
+4.延遲執行 Runnable：使用 sMainHandler.postDelayed(runnable, delayInMs) 將傳入的 Runnable 對象安排在指定的延遲後執行。這個 Runnable 將在主UI線程上執行，這對於更新UI或進行其他需要在主線程上執行的操作是必要的。
+
+總結來說，這段代碼的目的是提供一種安全的方式來在主UI線程上延遲執行任務，同時確保 Handler 的創建是線程安全的。這在Android開發中是一個常見的模式，用於從後台線程切換到主線程，尤其是當需要更新UI或進行其他與UI相關的操作時。
 
 
 
+====================================================================================================
+
+取得 nowUserId
+
+UserControlCenter.getUserMinInfo().userId
+
+StringUtils.HaoLog("fff= 1 " + UserControlCenter.getUserMinInfo().eimUserData.announceServerUrl);
+StringUtils.HaoLog("fff= 2 " + AllData.getAnnouncementServer());
 
 
+private static UserMin getUserMinInfoByPhone() {
+    SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(AllData.context);
+    String id = pref.getString("nowUserId", "");
+    if (!id.isEmpty()) {
+        try {
+            JSONObject UserIds = new JSONObject(pref.getString("UserIds", "[]"));
+            Gson gson = new Gson();
+            StringUtils.HaoLog(UserIds.getString(id));
+            return gson.fromJson(UserIds.getString(id), UserMin.class);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    return null;
+}
 
 
+====================================================================================================
 
+View 取得鍵盤高度
+
+public void close_Input_Board(View view) {
+    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+    imm.hideSoftInputFromWindow(findViewById(R.id.toolbar_layout).getWindowToken(), 0);
+    view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        @Override
+        public void onGlobalLayout() {
+            Rect rect = new Rect();
+            view.getWindowVisibleDisplayFrame(rect);
+            // 獲取屏幕的高度
+            int screenHeight = view.getRootView().getHeight();
+            // 計算差值
+            int keypadHeight = screenHeight - rect.bottom;
+        }
+    });
+}
+
+
+edit_account.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+        view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Rect rect = new Rect();
+                view.getWindowVisibleDisplayFrame(rect);
+                // 獲取屏幕的高度
+                int screenHeight = view.getRootView().getHeight();
+                StringUtils.HaoLog("fff= " + screenHeight);
+                // 計算差值
+                int keypadHeight = screenHeight - rect.bottom;
+            }
+        });
+    }
+});
+====================================================================================================
+
+public void updateNotification(int unreadCount) {
+    NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+    Notification notification = new NotificationCompat.Builder(this, "lale_channel_id")
+        .setContentTitle("您有新消息")
+        .setContentText("未讀消息數量: " + unreadCount)
+        .setSmallIcon(R.drawable.lale_logo)
+        .setNumber(unreadCount) // 設置未讀數字
+        .build();
+
+// 使用相同的 ID 發送通知，以更新現有通知
+    notificationManager.notify(1, notification);
+}
+
+====================================================================================================
 
 
 

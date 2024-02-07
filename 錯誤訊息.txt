@@ -53,3 +53,29 @@ handler.proceed();
 
 
 
+
+引用aar出現的錯誤：
+
+application內使用 tools:node="replace"，
+會出現錯誤
+E/AndroidRuntime: FATAL EXCEPTION: main
+    Process: com.flowring.laleents, PID: 12394
+    java.lang.IllegalStateException: Default FirebaseApp is not initialized in this process com.flowring.laleents. Make sure to call FirebaseApp.initializeApp(Context) first.
+        at com.google.firebase.FirebaseApp.getInstance(FirebaseApp.java:184)
+
+
+
+
+如果不使用 tools:node="replace"，
+會出現錯誤
+E/AndroidRuntime: FATAL EXCEPTION: main
+    Process: com.flowring.laleents, PID: 11082
+    java.lang.RuntimeException: Unable to get provider androidx.startup.InitializationProvider: java.lang.ClassNotFoundException: Didn't find class "androidx.startup.InitializationProvider" on path: DexPathList[[zip file "/data/app/~~QMWs9Hq4UPsnMOTUGplrTA==/com.flowring.laleents-qvOXQErm4f6wTaM_jrED1A==/base.apk"],nativeLibraryDirectories=[/data/app/~~QMWs9Hq4UPsnMOTUGplrTA==/com.flowring.laleents-qvOXQErm4f6wTaM_jrED1A==/lib/arm64, /data/app/~~QMWs9Hq4UPsnMOTUGplrTA==/com.flowring.laleents-qvOXQErm4f6wTaM_jrED1A==/base.apk!/lib/arm64-v8a, /system/lib64, /system/system_ext/lib64]]
+
+
+
+
+
+https://blog.csdn.net/g984160547/article/details/113767553
+
+apply plugin: 'com.google.gms.google-services'

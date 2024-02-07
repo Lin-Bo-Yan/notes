@@ -1,0 +1,13 @@
+安裝的 Homebrew 軟體包：
+   ● brew list
+
+查看特定軟體包的詳細信息：
+   ● brew info package-name
+
+
+brew --cask 指令：
+   ● brew install <package-name> --cask
+
+brew search 找尋您喜歡的字體
+   ● brew search powerline
+

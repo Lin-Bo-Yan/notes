@@ -1,0 +1,156 @@
+react-native 生命週期：
+
+Mounting:
+此為組建第一次繪製階段，在這裡完成加載及初始化。
+
+constructor() -> componentWillMount() -> render() -> componentDidMount() -> componentWillUnmount()
+
+
+constructor()：初始化參數，在這邊可以決定該 component 初始參數。
+componentWillMount()：此為畫圖之前，會執行的步驟，在生命週期裡只會執行一次。
+render()：畫圖，在這邊可以決定該 component 裡面有哪些元件。
+componentDidMount()：該處 DOM 以實作完成，通常這步用於網路數據請求或 native 資料的取得，該 function 只會被執行一次。
+componentWillUnmount()：在 component 結束前會執行該 function ，這邊用於關閉網路請求元件，timer。
+
+
+---------------------------------------------------------------------------------------------------
+
+Updating：
+此階段為根據狀態重新繪製該狀態的圖。
+
+Mounting 發生setProps() setState() forceUpdate()
+
+componentWillReceiveProps(nextProps) -> shouldComponentUpdate(nextProps, nextState) -> componentWillUpdate(nextProps, nextState) 
+-> render() -> componentDidUpdate(prevProps, prevState)
+
+
+
+componentWillReceiveProps()：該處為更動 props 之處，可獲得更改前與更改後的值。
+shouldComponentUpdate()：同 componentWillReceiveProps() 可得到 state ，這裡需回傳值 true 會繼續下去到 render()，反之 false 則停住。
+componentWillUpdate()：該處，可執行畫圖前一些動作，題外話，這邊不能執行 setState()，緊接著 render()。
+componentDidUpdate()：該處 preProps, preState 已更改完畢，該處可做網路資料更新，native database 資料更新。
+
+---------------------------------------------------------------------------------------------------
+
+Unmounting：
+組建清除階段。
+
+Mounting沒發生setProps() setState() forceUpdate() 
+
+Mounting -> Unmounting
+
+
+===================================================================================================
+
+function _mapStateToProps(state: IReduxState) {
+    return {
+        ..._abstractMapStateToProps(state),
+
+        // _reducedUI: state['features/base/responsive-ui'].reducedUI
+        getUnsafeRoomTextFn: (t: Function) => getUnsafeRoomText(state, t, 'welcome')
+    };
+}
+
+這段程式碼是使用React Native語言中的JavaScript或TypeScript撰寫的，主要是用於將應用程序的狀態映射到React組件的屬性（props）上，
+以便在組件中訪問和使用這些狀態。下面是這段程式碼的詳細說明：
+
+function _mapStateToProps(state: IReduxState)：這是一個JavaScript/TypeScript函數的定義，
+它用於將應用程序的Redux狀態對象映射到React組件的props上。state 是 Redux 狀態物件，IReduxState 則是定義或描述這個狀態物件結構的介面。
+
+return { ..._abstractMapStateToProps(state) }：這一行返回一個物件，其中包含了狀態的映射結果。
+_abstractMapStateToProps 函數似乎是另一個用於映射Redux狀態的函數，其結果被展開（使用 { ... } 語法）到這個物件中。
+
+getUnsafeRoomTextFn: (t: Function) => getUnsafeRoomText(state, t, 'welcome')：這一行是在物件中定義了一個名為 getUnsafeRoomTextFn 的屬性。
+這個屬性是一個函數，接受一個名為 t 的函數作為參數，並調用 getUnsafeRoomText 函數，這個函數用來獲取應用程序的某種房間文本信息，並將 state、t 
+和 'welcome' 作為參數傳遞給它。
+
+總的來說，這段程式碼的目的是將Redux狀態映射到React組件的props，其中包括來自 _abstractMapStateToProps 函數的其他映射結果，
+以及一個名為 getUnsafeRoomTextFn 的函數，該函數可用於獲取特定房間的文本信息。
+
+======================================================================================================================================
+
+_renderReducedUI() {
+        const { t } = this.props;
+
+        return (
+            <View style = { styles.reducedUIContainer as ViewStyle }>
+                <Text style = { styles.reducedUIText }>
+                    { t('welcomepage.reducedUIText', { app: getName() }) }
+                </Text>
+            </View>
+        );
+    }
+
+用繁體中文回答 const { t } = this.props; 什麼用意
+
+t = this.props
+
+
+const { t } = this.props; 這行程式碼的用意是解構 this.props 物件，從中取出名為 t 的屬性。
+
+在這段程式碼中，this.props 通常用於從父組件傳遞屬性到子組件。而 { t } 的語法是 JavaScript 的解構賦值，
+它的目的是從 this.props 中提取 t 這個屬性，並將其賦值給一個名為 t 的局部變數。
+這樣做的好處是在後續的程式碼中可以更簡潔地使用 t 這個變數，而不需要每次都寫 this.props.t。
+
+簡而言之，const { t } = this.props; 的目的是簡化代碼，以便在後續的程式碼中更容易地訪問 this.props 中的 t 屬性。
+在這段程式碼中，t 可能代表一個翻譯（translation）函數，用於本地化應用程序中的文字內容。
+
+
+
+======================================================================================================================================
+
+
+render() {
+        // 我們希望歡迎頁面支持簡化的 UI 佈局，但啟用它時遇到了嚴重問題，因此我們將其禁用，直到找到適當的修復方案。
+        // 不過，我們將代碼留在這裡，因為當錯誤修復後這部分應該沒問題。
+        // 注意：重新啟用時，不要忘記取消註釋相應的 _mapStateToProps 行
+
+        /*
+        const { _reducedUI } = this.props;
+
+        if (_reducedUI) {
+            return this._renderReducedUI();
+        }
+        */
+
+        return this._renderFullUI();
+    }
+
+這個是一個帶有回傳值的方法嗎
+
+
+這個 render 方法的主要目的是根據應用程序的狀態（通常是 this.props 中的 _reducedUI 屬性）來決定應該呈現哪種介面。
+根據注釋中的說明，目前該功能被禁用了，但在修復相關問題後，可以重新啟用。
+當 _reducedUI 是 true 時，它會呼叫 this._renderReducedUI() 方法，否則會呼叫 this._renderFullUI() 方法。
+
+======================================================================================================================================
+
+找不到模組 'react-native-heroicons/solid' 或其對應的型別宣告。
+模組怎麼引入?
+
+    * npm install react-native-heroicons
+
+import { SolidIcon } from 'react-native-heroicons/solid';
+// 使用 SolidIcon 來渲染圖示
+
+
+ERROR  Invariant Violation: requireNativeComponent: "RNSVGPath" was not found in the UIManager.
+
+
+這個錯誤訊息是由於 React Native 中使用的 SVG 圖形庫 'react-native-svg' 中的某個組件（RNSVGPath）未正確連結到原生模組。
+確保您已經安裝了 'react-native-svg' 庫。您可以使用以下命令來安裝：
+
+    * npm install react-native-svg
+
+======================================================================================================================================
+
+w-full 對應到 width: '100%'，表示元素的寬度佔據父元素的整個寬度。
+absolute 對應到 position: 'absolute'，表示元素使用絕對定位，可以進一步指定 top 和 left 來調整元素的位置。
+-top-5 是 Tailwind CSS 中的相對定位，對應到 top: -5，表示元素向上偏移 5 個像素。
+opacity-10 表示元素的不透明度為 10%，對應到 opacity: 0.1，表示元素有 10% 的不透明度，看起來是半透明的。
+
+
+
+======================================================================================================================================
+
+
